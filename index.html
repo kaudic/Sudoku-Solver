@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Sudoku Solveur</title>
+    <meta HTTP-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <link type="text/css" rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Holtwood+One+SC&display=swap" rel="stylesheet" type='text/css'>
+</head>
+
+<body>
+    <h1>Solveur de sudoku</h1>
+    <div id="souligneTitre"></div>
+
+
+    <form>
+        <!--<label for="typeGrille">Choisir un type de grille</label>
+        <select id="typeGrille">
+            <option>Grille Carrée</option>
+            <option>Grille losange</option> 
+        </select> -->
+
+        <!--<label for="lignes">Nombre de lignes/colonnes</label>
+        <input id="lignes" value=9>*/ -->
+
+        <label for="choixExo">Choisir un exercice</label>
+        <select id="choixExo">
+            <option>Facile1</option>
+            <option>Facile2</option>
+            <option>Moyen</option>
+            <option>Difficile</option>
+            <option>Démoniaque</option>
+        </select>
+
+        <input type="button" value="Charger Exercice" onclick="chargerExoCloser()" />
+
+        <input type="button" value="Vider la Grille" onclick="genererGrille()" />
+
+        <input type="button" id="resoudre" value="Résoudre Grille" />
+
+        <input type="button" value="Options" onclick="$options.showModal()" />
+
+
+
+    </form>
+    <div>
+
+        <table id="table">
+
+            <tbody id="tableSudoku"></tbody>
+
+        </table>
+
+        <div id="chrono">
+
+            <p id="textChrono">Chrono: </p>
+
+        </div>
+
+    </div>
+
+    <p id=paraphChrono> Gestion des erreurs</p>
+
+    <dialog id="options" close>
+
+        Liste des options :<br />
+
+        <div>
+            <ul>
+                <label for="controleAuto">Activer le contrôle Automatique</label>
+                <input type="checkbox" id="controleAuto" />
+                <label for="cellulePrioritaire">Activer le choix de la cellule à calculer</label>
+                <input type="checkbox" id="cellulePrioritaire" />
+            </ul>
+        </div>
+
+        <div class="boutons">
+            <button onclick="$options.close()">Old</button>&nbsp;
+            <button onclick="fermerOptionsPopUP()">Fermer</button>
+        </div>
+
+    </dialog>
+
+    <hr>
+
+    <script>
+
+        //Exécution d'un chargement de grille dès la page rafraichie
+
+        let nbLignesColonnes = 9;
+        document.addEventListener('DOMContentLoaded', genererGrille(nbLignesColonnes))
+        console.log("Grille générée.");
+
+        //Mettre une gestion d'évènement sur le click du bouton "résoudre"
+
+        lancementSolveur = document.getElementById('resoudre');
+        x = 0;
+        lancementSolveur.addEventListener("click", async (e) => {
+            e.preventDefault();
+
+            //lancerChrono();
+            test().then((data) => {
+                alert(data);
+            });
+
+
+        });
+        //lancementSolveur.addEventListener("click", function(){lancerChrono()}); //lancement d'un chrono
+
+
+        function lancerChrono() {
+            chrono = setInterval(function () { majChrono() }, 1000);
+        }
+
+        //Récupérer les valeurs du pop up sur les choix des options
+
+        function fermerOptionsPopUP() {
+            var optionsChoisies = new Object();
+            optionsChoisies.ctrlAuto = document.getElementById('controleAuto').value;
+            optionsChoisies.cellulePrioritaire = document.getElementById('cellulePrioritaire').value;
+            $options.returnValues = optionsChoisies;
+            $options.close();
+        }
+
+
+        //Gestion de la fenêtre des options
+
+        var $options = document.getElementById('options');
+
+        $options.addEventListener('close', function (optionsChoisies) {
+            console.log('Fermeture. ', optionsChoisies);
+        });
+
+
+        function genererGrille(nbLignesColonnes) {
+
+            //Etant passé automatiquement en grille de 9 lignes/colonnes on force le passage à cette valeur (auparavant on passait par un champ de formulaire)
+
+            nbLignesColonnes = 9;
+
+            //Remise à 0 du html dans le cas ou on génère successivement plusieurs grilles
+            document.getElementById('tableSudoku').innerHTML = "";
+
+            //Si on souhaite récupérer le nombre de lignes/Colonnes dans le champ d'un formulaire, il faut réactiver cette partie
+            //let nbLignesColonnes=document.getElementById('lignes').value;
+
+
+            //on contrôle qu'on a un multiple de 3 sinon il ne s'agira d'une table conforme à un sudoku
+            let controlMultiple3 = isMultiple3(nbLignesColonnes);
+
+            if (controlMultiple3) {
+
+                let visuTable = document.getElementById('tableSudoku');
+                visuTable.style.display = "block";
+
+                for (i = 0; i < nbLignesColonnes; i++) {
+
+                    let tr = visuTable.insertRow(-1);
+                    tr.id = "lig" + i;
+
+                    for (j = 0; j < nbLignesColonnes; j++) {
+
+                        let td = tr.insertCell(-1);
+                        let input = td.appendChild(document.createElement('input'));
+                        input.id = i + "-" + j;
+                        //input.value= input.id;
+                        input.className = "sudokValues";
+                    }
+                }
+            }
+            else {
+                alert("Vous devez saisir un multiple de 3");
+                document.getElementById('lignes').value = 9;
+            }
+        }
+
+
+        function modalOptions() {
+            window.open('popupOptions.html', 'Options', 'menubar=no, scrollbars=no, status=no, resizable=no, location=no, top=400, left=3000, width=300, height=200');
+        }
+
+        const test = function solveurGrille() {
+            return new Promise((resolve, reject) => {
+
+                var testeslint = "coucou";
+                var testeslint2 = "coucou";
+
+                check = controlePréalableSolveur(); //vérifie la présence d'une grille html & vérifie qu'il y a des chiffres de renseignés dans la grille
+
+                if (check) {
+
+
+                    var grille = lireGrille(); //0: matrice vide, 1:Ligne, 2:colonne, 3:Carré
+
+
+                    for (let m = 0; m <= 20; m++) // on fait 20 boucles de calcul (chiffre qui peut être adapté)
+                    {
+
+                        for (let z = 0; z < grille[0].length; z++) {
+
+                            var nextCellule = grille[0][z];
+                            let resultatCalcul = calculCellule(nextCellule, grille);
+
+                            if (resultatCalcul.length == 1) {
+                                document.getElementById(nextCellule[0]).value = resultatCalcul[0];
+
+                            }
+
+                        }
+                        grille = lireGrille();
+
+                        tracaCellule = new Array();
+
+                        controleResultat = verifGrille(grille);
+
+                        if (controleResultat) {
+                            resolve("Grille Terminée!");
+                        }
+                        else {
+                            // si après 20 boucles la grille est non résolue alors on lance la fonction backtracing 
+                            //avec le paramètre x=0 pour dire que l'on prendra le 1er résultat possible et qu'il ne s'agit pas d'un retour arrière
+
+                            //reject("Résolution simple échoue. Début Bactracing");
+                            console.log("Fin des 20 boucles: début du solveur bactracing.");
+
+                            x = 0;
+                            retourArrière = false;
+                            solveur().then((data) => {
+                                resolve(data);
+                            });
+
+                        }
+
+                    }
+                }
+                //Après 20 boucles on pose le résultat du calcul dans la table html bien que l'on n'ait pas trouvé une solution pour toutes les cases
+                //Sera à enlever au profit de la fonction récursive
+                /*for (let z=0; z<grille[0].length; z++)
+                    {
+                        var nextCellule=grille[0][z];
+                        let resultatCalcul= calculCellule(nextCellule, grille);
+                        document.getElementById(nextCellule[0]).value=resultatCalcul;
+
+                    }*/
+
+
+                //Test de grille après 20 boucles
+
+            });
+        }
+
+
+
+
+        const solveur = (grille, x, retourArrière) => {
+            return new Promise((resolve, reject) => {
+                //lancerChrono(); //lancement d'un chrono
+                backtracing(grille, x, retourArrière).then((data) => {
+                    resolve(data);
+                });
+                backtracing(grille, x, retourArrière).catch((data) => {
+                    backtracing(data);
+                });
+            });
+        };
+
+        const backtracing = ((grille, numResultatCellulePrecedente, retourArrière) => {
+            return new Promise((resolve, reject) => {
+
+                console.log("--------------------------");
+
+                var nextCellule = grille[0][0]; // dans nextCellule on retrouve les coordonnées de la cellule à calculer, ainsi qu'un chiffre qui sera utilisé pour dire quel n° de résultat sera utilisé
+                console.log("Calcul de la cellule: " + nextCellule);
+                cellulePrecedente = tracaCellule[tracaCellule.length - 1] // on prends en mémoire la cellule précédente au cas ou un retour arrière est nécessaire
+                let resultatCalcul = calculCellule(nextCellule, grille);
+                console.log("Résultat du calcul: " + resultatCalcul + " Longueur du résultat: " + resultatCalcul.length);
+
+                if (resultatCalcul.length == 0) // le résultat du calcul indique qu'il n'y a pas de réponse possible, il faut donc revenir en arrière, sur la cellule précédente et voir si un autre choix 
+                //était possible
+
+                {
+
+                    console.log("Pas de résultat trouvé pour la cellule " + nextCellule + ". Retour arrière sur la cellule " + cellulePrecedente + ".");
+                    retourArrière = true; // on active le flag retour arrière
+                    document.getElementById(cellulePrecedente[0]).value = ""; //remettre à 0 dans la grille la valeur de la cellule précédente, afin qu'à la prochaine lecture de grille, 
+                    //la cellule soit considérée comme vide
+                    tracaCellule.splice(tracaCellule.length - 1, 1);//suppression de l'enregistrement de traçabilité de la dernière cellule calculée puisqu'on va la recalculer
+                    grille = lireGrille();
+                    numResultatCellulePrecedente = cellulePrecedente[1];
+                    reject(grille, numResultatCellulePrecedente, retourArrière);
+
+                }
+
+                else if (resultatCalcul.length <= (numResultatCellulePrecedente + 1) & retourArrière == true) // les résultats ont déjà été testés, il faut faire un retour arrière
+                {
+                    console.log("Les résultats possibles ont déjà été testés. Retour arrière sur la cellule: " + cellulePrecedente);
+                    retourArrière = true; // on active le flag retour arrière
+                    document.getElementById(cellulePrecedente[0]).value = ""; //remettre à 0 dans la grille la valeur de la cellule précédente, afin qu'à la prochaine lecture de grille, 
+                    //la cellule soit considérée comme vide
+                    tracaCellule.splice(tracaCellule.length - 1, 1);//suppression de l'enregistrement de traçabilité de la dernière cellule calculée puisqu'on va la recalculer
+                    grille = lireGrille();
+                    numResultatCellulePrecedente = cellulePrecedente[1];
+                    reject(grille, numResultatCellulePrecedente, retourArrière);
+
+                }
+
+
+                else // plusieurs résultats sont possibles, dans ce cas il faut prendre soit le 1er des résultats (0), soit le résultat précédent incrémenté de 1 car il s'agit d'un retour arrière 
+                //(voir si le flag retour arrière est à true/false)
+
+                {
+
+                    if (retourArrière == true) {
+                        console.log("Retour Arrière = " + retourArrière);
+                        document.getElementById(nextCellule[0]).value = resultatCalcul[numResultatCellulePrecedente + 1];
+                        console.log("Résultat utilisé: " + document.getElementById(nextCellule[0]).value);
+                        nextCellule[1] = numResultatCellulePrecedente + 1; //on garde en mémoire le num de résultat que l'on a pris
+
+                    }
+                    else {
+                        console.log("Retour Arrière = " + retourArrière);
+                        celluleaMAJ = document.getElementById(nextCellule[0]);
+                        celluleaMAJ.value = resultatCalcul[0];
+
+                        console.log("Résultat utilisé: " + document.getElementById(nextCellule[0]).value);
+                        nextCellule[1] = 0; // on garde en mémoire que l'on a pris le premier résultat autorisé (0)
+
+                    }
+
+
+                    tracaCellule.push(nextCellule); // on enregistre en traçabilité la cellule qui vient d'être calculée
+                    //document.getElementById('table').contentDocument.location.reload(true);
+                    var grille = lireGrille();
+                    //rechargerPage();
+
+
+                    controleResultat = verifGrille(grille);
+
+                    if (controleResultat) // on teste la somme et le nombre de chiffres trouvés sur chaque array (lignes & colonnes) pour savoir si la grille est finie
+                    {
+                        resolve("Grille terminée");
+                    }
+                    else {
+                        x = 0;
+                        retourArrière = false;
+                        reject(grille, x, retourArrière);
+
+                    }
+                }
+
+            });
+        });
+
+
+
+        function rechargerPage() {
+            window.location.href = 'file:///C:/xampp/htdocs/Sudoku/index2.html';
+        }
+
+
+        function verifGrille(grille) {
+
+            // on récupère les variables lignes, colonnes et carrés
+            let ligne2 = grille[1];
+            let colonne2 = grille[2];
+            let carré2 = grille[3];
+
+            //console.log(grille);
+
+            for (p = 0; p <= 8; p++) {
+
+
+                if (ligne2[p][9] == 9 & colonne2[p][9] == 9 & carré2[p][9] == 9) {
+
+                    if (ligne2[p][10] == 45 & colonne2[p][10] == 45 & carré2[p][10] == 45) {
+                        controleResultat = true;
+                    }
+                    else {
+                        controleResultat = false;
+                        return controleResultat;
+                    }
+
+                }
+                else {
+                    controleResultat = false;
+                    return controleResultat;
+                }
+            }
+
+            return controleResultat;
+
+        }
+
+
+        function isMultiple3(nbLignesColonnes) {
+            return nbLignesColonnes % 3 === 0;
+        }
+
+
+        function controlePréalableSolveur() {
+
+            //contrôle si un tableau html existe
+            let table = document.getElementById('tableSudoku').innerHTML;
+
+            if (table === "") {
+                alert("Vous devez d'abord générer une grille avant de pouvoir la tester");
+            }
+            else {
+                let chiffre = controlePresenceChiffre();
+
+                var compteur = 0;
+
+                for (let i of chiffre) {
+
+                    if (i != "") {
+                        compteur += 1;
+                    }
+                }
+
+                if (compteur > 0) {
+                    return true;
+                }
+                else {
+                    alert("Il faut qu'il y ait des chiffres de renseignés pour que le solveur puisse tourner.")
+                    return false;
+                }
+
+            }
+
+        }
+
+        function lireGrille() {
+            //enregistrer dans une matrice nommée "matrice" tous les input du tableau identifiés par une class "sudo"
+            //enregistrer dans une matrice nommée "matriceVide" tous les ID des input (contenant les coordonnées dans leurs ID)
+            //de valeurs nulles, ce qui correspond aux cases à chercher
+
+            var matrice = document.getElementsByClassName('sudokValues');
+            var matriceVide = new Array();
+
+            for (let i = 0; i < matrice.length; i++) {
+
+                if (matrice[i].value == "") {
+                    matriceVide.push([matrice[i].id, 0]); //le 0 sera remplacé par le nombre de chiffres qui permettra de déterminer les priorités
+                }
+
+            }
+
+
+            // Enregistrement des arrays pour les lignes, des arrays pour les colonnes et des arrays pour les carrés
+
+            //Déclaration des variables
+            var Ligne = new Array(8);
+            var Colonne = new Array(8);
+            var Carré = new Array(8);
+            var Chiffre = 0;
+
+            //Initialisation des variables (notamment les colonnes)
+
+            for (let i = 0; i < 9; i++) {
+                Ligne[i] = new Array(11);
+                Ligne[i][9] = 0; //on initialise un total des nombres à 0
+                Ligne[i][10] = 0; //on initialise une somme des nombres à 0
+                Colonne[i] = new Array(11);
+                Colonne[i][9] = 0; //on initialise un total des nombres à 0
+                Colonne[i][10] = 0; //on initialise une somme des nombres à 0
+                Carré[i] = new Array();
+            }
+
+
+
+            //Enregistrement des valeurs dans les arrays Ligne, Colonnes et Carrés
+            for (let i = 0; i < 81; i++) {
+                var ligID = matrice[i].id.toString().substr(0, 1);
+                var colID = matrice[i].id.toString().substr(2, 1);
+
+                if (matrice[i].value == "") {
+                    chiffre = 0;
+                }
+                else {
+                    chiffre = parseInt(matrice[i].value);
+                }
+
+                Ligne[ligID][colID] = (chiffre);
+
+                //on remplit le nombre de chiffres supérieurs à 0 dans chaque ligne, en colonne 9, et la somme de chaque ligne en colonne 10
+                if (Ligne[ligID][colID] > 0) {
+                    Ligne[ligID][9] += 1;
+                    Ligne[ligID][10] += Ligne[ligID][colID];
+                }
+
+                Colonne[colID][ligID] = (chiffre);
+
+                //on remplit le nombre de chiffres supérieurs à 0 dans chaque ligne, en colonne 9, et la somme de chaque ligne en colonne 10
+                if (Colonne[colID][ligID] > 0) {
+                    Colonne[colID][9] += 1;
+                    Colonne[colID][10] += Colonne[colID][ligID];
+                }
+
+                //Gestion des 9 carrés, cela nécessite l'emploi d'un else if
+                if (ligID <= 2 && colID <= 2) {
+                    Carré[0].push(chiffre);
+
+                }
+                else if (ligID <= 2 && colID > 2 && colID <= 5) {
+                    Carré[1].push(chiffre);
+                }
+                else if (ligID <= 2 && colID > 5) {
+                    Carré[2].push(chiffre);
+                }
+                else if (ligID > 2 && ligID <= 5 && colID <= 2) {
+                    Carré[3].push(chiffre);
+                }
+                else if (ligID > 2 && ligID <= 5 && colID > 2 && colID <= 5) {
+                    Carré[4].push(chiffre);
+                }
+                else if (ligID > 2 && ligID <= 5 && colID > 5) {
+                    Carré[5].push(chiffre);
+                }
+                else if (ligID > 5 && colID <= 2) {
+                    Carré[6].push(chiffre);
+                }
+                else if (ligID > 5 && colID > 2 && colID <= 5) {
+                    Carré[7].push(chiffre);
+                }
+                else if (ligID > 5 && colID > 5) {
+                    Carré[8].push(chiffre);
+                }
+
+                //fin de la boucle principale
+            }
+
+            //on remplit le nombre de chiffres supérieurs à 0 dans chaque ligne, en colonne 9 et la somme en colonne 10
+            var nbChiffresCarré = 0;
+            var sommeChiffresCarré = 0;
+
+            for (i = 0; i < 9; i++) {
+                nbChiffresCarré = 0;
+                sommeChiffresCarré = 0;
+
+                for (let n = 0; n < (Carré[i].length) - 1; n++) {
+                    if (Carré[i][n] > 0) {
+                        nbChiffresCarré += 1;
+                        sommeChiffresCarré += Carré[i][n];
+                        Carré[i].splice(9, 1, nbChiffresCarré);
+
+                    }
+
+                }
+                Carré[i].splice(10, 1, sommeChiffresCarré);
+            }
+
+            return grille = [matriceVide, Ligne, Colonne, Carré];
+
+        }
+
+        function calculPriorité(grille) {
+            //l'objectif est de calculer le nombre de chiffres renseignés dans la ligne/colonne/carré de chaque cellule vide
+            //à la fin est tri est fait afin de récupérer la première cellule à calculer
+
+            //on récupère de la variable grille la matrice contenant les cellules vides -> priorités
+            //on écrira dans les objets de la variable priorité, en colonne 1 le nombre de chiffres renseignés
+            var priorités = grille[0];
+
+            // on récupère les variables lignes, colonnes et carrés
+            var lignes = grille[1];
+            var colonnes = grille[2];
+            var carrés = grille[3];
+
+
+            for (let n = 0; n < priorités.length; n++) {
+                let lig = parseInt(priorités[n][0].substr(0, 1)); //on décrypte l'ID des cellules pour en tirer ligne
+                let col = parseInt(priorités[n][0].substr(2, 1)); //on décrypte l'ID des cellules pour en tirer colonne
+
+                if (lig <= 2 && col <= 2) {
+                    priorités[n][1] = lignes[lig][9] + colonnes[col][9] + carrés[0][9];
+
+                }
+                else if (lig <= 2 && col > 2 && col <= 5) {
+                    priorités[n][1] = lignes[lig][9] + colonnes[col][9] + carrés[1][9];
+                }
+                else if (lig <= 2 && col > 5) {
+                    priorités[n][1] = lignes[lig][9] + colonnes[col][9] + carrés[2][9];
+                }
+                else if (lig > 2 && lig <= 5 && col <= 2) {
+                    priorités[n][1] = lignes[lig][9] + colonnes[col][9] + carrés[3][9];
+                }
+                else if (lig > 2 && lig <= 5 && col > 2 && col <= 5) {
+                    priorités[n][1] = lignes[lig][9] + colonnes[col][9] + carrés[4][9];
+                }
+                else if (lig > 2 && lig <= 5 && col > 5) {
+                    priorités[n][1] = lignes[lig][9] + colonnes[col][9] + carrés[5][9];
+                }
+                else if (lig > 5 && col <= 2) {
+                    priorités[n][1] = lignes[lig][9] + colonnes[col][9] + carrés[6][9];
+                }
+                else if (lig > 5 && col > 2 && col <= 5) {
+                    priorités[n][1] = lignes[lig][9] + colonnes[col][9] + carrés[7][9];
+                }
+                else if (lig > 5 && col > 5) {
+                    priorités[n][1] = lignes[lig][9] + colonnes[col][9] + carrés[8][9];
+                }
+            }
+
+            //on va boucler et enregistrer dans input1 les coordonnées 
+            var input1 = ["0-0", 2];
+            for (n = 0; n < priorités.length; n++) {
+                if (priorités[n][1] > parseInt(input1[1])) {
+                    input1[0] = priorités[n][0];
+                    input1[1] = priorités[n][1];
+                }
+            }
+
+            return input1;
+
+        }
+
+        function controlePresenceChiffre() {
+
+            // on enregistre dans une variable tous les éléments input situés à l'intérieur du tableau grâce à une classe
+            let matrice = document.getElementsByClassName('sudokValues');
+            var matriceValues = [""];
+
+            // on transfert les valeurs des éléments input à un array
+            for (let i = 0; i < matrice.length; i++) {
+                matriceValues.push(matrice[i].value);
+            }
+
+            return matriceValues;
+
+        }
+
+        function calculCellule(nextCellule, grille) {
+            //les coordonnées de la cellule se trouvent dans la variable passée en paramètre de la fonction
+            //on va parser la variable pour récupérer la ligne et la colonne
+
+            var nombrePossible = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            var lig = nextCellule[0].substr(0, 1);
+            var col = nextCellule[0].substr(2, 1);
+
+            //on va boucler sur les matrices Lignes, colonnes et carrés pour supprimer les chiffres déjà présents de la variable nombrePossible
+            // dans grille on retrouve dans les positions suivantes: 1:Ligne, 2:colonne, 3:Carré
+
+            var ligne = grille[1];
+            var colonne = grille[2];
+            var carré = grille[3];
+
+            //on parcourt la ligne et on élimine les chiffres déjà présents
+            for (n = 0; n < ligne[lig].length - 2; n++) {
+                if (ligne[lig][n] > 0) {
+                    var position = nombrePossible.indexOf(ligne[lig][n]);
+                    if (position !== -1) {
+                        nombrePossible.splice(position, 1);
+                    }
+                }
+            }
+
+            //on parcourt la colonne et on élimine les chiffres déjà présents
+            for (n = 0; n < colonne[lig].length - 2; n++) {
+                if (colonne[col][n] > 0) {
+                    var position = nombrePossible.indexOf(colonne[col][n]);
+                    if (position !== -1) {
+                        nombrePossible.splice(position, 1);
+                    }
+                }
+            }
+
+            //on détermine quel carré il faut analyser
+            if (lig <= 2 && col <= 2) {
+                var numCarré = 0;
+
+            }
+            else if (lig <= 2 && col > 2 && col <= 5) {
+                var numCarré = 1;
+            }
+            else if (lig <= 2 && col > 5) {
+                var numCarré = 2;
+            }
+            else if (lig > 2 && lig <= 5 && col <= 2) {
+                var numCarré = 3;
+            }
+            else if (lig > 2 && lig <= 5 && col > 2 && col <= 5) {
+                var numCarré = 4;
+            }
+            else if (lig > 2 && lig <= 5 && col > 5) {
+                var numCarré = 5;
+            }
+            else if (lig > 5 && col <= 2) {
+                var numCarré = 6;
+            }
+            else if (lig > 5 && col > 2 && col <= 5) {
+                var numCarré = 7;
+            }
+            else if (lig > 5 && col > 5) {
+                var numCarré = 8;
+            }
+
+            //on parcourt le carré identifié et on élimine les chiffres déjà présents
+            for (n = 0; n < carré[numCarré].length - 2; n++) {
+                if (carré[numCarré][n] > 0) {
+                    var position = nombrePossible.indexOf(carré[numCarré][n]);
+                    if (position !== -1) {
+                        nombrePossible.splice(position, 1);
+                    }
+                }
+            }
+
+            //Ecrire le résultat dans la cellule
+            document.getElementById(lig + "-" + col).focus();
+
+            return nombrePossible;
+
+        }
+
+        function majChrono() {
+            x++;
+            o = document.getElementById("textChrono");
+            o.style.fontSize = '50px'
+
+            o.innerHTML = x + "s";
+            console.log(x);
+            return x;
+
+        }
+
+        function chargerExoCloser() {
+
+            //au préalable avant de charger l'exo, on remet la grille à 0
+            cases = document.getElementsByClassName("sudokValues");
+            for (let i of cases) {
+                i.value = "";
+            }
+
+            //on regarde la sélection de l'exo faite par l'utilisateur
+
+            select = document.getElementById("choixExo");
+            choice = select.selectedIndex;
+            valueChoice = select.options[choice].value;
+
+            if (valueChoice == "Facile1") {
+
+                //précharge une grille de closer du 04 au 10 Juin 2021
+                document.getElementById('0-2').value = 4;
+                document.getElementById('0-3').value = 6;
+                document.getElementById('0-7').value = 8;
+                document.getElementById('1-0').value = 3;
+                document.getElementById('1-2').value = 5;
+                document.getElementById('1-4').value = 1;
+                document.getElementById('1-7').value = 6;
+                document.getElementById('1-8').value = 7;
+                document.getElementById('2-0').value = 6;
+                document.getElementById('2-4').value = 5;
+                document.getElementById('2-5').value = 3;
+                document.getElementById('2-6').value = 9;
+                document.getElementById('3-0').value = 9;
+                document.getElementById('3-4').value = 8;
+                document.getElementById('4-1').value = 1;
+                document.getElementById('4-4').value = 2;
+                document.getElementById('4-5').value = 6;
+                document.getElementById('4-6').value = 4;
+                document.getElementById('5-0').value = 4;
+                document.getElementById('5-6').value = 5;
+                document.getElementById('5-7').value = 1;
+                document.getElementById('6-2').value = 6;
+                document.getElementById('6-5').value = 1;
+                document.getElementById('7-2').value = 1;
+                document.getElementById('7-3').value = 7;
+                document.getElementById('7-4').value = 9;
+                document.getElementById('7-8').value = 2;
+                document.getElementById('8-1').value = 3;
+                document.getElementById('8-4').value = 6;
+                document.getElementById('8-5').value = 2;
+                document.getElementById('8-7').value = 7;
+            }
+
+            else if (valueChoice == "Facile2") {
+                //précharge une grille de closer du 04 au 10 Juin 2021
+                document.getElementById('0-0').value = 6;
+                document.getElementById('0-2').value = 9;
+                document.getElementById('0-5').value = 5;
+                document.getElementById('0-7').value = 1;
+                document.getElementById('1-2').value = 4;
+                document.getElementById('1-3').value = 3;
+                document.getElementById('1-4').value = 7;
+                document.getElementById('1-5').value = 6;
+                document.getElementById('1-8').value = 2;
+                document.getElementById('2-0').value = 8;
+                document.getElementById('2-1').value = 7;
+                document.getElementById('2-4').value = 1;
+                document.getElementById('2-7').value = 6;
+                document.getElementById('3-0').value = 7;
+                document.getElementById('3-5').value = 9;
+                document.getElementById('3-7').value = 3;
+                document.getElementById('3-8').value = 1;
+                document.getElementById('4-1').value = 9;
+                document.getElementById('5-0').value = 3;
+                document.getElementById('5-2').value = 1;
+                document.getElementById('5-3').value = 5;
+                document.getElementById('5-5').value = 2;
+                document.getElementById('6-0').value = 2;
+                document.getElementById('6-2').value = 3;
+                document.getElementById('6-6').value = 6;
+                document.getElementById('6-7').value = 7;
+                document.getElementById('7-1').value = 6;
+                document.getElementById('7-4').value = 9;
+                document.getElementById('7-5').value = 3;
+                document.getElementById('7-6').value = 1;
+                document.getElementById('7-8').value = 8;
+                document.getElementById('8-0').value = 9;
+                document.getElementById('8-5').value = 1;
+
+            }
+
+            else if (valueChoice == "Moyen") {
+                //précharge une grille de closer du 04 au 10 Juin 2021
+                document.getElementById('0-0').value = 4;
+                document.getElementById('0-5').value = 6;
+                document.getElementById('0-8').value = 7;
+                document.getElementById('1-3').value = 3;
+                document.getElementById('1-4').value = 8;
+                document.getElementById('1-7').value = 6;
+                document.getElementById('1-8').value = 1;
+                document.getElementById('2-1').value = 3;
+                document.getElementById('2-5').value = 4;
+                document.getElementById('3-1').value = 2;
+                document.getElementById('3-5').value = 9;
+                document.getElementById('3-7').value = 5;
+                document.getElementById('4-0').value = 3;
+                document.getElementById('4-1').value = 7;
+                document.getElementById('4-6').value = 2;
+                document.getElementById('5-0').value = 1;
+                document.getElementById('5-2').value = 5;
+                document.getElementById('5-6').value = 3;
+                document.getElementById('5-7').value = 4;
+                document.getElementById('6-3').value = 5;
+                document.getElementById('6-5').value = 8;
+                document.getElementById('6-7').value = 9;
+                document.getElementById('7-1').value = 1;
+                document.getElementById('7-4').value = 2;
+                document.getElementById('7-7').value = 8;
+                document.getElementById('7-8').value = 4;
+                document.getElementById('8-3').value = 6;
+
+            }
+
+            else if (valueChoice == "Difficile") {
+                //précharge une grille de closer du 04 au 10 Juin 2021
+                document.getElementById('0-1').value = 4;
+                document.getElementById('0-4').value = 5;
+                document.getElementById('0-7').value = 9;
+                document.getElementById('1-2').value = 2;
+                document.getElementById('1-6').value = 8;
+                document.getElementById('1-8').value = 5;
+                document.getElementById('2-1').value = 9;
+                document.getElementById('2-8').value = 1;
+                document.getElementById('3-0').value = 8;
+                document.getElementById('3-3').value = 1;
+                document.getElementById('3-6').value = 3;
+                document.getElementById('3-7').value = 4;
+                document.getElementById('4-1').value = 7;
+                document.getElementById('4-2').value = 4;
+                document.getElementById('4-5').value = 8;
+                document.getElementById('5-8').value = 9;
+                document.getElementById('6-0').value = 5;
+                document.getElementById('6-1').value = 1;
+                document.getElementById('6-3').value = 2;
+                document.getElementById('7-1').value = 6;
+                document.getElementById('7-3').value = 3;
+                document.getElementById('7-6').value = 9;
+                document.getElementById('8-4').value = 6;
+                document.getElementById('8-7').value = 7;
+
+            }
+
+            else if (valueChoice == "Démoniaque") {
+                //précharge une grille de closer du 04 au 10 Juin 2021
+                document.getElementById('0-2').value = 1;
+                document.getElementById('0-7').value = 2;
+                document.getElementById('1-3').value = 8;
+                document.getElementById('1-5').value = 5;
+                document.getElementById('1-8').value = 1;
+                document.getElementById('2-0').value = 5;
+                document.getElementById('2-3').value = 1;
+                document.getElementById('2-5').value = 3;
+                document.getElementById('2-6').value = 4;
+                document.getElementById('3-1').value = 2;
+                document.getElementById('3-2').value = 9;
+                document.getElementById('3-6').value = 7;
+                document.getElementById('3-7').value = 4;
+                document.getElementById('5-1').value = 4;
+                document.getElementById('5-2').value = 6;
+                document.getElementById('5-6').value = 3;
+                document.getElementById('5-7').value = 9;
+                document.getElementById('6-2').value = 2;
+                document.getElementById('6-3').value = 3;
+                document.getElementById('6-5').value = 7;
+                document.getElementById('6-8').value = 4;
+                document.getElementById('7-0').value = 9;
+                document.getElementById('7-3').value = 5;
+                document.getElementById('7-5').value = 1;
+                document.getElementById('8-1').value = 1;
+                document.getElementById('8-6').value = 8;
+
+            }
+
+
+
+
+
+
+        }
+
+
+    </script>
+
+</body>
+
+</html>
