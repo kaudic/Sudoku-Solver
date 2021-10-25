@@ -1,0 +1,125 @@
+body{
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    font-family: 'Holtwood One SC', sans-serif;
+}
+
+.main-title{
+    
+    color: yellowgreen;
+    font-size: 60px;
+}
+
+.underline-title
+ {
+     background-color: orange;
+     height: 10px;
+     border-radius: 10px;
+     width: 770px;
+ }
+
+
+ .main-form{
+    display: flex;
+    justify-content: flex-start;
+    border: 3px solid yellowgreen;
+    border-radius: 10px;
+    margin-top: 40px;
+}
+
+
+.main-form button, .main-form select{
+margin: 10px;
+background-color: lightgrey;
+color: black;
+border-radius: 5px;
+}
+
+.main-form label{
+    margin: 10px;
+    background-color: none;
+    color: white;
+    }
+
+.main-content{
+    display: flex;
+    justify-content: flex-start;
+    align-content: center;
+
+}
+
+#sudokuBoard{
+    margin: 100px;
+
+}
+
+.sudokuRow{
+    display: flex;
+}
+
+.sudokuColumn{
+
+}
+
+#sudokuBoard input{
+    display: block;
+    border: 1px solid black;
+    color: black;
+    /* width: 30px;
+    height: 30px; */
+    margin: 0px;
+    text-align: center;
+    background-color: lightgrey;
+
+}
+
+#sudokuBoard input:focus { 
+    outline: 0;
+    background-color: burlywood;
+ }
+
+
+ #sudokuBoard .sudokuRow:last-of-type input{
+    border-bottom:4px solid yellowgreen;
+}
+
+#sudokuBoard .sudokuRow:first-of-type input{
+    border-top:4px solid yellowgreen;
+}
+
+#sudokuBoard .sudokuRow .sudokuColumn:last-of-type input{
+    border-right:4px solid yellowgreen;
+}
+
+#sudokuBoard .sudokuRow .sudokuColumn:first-of-type input{
+    border-left:4px solid yellowgreen;
+}
+
+#stopWatch
+{
+   margin-top: 30px;
+   margin-bottom: 30px;
+   border: 4px solid yellowgreen;
+   border-radius: 100%;
+   width: 350px;
+   height: 350px;
+   color: yellowgreen;
+   margin: 100px;
+   text-align: center;
+   display:inline-block;
+}
+
+.stopWatchText
+{
+   display:block;
+   padding-top:20%;
+   background: none;
+   font-size: 30px;
+}
+
+
+
+
+
+
