@@ -118,6 +118,18 @@ const app = {
 
     },
 
+    applyDatasToBoard: (data) => {
+        //TODO remplir la grille avec data et les id de lignes
+        for (let line = 0; line < 9; line++) {
+            for (let column = 0; column < 9; column++) {
+                let cell = document.getElementById(line.toString() + column.toString());
+                cell.value = data[line][column];
+
+            }
+        }
+
+    },
+
     loadExercice: (e) => {
 
         e.preventDefault();
@@ -131,7 +143,9 @@ const app = {
                 return response.json();
             })
             .then((data) => {
-                console.log(data[0][0]); //Bingo Gringo!! j'obtiens la première ligne de la grille !!
+                console.log(data);
+                app.applyDatasToBoard(data);
+
             });
 
 
