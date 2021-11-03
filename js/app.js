@@ -135,11 +135,6 @@ const app = {
             });
 
 
-
-
-
-
-
         //on regarde la sélection de l'exo faite par l'utilisateur pour savoir quoi charger
         // console.log('Loading Board ...');
         // const exerciceSelectorElt = document.getElementById('level-selection');
