@@ -128,19 +128,14 @@ const app = {
         //test d'une fonction fetch
         fetch('http://localhost:3000/database')
             .then(function (response) {
-                try {
-                    // Parse a JSON
-                    // const responseParsed = JSON.parse(response);
-                    console.log(response);
-                } catch (e) {
-                    // You can read e for more info
-                    // Let's assume the error is that we already have parsed the payload
-                    // So just return that
-                    const responseNotParsed = response;
-                    alert('erreur: ' + e + 'rep: ' + responseNotParsed);
-                }
-
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data[0][0]); //Bingo Gringo!! j'obtiens la première ligne de la grille !!
             });
+
+
+
 
 
 

@@ -9,9 +9,8 @@ const server = http.createServer((req, res) => {
 
     if (req.url === '/database') {
 
-        fs.readFile('./boardDatabase.json', (err, data) => {
+        fs.readFile('./boardDatabase.js', (err, data) => {
             if (err) throw err;
-            console.log('boardDatabase: ' + data);
             res.setHeader('Content-Type', 'application/json');
             res.setHeader('Access-Control-Allow-Origin', '*');
             res.end(data);
