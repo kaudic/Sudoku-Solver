@@ -94,9 +94,9 @@ const app = {
         emptyBoardBtnElt.addEventListener('click', app.emptyExercice);
 
         const solveExerciceBtnElt = document.createElement('button');
+        solveExerciceBtnElt.id = 'solveBoardBtn'
         solveExerciceBtnElt.textContent = 'Résoudre la grille';
         solveExerciceBtnElt.addEventListener('click', app.solveExercice);
-
 
         //Implentation des éléments du formulaire dans le formulaire
         formElt.appendChild(labelForSelectElt);
@@ -137,14 +137,25 @@ const app = {
         //On met la grille à 0 au cas ou
         app.emptyExercice();
 
-        //test d'une fonction fetch
-        fetch('http://localhost:3000/database')
+        //on lit la difficulté demandée pour l'envoyer au serveur qui traitera alors une route dynamique
+        const level = document.getElementById('level-selection').value;
+        const route = 'http://localhost:3000/getBoard/' + level;
+
+        //on fetch une grille avec un niveau de difficulté demandé
+        fetch(route)
             .then(function (response) {
+
                 return response.json();
             })
-            .then((data) => {
-                console.log(data);
-                app.applyDatasToBoard(data);
+            .then((board) => {
+
+                console.log(`Board ${board.id} loaded`);
+
+                //on récupère un id de grille que l'on stocke dans un dataset du bouton 'Résoudre Grille'
+                const solveBoardBtn = document.getElementById('solveBoardBtn');
+                solveBoardBtn.dataset.id = board.id;
+
+                app.applyDatasToBoard(board.data);
 
             });
 
@@ -290,32 +301,87 @@ const app = {
         // else if (ExerciceChosen == 'Moyen') {
         //     //précharge une grille de closer du 04 au 10 Juin 2021
         //     document.getElementById('0-0').value = 4;
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
         //     document.getElementById('0-5').value = 6;
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
         //     document.getElementById('0-8').value = 7;
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
         //     document.getElementById('1-3').value = 3;
         //     document.getElementById('1-4').value = 8;
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
         //     document.getElementById('1-7').value = 6;
         //     document.getElementById('1-8').value = 1;
+
+        //     document.getElementById('0-0').value = '';
         //     document.getElementById('2-1').value = 3;
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
         //     document.getElementById('2-5').value = 4;
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
         //     document.getElementById('3-1').value = 2;
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
         //     document.getElementById('3-5').value = 9;
+        //     document.getElementById('0-0').value = '';
         //     document.getElementById('3-7').value = 5;
+        //     document.getElementById('0-0').value = '';
         //     document.getElementById('4-0').value = 3;
         //     document.getElementById('4-1').value = 7;
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
         //     document.getElementById('4-6').value = 2;
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
         //     document.getElementById('5-0').value = 1;
+        //     document.getElementById('0-0').value = '';
         //     document.getElementById('5-2').value = 5;
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
         //     document.getElementById('5-6').value = 3;
         //     document.getElementById('5-7').value = 4;
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
         //     document.getElementById('6-3').value = 5;
+        //     document.getElementById('0-0').value = '';
         //     document.getElementById('6-5').value = 8;
+        //     document.getElementById('0-0').value = '';
         //     document.getElementById('6-7').value = 9;
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
         //     document.getElementById('7-1').value = 1;
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
         //     document.getElementById('7-4').value = 2;
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
         //     document.getElementById('7-7').value = 8;
         //     document.getElementById('7-8').value = 4;
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
         //     document.getElementById('8-3').value = 6;
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
+        //     document.getElementById('0-0').value = '';
 
         // }
 
@@ -411,15 +477,41 @@ const app = {
 
         console.log('Bouton "Résoudre Grille activé"');
 
-        //Déclencher le chronomètre
-        app.launchStopWatchCount();
+        //On teste la présence d'un id dans les dataset du bouton solve et si oui on fetch la grille concernée et on l'affiche (route1)
+        //si pas de ID présent alors on lance un programme de type solveur (route2)
 
-        //mettre le code du solveur
+        const solveBoardBtn = document.getElementById('solveBoardBtn');
+        const boardId = solveBoardBtn.dataset.id;
+        let route = 'http://localhost:3000/solveBoard/';
 
-        setTimeout(() => {
-            for (let i = 0; i < 1000000; i++)
-                console.log('Démarrage du solveur' + i);
-        }, 3000);
+        if (boardId) {
+            route += boardId;
+
+        }
+        else {
+            route += 'none';
+            //Déclencher le chronomètre si le dataset est à false
+            app.launchStopWatchCount();
+        }
+
+
+        fetch(route)
+            .then(function (response) {
+
+                return response.json();
+            })
+            .then((board) => {
+
+                console.log(`Board ${board.id} loaded`);
+
+                //on récupère un id de grille que l'on stocke dans un dataset du bouton 'Résoudre Grille'
+                const solveBoardBtn = document.getElementById('solveBoardBtn');
+                solveBoardBtn.dataset.id = board.id;
+
+                app.applyDatasToBoard(board.data);
+
+            });
+
 
     },
 
