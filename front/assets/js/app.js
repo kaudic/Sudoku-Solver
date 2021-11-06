@@ -11,6 +11,48 @@ const app = {
 
     },
 
+    checkInput: (e) => {
+        //regarder si l'utilisateur a coché l'option de checker ses saisies, si oui on exécute la fonction sinon on sort
+        const inputCheckOn = document.getElementById('autoCheck').checked; //booléen
+
+        if (inputCheckOn) {
+
+            //chercher un numéro de ID de grille
+            const idGrille = document.getElementById('solveBoardBtn').dataset.id;
+
+            //capter l'identifiant de l'input modifié
+            const idInput = e.target.id;
+
+            //Création d'une route avec les paramètres Id de Grille et Id de Input
+            const route = '/checkInput/' + idGrille + '/' + idInput;
+            console.log(route);
+
+            //faire un fetch sur la route
+            fetch(route)
+                .then(function (response) {
+
+                    const responseTreated = response.json(); //on décrypte la réponse du back
+                    return responseTreated;
+                })
+                .then((response) => {
+
+                    //On compare la solution du back avec la valeur saisie et si c'est mauvais on met en rouge
+                    if (response.inputSolution !== Number(e.target.value)) {
+                        document.getElementById(idInput).style.backgroundColor = 'red';
+                    }
+                    else {
+                        document.getElementById(idInput).style.backgroundColor = 'lightgrey';
+                    }
+
+
+                });
+        }
+        else {
+            return;
+        }
+
+    },
+
     drawBoard: () => {
 
         console.log('Generating Board ...');
@@ -42,6 +84,7 @@ const app = {
                 divRow.appendChild(divColumns);
 
                 const inputCellElt = document.createElement('input');
+                inputCellElt.addEventListener('change', app.checkInput);
                 inputCellElt.style.width = app.boardCellSize;
                 inputCellElt.style.height = app.boardCellSize;
                 const boardCell = divColumns.appendChild(inputCellElt);
@@ -94,9 +137,19 @@ const app = {
         emptyBoardBtnElt.addEventListener('click', app.emptyExercice);
 
         const solveExerciceBtnElt = document.createElement('button');
-        solveExerciceBtnElt.id = 'solveBoardBtn'
+        solveExerciceBtnElt.id = 'solveBoardBtn';
         solveExerciceBtnElt.textContent = 'Résoudre la grille';
         solveExerciceBtnElt.addEventListener('click', app.solveExercice);
+
+        //Checkbox option
+        const autoCheckInput = document.createElement('input');
+        const autoCheckInputLabel = document.createElement('label');
+        autoCheckInput.type = 'checkbox';
+        autoCheckInput.name = 'autoCheck';
+        autoCheckInput.id = 'autoCheck';
+        autoCheckInputLabel.setAttribute('for', 'autoCheck');
+        autoCheckInputLabel.textContent = 'Auto-Contrôle';
+
 
         //Implentation des éléments du formulaire dans le formulaire
         formElt.appendChild(labelForSelectElt);
@@ -104,26 +157,50 @@ const app = {
         formElt.appendChild(loadExerciceBtnElt);
         formElt.appendChild(emptyBoardBtnElt);
         formElt.appendChild(solveExerciceBtnElt);
+        formElt.appendChild(autoCheckInput);
+        formElt.appendChild(autoCheckInputLabel);
 
     },
 
     emptyExercice: () => {
 
-        //Mettre la grille à 0.
+        //Mettre toute la grille à 0 et enlever l'Id de grille (s'il existe) des dataset du bouton de résolution
+        //Remettre les background des input avec la couleur d'origine
         console.log('Emptying Board ...');
+
         const boardCells = document.querySelectorAll('.sudokValues');
         for (let cell of boardCells) {
             cell.value = '';
+            cell.style.backgroundColor = 'lightgrey';
         }
+
+        const solveExerciceBtnElt = document.getElementById('solveBoardBtn');
+        const isGrille = solveExerciceBtnElt.dataset.id;
+
+        if (isGrille) {
+            solveExerciceBtnElt.removeAttribute('data-id');
+        }
+
 
     },
 
     applyDatasToBoard: (data) => {
-        //TODO remplir la grille avec data et les id de lignes
+
+        //On parcours le tableau reçu dans le paramètre data et on boucle sur les cellules de la board pour les mettre à jour
+        //On remet également tous les background à l'origine
+
+        const boardCells = document.querySelectorAll('.sudokValues');
+        for (let cell of boardCells) {
+            cell.value = '';
+            cell.style.backgroundColor = 'lightgrey';
+        }
+
         for (let line = 0; line < 9; line++) {
             for (let column = 0; column < 9; column++) {
                 let cell = document.getElementById(line.toString() + column.toString());
                 cell.value = data[line][column];
+
+
 
             }
         }
@@ -491,24 +568,20 @@ const app = {
         else {
             route += 'none';
             //Déclencher le chronomètre si le dataset est à false
-            app.launchStopWatchCount();
+            //! ligne à supprimer : app.launchStopWatchCount();
         }
 
-
-        fetch(route)
+        fetch(route) //on fait une demande au back d'une résolution de gille (connue en base ou non)
             .then(function (response) {
 
-                return response.json();
+                const responseTreated = response.json(); //on décrypte la réponse du back
+                return responseTreated;
             })
             .then((board) => {
 
-                console.log(`Board ${board.id} loaded`);
-
-                //on récupère un id de grille que l'on stocke dans un dataset du bouton 'Résoudre Grille'
-                const solveBoardBtn = document.getElementById('solveBoardBtn');
-                solveBoardBtn.dataset.id = board.id;
-
+                //On affiche les résultats dans la grille
                 app.applyDatasToBoard(board.data);
+                console.log('Results for Board loaded');
 
             });
 

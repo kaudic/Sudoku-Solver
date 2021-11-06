@@ -5,7 +5,8 @@ const serverMethods = require('./serverMethods');
 
 router.get('/sudoku/', (req, res) => {
 
-    res.render('index');
+    const title = 'Solveur de Sudoku';
+    res.render('index', { title: title });
 });
 
 
@@ -42,7 +43,7 @@ router.get('/solveBoard/:boardId', (req, res) => {
     if (boardId !== 'none') {
 
         //lecture de la base de données json et on renvoie la grille de l'ID recherchée
-        fs.readFile('./boardDatabase.json', (err, data) => {
+        fs.readFile('./data/boardDatabase.json', (err, data) => {
             if (err) throw err;
             const boardData = JSON.parse(data);
 
@@ -59,10 +60,37 @@ router.get('/solveBoard/:boardId', (req, res) => {
     }
     else {
 
+        console.log('Lancer une fonction de résolution récursive');
+
         //TODO lancer le solveur
 
     }
 
+});
+
+router.get('/checkInput/:boardId/:inputId', (req, res) => {
+
+    //on récupère l'Id de la grille et l'Id de l'input
+    const { boardId, inputId } = req.params;
+    console.log('Id grille reçu: ' + boardId);
+    console.log('Input n° modifié : ' + inputId);
+    const ligne = inputId.substr(0, 1);
+    const column = inputId.substr(1, 1);
+
+    //lecture de la base de données json et on renvoie l'élément recherché
+    fs.readFile('./data/boardDatabase.json', (err, data) => {
+        if (err) throw err;
+        const boardData = JSON.parse(data);
+
+        const response = {
+            inputSolution: boardData[boardId][ligne][column]
+        };
+
+        console.log('solution: ' + response.inputSolution);
+
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.send(response);
+    });
 });
 
 module.exports = router;
