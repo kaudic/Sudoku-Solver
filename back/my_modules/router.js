@@ -64,8 +64,32 @@ router.get('/solveBoard/:boardId', (req, res) => {
 
         //TODO lancer le solveur
 
-    }
+        //simulation de fonction solveur (dur 15s) -> il faudra la mettre en asynchrone
 
+        const resultatSolver = async function () {
+            for (let i = 0; i < 100000; i++) {
+                console.log(i);
+            }
+            return 'grille ok';
+        }
+        const response = async function () {
+            const resultat = await resultatSolver();
+            return 'grille ok'
+            //ici il faudra mettre un .then pour récupérer la promesse et renvoyer une réponse au front pour lui dire d'arrêter le chrono
+
+        }
+        response().then((data) => {
+            const responseTreated = {
+                data: data
+            };
+
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.send(responseTreated);
+
+            console.log(responseTreated);
+        });
+
+    };
 });
 
 router.get('/checkInput/:boardId/:inputId', (req, res) => {

@@ -568,7 +568,8 @@ const app = {
         else {
             route += 'none';
             //Déclencher le chronomètre si le dataset est à false
-            //! ligne à supprimer : app.launchStopWatchCount();
+            //! ligne à supprimer : 
+            app.launchStopWatchCount();
         }
 
         fetch(route) //on fait une demande au back d'une résolution de gille (connue en base ou non)
@@ -579,9 +580,18 @@ const app = {
             })
             .then((board) => {
 
-                //On affiche les résultats dans la grille
-                app.applyDatasToBoard(board.data);
-                console.log('Results for Board loaded');
+                if (typeof board.data === 'string') {
+                    console.log(board.data);
+                    //TODO mettre un clear interval
+                    app.setOffStopWatchCount();
+
+                }
+                else {
+                    //On affiche les résultats dans la grille
+                    console.log(board);
+                    app.applyDatasToBoard(board.data);
+                    console.log('Results for Board loaded');
+                }
 
             });
 
@@ -590,17 +600,18 @@ const app = {
 
     launchStopWatchCount: () => {
         console.log('Début du chronomètre');
+        setInterval(app.setOnStopWatchCount, 1000);
+    },
+
+    setOffStopWatchCount: function () { clearInterval(app.setOnStopWatchCount) },
+
+    setOnStopWatchCount: function () {
         const stopWatchTextElt = document.querySelector('.stopWatchText');
         var count = 0;
-
         stopWatchTextElt.textContent = `Chrono: \n ${count}s`;
-
-        setInterval(() => {
-            count++;
-            stopWatchTextElt.textContent = `Chrono: 
+        count++;
+        stopWatchTextElt.textContent = `Chrono: 
         ${count}s`;
-
-        }, 1000);
     }
 
 
