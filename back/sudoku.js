@@ -74,9 +74,8 @@ const sudoku = {
         sudoku.resultCalculated = sudoku.calculateCell(sudoku.nextCellToCalculate, sudoku.boardData);
         console.log('Résultat du calcul: ' + sudoku.resultCalculated + ' Longueur du résultat: ' + sudoku.resultCalculated.length);
 
-        if (sudoku.resultCalculated.length == 0) // le résultat du calcul indique qu'il n'y a pas de réponse possible, il faut donc revenir en arrière, sur la cellule précédente et voir si un autre choix 
-        //était possible
-
+        if (sudoku.resultCalculated.length == 0)
+        //! le résultat du calcul indique qu'il n'y a pas de réponse possible, il faut donc revenir en arrière, sur la cellule précédente et voir si un autre choix était possible
 
         {
 
@@ -169,9 +168,11 @@ const sudoku = {
         //enregistrer dans une matrice nommée "matriceVide" tous les ID des input (contenant les coordonnées dans leurs ID)
         //de valeurs nulles, ce qui correspond aux cases à chercher
 
+        //! on récupère la valeur de tous les input dans matrice
         var matrice = document.getElementsByClassName('sudokValues');
         var matriceVide = [];
 
+        //! on enregistre dans matrice Vide les coordonnées (id) des cellules qui sont vides
         for (let i = 0; i < matrice.length; i++) {
 
             if (matrice[i].value == '') {
@@ -201,12 +202,10 @@ const sudoku = {
             Carré[i] = new Array();
         }
 
-
-
         //Enregistrement des valeurs dans les arrays Ligne, Colonnes et Carrés
-        for (let i = 0; i < 81; i++) {
-            var ligID = matrice[i].id.toString().substr(0, 1);
-            var colID = matrice[i].id.toString().substr(2, 1);
+        for (let i = 0; i < 81; i++) { //!on parcourt 100% des input et on remplit les 3 arrays décris plus bas
+            var ligID = matrice[i].id.toString().substr(0, 1); //!récup du numéro de ligne de l'ID
+            var colID = matrice[i].id.toString().substr(2, 1); //!récup du numéro de colonne de l'ID
 
             if (matrice[i].value == '') {
                 chiffre = 0;
@@ -215,6 +214,9 @@ const sudoku = {
                 chiffre = parseInt(matrice[i].value);
             }
 
+            //!on créer 3 arrays à 2 dimensions qui vont de 0 à 8
+            //! on y met les 9 chiffres (si '' -> on transforme en 0)
+            //! on met 2 totaux à la fin: en col 9 le nb de chiffres >0 et en col 10 le total pour vérifier)
             Ligne[ligID][colID] = (chiffre);
 
             //on remplit le nombre de chiffres supérieurs à 0 dans chaque ligne, en colonne 9, et la somme de chaque ligne en colonne 10
@@ -402,189 +404,6 @@ const sudoku = {
 
 
     },
-
-    loadExercice: () => { //attention la fonction est déjà côté client !
-        //au préalable avant de charger l'exo, on remet la grille à 0
-        let cases = document.getElementsByClassName('sudokValues');
-        for (let i of cases) {
-            i.value = '';
-        }
-
-        //on regarde la sélection de l'exo faite par l'utilisateur
-
-        let select = document.getElementById('choixExo');
-        let choice = select.selectedIndex;
-        let valueChoice = select.options[choice].value;
-
-        if (valueChoice == 'Facile1') {
-
-            //précharge une grille de closer du 04 au 10 Juin 2021
-            document.getElementById('0-2').value = 4;
-            document.getElementById('0-3').value = 6;
-            document.getElementById('0-7').value = 8;
-            document.getElementById('1-0').value = 3;
-            document.getElementById('1-2').value = 5;
-            document.getElementById('1-4').value = 1;
-            document.getElementById('1-7').value = 6;
-            document.getElementById('1-8').value = 7;
-            document.getElementById('2-0').value = 6;
-            document.getElementById('2-4').value = 5;
-            document.getElementById('2-5').value = 3;
-            document.getElementById('2-6').value = 9;
-            document.getElementById('3-0').value = 9;
-            document.getElementById('3-4').value = 8;
-            document.getElementById('4-1').value = 1;
-            document.getElementById('4-4').value = 2;
-            document.getElementById('4-5').value = 6;
-            document.getElementById('4-6').value = 4;
-            document.getElementById('5-0').value = 4;
-            document.getElementById('5-6').value = 5;
-            document.getElementById('5-7').value = 1;
-            document.getElementById('6-2').value = 6;
-            document.getElementById('6-5').value = 1;
-            document.getElementById('7-2').value = 1;
-            document.getElementById('7-3').value = 7;
-            document.getElementById('7-4').value = 9;
-            document.getElementById('7-8').value = 2;
-            document.getElementById('8-1').value = 3;
-            document.getElementById('8-4').value = 6;
-            document.getElementById('8-5').value = 2;
-            document.getElementById('8-7').value = 7;
-        }
-
-        else if (valueChoice == 'Facile2') {
-            //précharge une grille de closer du 04 au 10 Juin 2021
-            document.getElementById('0-0').value = 6;
-            document.getElementById('0-2').value = 9;
-            document.getElementById('0-5').value = 5;
-            document.getElementById('0-7').value = 1;
-            document.getElementById('1-2').value = 4;
-            document.getElementById('1-3').value = 3;
-            document.getElementById('1-4').value = 7;
-            document.getElementById('1-5').value = 6;
-            document.getElementById('1-8').value = 2;
-            document.getElementById('2-0').value = 8;
-            document.getElementById('2-1').value = 7;
-            document.getElementById('2-4').value = 1;
-            document.getElementById('2-7').value = 6;
-            document.getElementById('3-0').value = 7;
-            document.getElementById('3-5').value = 9;
-            document.getElementById('3-7').value = 3;
-            document.getElementById('3-8').value = 1;
-            document.getElementById('4-1').value = 9;
-            document.getElementById('5-0').value = 3;
-            document.getElementById('5-2').value = 1;
-            document.getElementById('5-3').value = 5;
-            document.getElementById('5-5').value = 2;
-            document.getElementById('6-0').value = 2;
-            document.getElementById('6-2').value = 3;
-            document.getElementById('6-6').value = 6;
-            document.getElementById('6-7').value = 7;
-            document.getElementById('7-1').value = 6;
-            document.getElementById('7-4').value = 9;
-            document.getElementById('7-5').value = 3;
-            document.getElementById('7-6').value = 1;
-            document.getElementById('7-8').value = 8;
-            document.getElementById('8-0').value = 9;
-            document.getElementById('8-5').value = 1;
-
-        }
-
-        else if (valueChoice == 'Moyen') {
-            //précharge une grille de closer du 04 au 10 Juin 2021
-            document.getElementById('0-0').value = 4;
-            document.getElementById('0-5').value = 6;
-            document.getElementById('0-8').value = 7;
-            document.getElementById('1-3').value = 3;
-            document.getElementById('1-4').value = 8;
-            document.getElementById('1-7').value = 6;
-            document.getElementById('1-8').value = 1;
-            document.getElementById('2-1').value = 3;
-            document.getElementById('2-5').value = 4;
-            document.getElementById('3-1').value = 2;
-            document.getElementById('3-5').value = 9;
-            document.getElementById('3-7').value = 5;
-            document.getElementById('4-0').value = 3;
-            document.getElementById('4-1').value = 7;
-            document.getElementById('4-6').value = 2;
-            document.getElementById('5-0').value = 1;
-            document.getElementById('5-2').value = 5;
-            document.getElementById('5-6').value = 3;
-            document.getElementById('5-7').value = 4;
-            document.getElementById('6-3').value = 5;
-            document.getElementById('6-5').value = 8;
-            document.getElementById('6-7').value = 9;
-            document.getElementById('7-1').value = 1;
-            document.getElementById('7-4').value = 2;
-            document.getElementById('7-7').value = 8;
-            document.getElementById('7-8').value = 4;
-            document.getElementById('8-3').value = 6;
-
-        }
-
-        else if (valueChoice == 'Difficile') {
-            //précharge une grille de closer du 04 au 10 Juin 2021
-            document.getElementById('0-1').value = 4;
-            document.getElementById('0-4').value = 5;
-            document.getElementById('0-7').value = 9;
-            document.getElementById('1-2').value = 2;
-            document.getElementById('1-6').value = 8;
-            document.getElementById('1-8').value = 5;
-            document.getElementById('2-1').value = 9;
-            document.getElementById('2-8').value = 1;
-            document.getElementById('3-0').value = 8;
-            document.getElementById('3-3').value = 1;
-            document.getElementById('3-6').value = 3;
-            document.getElementById('3-7').value = 4;
-            document.getElementById('4-1').value = 7;
-            document.getElementById('4-2').value = 4;
-            document.getElementById('4-5').value = 8;
-            document.getElementById('5-8').value = 9;
-            document.getElementById('6-0').value = 5;
-            document.getElementById('6-1').value = 1;
-            document.getElementById('6-3').value = 2;
-            document.getElementById('7-1').value = 6;
-            document.getElementById('7-3').value = 3;
-            document.getElementById('7-6').value = 9;
-            document.getElementById('8-4').value = 6;
-            document.getElementById('8-7').value = 7;
-
-        }
-
-        else if (valueChoice == 'Démoniaque') {
-            //précharge une grille de closer du 04 au 10 Juin 2021
-            document.getElementById('0-2').value = 1;
-            document.getElementById('0-7').value = 2;
-            document.getElementById('1-3').value = 8;
-            document.getElementById('1-5').value = 5;
-            document.getElementById('1-8').value = 1;
-            document.getElementById('2-0').value = 5;
-            document.getElementById('2-3').value = 1;
-            document.getElementById('2-5').value = 3;
-            document.getElementById('2-6').value = 4;
-            document.getElementById('3-1').value = 2;
-            document.getElementById('3-2').value = 9;
-            document.getElementById('3-6').value = 7;
-            document.getElementById('3-7').value = 4;
-            document.getElementById('5-1').value = 4;
-            document.getElementById('5-2').value = 6;
-            document.getElementById('5-6').value = 3;
-            document.getElementById('5-7').value = 9;
-            document.getElementById('6-2').value = 2;
-            document.getElementById('6-3').value = 3;
-            document.getElementById('6-5').value = 7;
-            document.getElementById('6-8').value = 4;
-            document.getElementById('7-0').value = 9;
-            document.getElementById('7-3').value = 5;
-            document.getElementById('7-5').value = 1;
-            document.getElementById('8-1').value = 1;
-            document.getElementById('8-6').value = 8;
-
-        }
-
-
-
-    }
 
 
 };

@@ -67,7 +67,7 @@ router.get('/solveBoard/:boardId', (req, res) => {
         //simulation de fonction solveur (dur 15s) -> il faudra la mettre en asynchrone
 
         const resultatSolver = async function () {
-            for (let i = 0; i < 100000; i++) {
+            for (let i = 0; i < 50000; i++) {
                 console.log(i);
             }
             return 'grille ok';
@@ -75,12 +75,12 @@ router.get('/solveBoard/:boardId', (req, res) => {
         const response = async function () {
             const resultat = await resultatSolver();
             return 'grille ok'
-            //ici il faudra mettre un .then pour récupérer la promesse et renvoyer une réponse au front pour lui dire d'arrêter le chrono
 
         }
         response().then((data) => {
             const responseTreated = {
-                data: data
+                solveur: data,
+                data: [] //TODO mettre les valeurs de retour du solveur ici
             };
 
             res.setHeader('Access-Control-Allow-Origin', '*');

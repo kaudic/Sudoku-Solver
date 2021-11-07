@@ -110,6 +110,16 @@ border-radius: 5px;
    display:inline-block;
 }
 
+
+.blink {
+    color:red; 
+    animation: colorblink 2s infinite;
+  }
+  @keyframes colorblink { 
+  0% { }
+  50% { color:green; } 
+  }
+
 .stopWatchText
 {
    display:block;
