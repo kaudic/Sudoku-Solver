@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 const serverMethods = require('./serverMethods');
+const boardData = require('../data/boardDatabase.json');
 
 router.get('/sudoku/', (req, res) => {
 
@@ -15,23 +16,23 @@ router.get('/getBoard/:level', (req, res) => {
     //on récupère le niveau de difficulté demandé par le client (envoyé dans la route)
     const { level } = req.params;
 
-    //lecture de la base de données json et on renvoie une grille aléatoire
-    fs.readFile('./data/boardDatabase.json', (err, data) => {
-        if (err) throw err;
-        const boardData = JSON.parse(data);
-        const max = Object.keys(boardData).length;
-        const randomNumber = serverMethods.getRandomNumber(0, max);
-        const randomId = 'id' + randomNumber;
-        const boardDataLevelTreated = serverMethods.takeOutNumbersFromBoard(level, boardData[randomId]);
+    //la base de données a été require dans la variable boardData -> plus besoin de faire des fs.readFile
 
-        const response = {
-            id: randomId,
-            data: boardDataLevelTreated
-        };
+    const max = Object.keys(boardData).length;
+    const randomNumber = serverMethods.getRandomNumber(0, max);
+    const randomId = 'id' + randomNumber;
+    const boardDataLevelTreated = serverMethods.takeOutNumbersFromBoard(level, boardData[randomId]);
 
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.send(response);
-    });
+    const response = {
+        id: randomId,
+        data: boardDataLevelTreated
+    };
+
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.send(response);
+
+
+
 
 });
 
