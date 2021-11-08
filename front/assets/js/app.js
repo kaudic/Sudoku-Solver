@@ -100,6 +100,18 @@ const app = {
 
         cellSize: '40px',
 
+        read: function () {
+
+            // objectif: créer un objet qui contiendra 4 tableaux avec les chiffres de la grille et les "trous"
+            // ligne, columns, square, emptyCells
+
+            //créer l'objet vide
+            //récupérer tous les inputs de la grille et itérer sur chacun des éléments 
+            //prendre le numéro de ligne et le numéro de colonne de l'élément itéré (voir si nécessaire, on fait un console.log des ID et on voit dans quel sens cela est fait )et enregistrer dans l'objet ligne/colomn/square le chiffre
+            //pour le square créer une fonction déportée pour aider: //loadSquare(input itéré) -> remplira le square directement
+            //retourne l'objet complet
+        }
+
     },
 
     stopWatch: {
@@ -316,18 +328,16 @@ const app = {
         e.preventDefault();
 
         console.log('Bouton "Résoudre Grille activé"');
-
-        //On teste la présence d'un id dans les dataset du bouton solve et si oui on fetch la grille concernée et on l'affiche (route1)
-        //si pas de ID présent alors on lance un programme de type solveur (route2)
-
         const solveBoardBtn = document.getElementById('solveBoardBtn');
         const boardId = solveBoardBtn.dataset.id;
         let route = 'http://localhost:3000/solveBoard/';
 
+        //On teste la présence d'un id dans les dataset du bouton solve et si oui on fetch la grille concernée et on l'affiche (route1)
         if (boardId) {
             route += boardId;
 
         }
+        //si pas de ID présent alors on lance un programme de type solveur (route2)
         else {
             route += 'none';
             //Créer puis Déclencher le chronomètre si le dataset est à false
@@ -335,6 +345,7 @@ const app = {
             app.stopWatch.launch();
         }
 
+        //TODO à cette route, il faudra pouvoir joindre les chiffres présents dans la grille: voir la fonction app.board.read() qui créé l'array avec les valeurs
         fetch(route) //on fait une demande au back d'une résolution de gille (connue en base ou non)
             .then(function (response) {
 
