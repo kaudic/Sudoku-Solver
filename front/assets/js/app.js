@@ -217,6 +217,18 @@ const app = {
             solveExerciceBtnElt.textContent = 'Résoudre la grille';
             solveExerciceBtnElt.addEventListener('click', app.solveExercice);
 
+            const newChrono = document.createElement('button');
+            newChrono.id = 'newChrono';
+            newChrono.textContent = 'Lancer un chrono';
+            newChrono.addEventListener('click', (e) => {
+                e.preventDefault();
+                app.stopWatch.setOff();
+                app.stopWatch.delete();
+                app.stopWatch.create();
+                app.stopWatch.launch();
+            });
+
+
             //Checkbox option
             const autoCheckInput = document.createElement('input');
             const autoCheckInputLabel = document.createElement('label');
@@ -233,6 +245,7 @@ const app = {
             formElt.appendChild(loadExerciceBtnElt);
             formElt.appendChild(emptyBoardBtnElt);
             formElt.appendChild(solveExerciceBtnElt);
+            formElt.appendChild(newChrono);
             formElt.appendChild(autoCheckInput);
             formElt.appendChild(autoCheckInputLabel);
 
@@ -263,8 +276,10 @@ const app = {
             solveExerciceBtnElt.removeAttribute('data-id');
         }
 
-        //supprimer le chrono s'il existe
+        //supprimer le compte du chrono et le chrono html s'il existe
+        app.stopWatch.setOff();
         app.stopWatch.delete();
+
 
     },
 
@@ -381,4 +396,3 @@ const app = {
 //Lancement de la génération de la grille
 
 document.addEventListener('DOMContentLoaded', app.init);
-

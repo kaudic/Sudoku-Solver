@@ -111,14 +111,6 @@ border-radius: 5px;
 }
 
 
-.blink {
-    color:red; 
-    animation: colorblink 2s infinite;
-  }
-  @keyframes colorblink { 
-  0% { }
-  50% { color:green; } 
-  }
 
 .stopWatchText
 {

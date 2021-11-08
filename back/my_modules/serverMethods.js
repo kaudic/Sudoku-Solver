@@ -47,11 +47,11 @@ const serverMethods = {
                 break; //
 
             case 'Facile2':
-                goalOfCellsEmptyPerLine = 3;
+                goalOfCellsEmptyPerLine = 3; //on enlève 3 chiffres à chaque ligne
                 break;
 
             case 'Moyen':
-                goalOfCellsEmptyPerLine = 4;
+                goalOfCellsEmptyPerLine = 4; // ...
                 break;
 
             case 'Difficile':
@@ -64,7 +64,8 @@ const serverMethods = {
 
         }
         return serverMethods.emptyCells(board, goalOfCellsEmptyPerLine);
-    }
+    },
+
 };
 
 module.exports = serverMethods;
