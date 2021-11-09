@@ -437,10 +437,13 @@ const app = {
 
             //Route du solveur car la grille n'est pas connue en base. Il faut donc lire la grille et l'envoyer dans le fetch
 
-            const boardData = app.board.read();
-            console.log('Lecture de la grille avant envoie au back: ' + boardData.ligne);
+            //déjà démarrage du chrono pour mesurer la performance du système solveur
+            app.stopWatch.create();
+            app.stopWatch.launch();
+
+            //lecture de la grille html
+            const boardData = app.board.read(); //un objet qui contient des tableaux sur différentes propriétés
             const boardDataJSON = JSON.stringify(boardData);
-            console.log('Lecture de la grille avant envoie au back: ' + boardDataJSON);
 
             fetch(route, {
                 method: 'POST',
@@ -458,7 +461,7 @@ const app = {
                 })
 
                 .then((board) => { //on a récupéré le retour et on l'a décrypté
-                    //TODO il faudra mettre dans la board les chiffres renvoyés par le back
+                    //TODO il faudra mettre dans la board les chiffres reçus du back qui correspondent à la réponse
                     console.log(board.data);
                     app.stopWatch.setOff();
 

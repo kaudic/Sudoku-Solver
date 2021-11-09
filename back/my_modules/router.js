@@ -73,12 +73,8 @@ router.get('/solveBoard/:boardId', (req, res) => {
 
 router.post('/solveBoard/', (req, res) => {
     console.log('Lancer une fonction de résolution récursive');
-
     const boardData = req.body;
-
     console.log(boardData);
-
-
 
     //TODO lancer le solveur
 
@@ -86,7 +82,7 @@ router.post('/solveBoard/', (req, res) => {
 
     const resultatSolver = async function () {
         for (let i = 0; i < 50000; i++) {
-            // console.log(i);
+            console.log(i);
         }
 
 
