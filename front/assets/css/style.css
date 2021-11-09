@@ -107,7 +107,10 @@ border-radius: 5px;
    color: yellowgreen;
    margin: 100px;
    text-align: center;
-   display:inline-block;
+   display:flex;
+   flex-direction: column;
+   justify-content:space-evenly;
+   align-items: center;
 }
 
 
@@ -115,12 +118,21 @@ border-radius: 5px;
 .stopWatchText
 {
    display:block;
-   padding-top:20%;
+   /* padding-top:20%; */
    background: none;
    font-size: 30px;
 }
 
-
+#breakBtn{
+    border: 2px solid yellowgreen;
+    line-height: ;
+    display: inline;
+    width: 40%;
+    height: 10%;
+    padding: 10px;
+    border-radius: 1em;
+    /* margin: auto; */
+}
 
 
 

@@ -188,6 +188,7 @@ const app = {
         create: () => {
             //on contrôle d'abord si le chrono est déjà présent pour ne pas en créer un 2ème.
             const chrono = document.getElementById('stopWatch');
+            app.stopWatch.count = 0;
 
             if (chrono) { //s'il est présent on stoppe la fonction
                 return;
@@ -195,11 +196,13 @@ const app = {
 
             console.log('Generating StopWatch ...');
 
+
             //Création du Chronomètre dans le conteneur de la grille et du chrono
             const stopWatchContainerElt = document.querySelector('.main-content');
             const stopWatchElt = document.createElement('div');
             stopWatchElt.id = 'stopWatch';
             stopWatchContainerElt.appendChild(stopWatchElt);
+
 
             //création d'un paragraphe au sein du Chrono pour y afficher le chrono en cours
 
@@ -207,6 +210,15 @@ const app = {
             stopWatchTextElt.classList.add('stopWatchText');
             stopWatchTextElt.textContent = 'Chrono:';
             stopWatchElt.appendChild(stopWatchTextElt);
+
+            //sous le chrono en cours on affiche un bouton pause
+            const breakBtn = document.createElement('div');
+            breakBtn.id = 'breakBtn';
+            breakBtn.textContent = 'Pause';
+            breakBtn.addEventListener('click', (e) => {
+                app.stopWatch.breakToggle(e);
+            });
+            stopWatchElt.appendChild(breakBtn);
 
         },
 
@@ -229,7 +241,7 @@ const app = {
             clearInterval(app.stopWatch.On);
             //TODO Faire clignoter le chrono pendant 3 sec en jouant sur le style display (none/block)
             console.log('arrêt chrono');
-            app.stopWatch.count = 0;
+            // app.stopWatch.count = 0;
         },
 
         setOn: function () {
@@ -238,6 +250,18 @@ const app = {
             app.stopWatch.count++;
             stopWatchTextElt.textContent = `Chrono: 
         ${app.stopWatch.count}s`;
+        },
+
+        breakToggle: function (e) {
+            if (e.target.textContent === 'Pause') {
+                e.target.textContent = 'Reprendre';
+                console.log('Chrono mis en pause');
+                app.stopWatch.setOff();
+            } else {
+                e.target.textContent = 'Pause';
+                console.log('Chrono redémarré');
+                app.stopWatch.launch();
+            }
         }
     },
 
@@ -438,6 +462,7 @@ const app = {
             //Route du solveur car la grille n'est pas connue en base. Il faut donc lire la grille et l'envoyer dans le fetch
 
             //déjà démarrage du chrono pour mesurer la performance du système solveur
+            app.stopWatch.setOff();
             app.stopWatch.create();
             app.stopWatch.launch();
 
