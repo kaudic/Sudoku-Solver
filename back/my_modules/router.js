@@ -3,6 +3,7 @@ const router = express.Router();
 const fs = require('fs');
 const serverMethods = require('./serverMethods');
 const boardData = require('../data/boardDatabase.json');
+const { nextTick } = require('process');
 
 router.get('/sudoku/', (req, res) => {
 
@@ -59,38 +60,55 @@ router.get('/solveBoard/:boardId', (req, res) => {
             res.send(response);
         });
     }
+
     else {
 
-        console.log('Lancer une fonction de résolution récursive');
+        return nextTick();
 
-        //TODO lancer le solveur
-
-        //simulation de fonction solveur (dur 15s) -> il faudra la mettre en asynchrone
-
-        const resultatSolver = async function () {
-            for (let i = 0; i < 50000; i++) {
-                console.log(i);
-            }
-            return 'grille ok';
-        }
-        const response = async function () {
-            const resultat = await resultatSolver();
-            return 'grille ok'
-
-        }
-        response().then((data) => {
-            const responseTreated = {
-                solveur: data,
-                data: [] //TODO mettre les valeurs de retour du solveur ici
-            };
-
-            res.setHeader('Access-Control-Allow-Origin', '*');
-            res.send(responseTreated);
-
-            console.log(responseTreated);
-        });
 
     };
+
+});
+
+
+router.post('/solveBoard/', (req, res) => {
+    console.log('Lancer une fonction de résolution récursive');
+
+    const boardData = req.body;
+
+    console.log(boardData);
+
+
+
+    //TODO lancer le solveur
+
+    //simulation de fonction solveur (dur 5s) -> il faudra la mettre en asynchrone
+
+    const resultatSolver = async function () {
+        for (let i = 0; i < 50000; i++) {
+            // console.log(i);
+        }
+
+
+        return 'grille ok';
+    }
+    const response = async function () {
+        const resultat = await resultatSolver();
+        return 'grille ok'
+
+    }
+    response().then((data) => {
+        const responseTreated = {
+            solveur: data,
+            data: [1, 2] //TODO mettre les valeurs de retour du solveur ici
+        };
+
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.send(responseTreated);
+
+        console.log(responseTreated);
+
+    });
 });
 
 router.get('/checkInput/:boardId/:inputId', (req, res) => {

@@ -100,17 +100,82 @@ const app = {
 
         cellSize: '40px',
 
+        data: {
+            emptyCells: [],
+            ligne: [[], [], [], [], [], [], [], [], []],
+            column: [[], [], [], [], [], [], [], [], []],
+            square: [[], [], [], [], [], [], [], [], []]
+        },
+
         read: function () {
 
-            // objectif: créer un objet qui contiendra 4 tableaux avec les chiffres de la grille et les "trous"
-            // ligne, columns, square, emptyCells
-
-            //créer l'objet vide
             //récupérer tous les inputs de la grille et itérer sur chacun des éléments 
-            //prendre le numéro de ligne et le numéro de colonne de l'élément itéré (voir si nécessaire, on fait un console.log des ID et on voit dans quel sens cela est fait )et enregistrer dans l'objet ligne/colomn/square le chiffre
-            //pour le square créer une fonction déportée pour aider: //loadSquare(input itéré) -> remplira le square directement
-            //retourne l'objet complet
-        }
+            const cellELements = document.getElementsByClassName('sudokValues');
+
+            for (const cell of cellELements) {
+
+                const numLigne = cell.id.substr(0, 1);
+                const numColumn = cell.id.substr(1, 1);
+                let inputValue = 0;
+
+                //les cellules vides sont transformées en 0 -> on en profite pour charger emptyCells
+                if (!cell.value) {
+                    inputValue = 0;
+                    app.board.data.emptyCells.push(numLigne + numColumn);
+                }
+                else {
+                    inputValue = Number(cell.value);
+                }
+
+                //on remplit l'array sur les lignes
+                app.board.data.ligne[numLigne].push(inputValue);
+
+                //on remplit l'array sur les colonnes
+                app.board.data.column[numColumn][numLigne] = inputValue;
+
+                //on remplit l'array sur les squares en utilisant une fonction déportée
+                app.board.writeInSquare(numLigne, numColumn, inputValue);
+
+            }
+
+            return app.board.data;
+
+        },
+
+        writeInSquare: function (numLigne, numColumn, inputValue) {
+
+            //Gestion des 9 carrés, cela nécessite l'emploi d'un else if
+            if (numLigne <= 2 && numColumn <= 2) {
+                app.board.data.square[0].push(inputValue);
+
+            }
+            else if (numLigne <= 2 && numColumn > 2 && numColumn <= 5) {
+                app.board.data.square[1].push(inputValue);
+            }
+            else if (numLigne <= 2 && numColumn > 5) {
+                app.board.data.square[2].push(inputValue);
+            }
+            else if (numLigne > 2 && numLigne <= 5 && numColumn <= 2) {
+                app.board.data.square[3].push(inputValue);
+            }
+            else if (numLigne > 2 && numLigne <= 5 && numColumn > 2 && numColumn <= 5) {
+                app.board.data.square[4].push(inputValue);
+            }
+            else if (numLigne > 2 && numLigne <= 5 && numColumn > 5) {
+                app.board.data.square[5].push(inputValue);
+            }
+            else if (numLigne > 5 && numColumn <= 2) {
+                app.board.data.square[6].push(inputValue);
+            }
+            else if (numLigne > 5 && numColumn > 2 && numColumn <= 5) {
+                app.board.data.square[7].push(inputValue);
+            }
+            else if (numLigne > 5 && numColumn > 5) {
+                app.board.data.square[8].push(inputValue);
+            }
+
+
+        },
 
     },
 
@@ -351,45 +416,55 @@ const app = {
         if (boardId) {
             route += boardId;
 
-        }
-        //si pas de ID présent alors on lance un programme de type solveur (route2)
-        else {
-            route += 'none';
-            //Créer puis Déclencher le chronomètre si le dataset est à false
-            app.stopWatch.create();
-            app.stopWatch.launch();
-        }
+            fetch(route) //on fait une demande au back d'une résolution de gille connue avec un ID transmis en paramètre
+                .then(function (response) {
 
-        //TODO à cette route, il faudra pouvoir joindre les chiffres présents dans la grille: voir la fonction app.board.read() qui créé l'array avec les valeurs
-        fetch(route) //on fait une demande au back d'une résolution de gille (connue en base ou non)
-            .then(function (response) {
-
-                const responseTreated = response.json(); //on décrypte la réponse du back
-                return responseTreated;
-            })
-            .then((board) => { //si la réponse du back est une strinh c'est que l'on a reçu 'grille ok' donc il s'agit du solveur
-                //TODO sera à modifier car plus tard on recevra un array aussi en retour du solveur
-
-                if (typeof board.solveur === 'string') {
-                    console.log(board.data);
-                    app.stopWatch.setOff();
-
-                }
-                else { //sinon il s'agit d'un array
+                    const responseTreated = response.json(); //on décrypte la réponse du back
+                    return responseTreated;
+                })
+                .then((board) => {
                     //On affiche les résultats dans la grille
                     console.log(board);
                     app.applyDatasToBoard(board.data);
                     console.log('Results for Board loaded');
+
+
+                });
+
+        }
+
+        else {
+
+            //Route du solveur car la grille n'est pas connue en base. Il faut donc lire la grille et l'envoyer dans le fetch
+
+            const boardData = app.board.read();
+            console.log('Lecture de la grille avant envoie au back: ' + boardData.ligne);
+            const boardDataJSON = JSON.stringify(boardData);
+            console.log('Lecture de la grille avant envoie au back: ' + boardDataJSON);
+
+            fetch(route, {
+                method: 'POST',
+                body: boardDataJSON,
+                headers: {
+                    'Content-Type': 'application/json'
                 }
 
-            });
+            })
 
+                .then(function (response) {
 
+                    const responseTreated = response.json(); //on décrypte la réponse du back
+                    return responseTreated;
+                })
+
+                .then((board) => { //on a récupéré le retour et on l'a décrypté
+                    //TODO il faudra mettre dans la board les chiffres renvoyés par le back
+                    console.log(board.data);
+                    app.stopWatch.setOff();
+
+                });
+        }
     },
-
-
-
-
 };
 
 
