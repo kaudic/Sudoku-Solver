@@ -3,6 +3,7 @@ const router = express.Router();
 const fs = require('fs');
 const serverMethods = require('./serverMethods');
 const boardData = require('../data/boardDatabase.json');
+const solver = require('../my_modules/solver');
 const { nextTick } = require('process');
 
 router.get('/sudoku/', (req, res) => {
@@ -72,37 +73,32 @@ router.get('/solveBoard/:boardId', (req, res) => {
 
 
 router.post('/solveBoard/', (req, res) => {
-    console.log('Lancer une fonction de résolution récursive');
-    const boardData = req.body;
-    console.log(boardData);
+    console.log('Solveur démarré');
 
-    //TODO lancer le solveur
+    //on récupère les données de la grille du front
+    const frontBoardData = req.body;
 
-    //simulation de fonction solveur (dur 5s) -> il faudra la mettre en asynchrone
+    //enregistrer les données reçues du front (frontBoardData) vers notre variable en back : "solver.board.data"
+    solver.board.data.ligne = frontBoardData.ligne;
+    solver.board.data.column = frontBoardData.column;
+    solver.board.data.square = frontBoardData.square;
+    solver.board.data.ligne = frontBoardData.ligne;
+    solver.board.data.emptyCells = frontBoardData.emptyCells;
 
+    //lancement du solveur en mode asynchrone
     const resultatSolver = async function () {
-        for (let i = 0; i < 50000; i++) {
-            console.log(i);
-        }
-
-
-        return 'grille ok';
+        return solver.board.solve();
     }
-    const response = async function () {
-        const resultat = await resultatSolver();
-        return 'grille ok'
 
-    }
-    response().then((data) => {
+    //A récupération des données du solver, on prépare le message JSON pour le front
+    resultatSolver().then((data) => {
         const responseTreated = {
-            solveur: data,
-            data: [1, 2] //TODO mettre les valeurs de retour du solveur ici
+            results: data,
         };
 
+        //envoie du message au front
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.send(responseTreated);
-
-        console.log(responseTreated);
 
     });
 });
