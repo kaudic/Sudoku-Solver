@@ -96,31 +96,31 @@ const solver = {
         writeInSquare: function (lig, col, square, result) {
 
             if ((lig == 0 || lig == 3 || lig == 6) && col <= 2) {
-                solver.board.data.square[square][col] === result;
+                solver.board.data.square[square][Number(col)] = result;
             }
             else if ((lig == 0 || lig == 3 || lig == 6) && col > 2 && col <= 5) {
-                solver.board.data.square[square][col - 3] === result;
+                solver.board.data.square[square][Number(col) - 3] = result;
             }
             else if ((lig == 0 || lig == 3 || lig == 6) && col > 5 && col <= 8) {
-                solver.board.data.square[square][col - 6] === result;
+                solver.board.data.square[square][Number(col) - 6] = result;
             }
             else if ((lig == 1 || lig == 4 || lig == 7) && col <= 2) {
-                solver.board.data.square[square][col] === result;
+                solver.board.data.square[square][Number(col) + 3] = result;
             }
             else if ((lig == 1 || lig == 4 || lig == 7) && col > 2 && col <= 5) {
-                solver.board.data.square[square][col + 3] === result;
+                solver.board.data.square[square][Number(col)] = result;
             }
             else if ((lig == 1 || lig == 4 || lig == 7) && col > 5 && col <= 8) {
-                solver.board.data.square[square][col + 6] === result;
+                solver.board.data.square[square][Number(col) - 3] = result;
             }
             else if ((lig == 2 || lig == 5 || lig == 8) && col <= 2 + 6) {
-                solver.board.data.square[square][col + 6] === result;
+                solver.board.data.square[square][Number(col) + 6] = result;
             }
             else if ((lig == 2 || lig == 5 || lig == 8) && col > 2 && col <= 5) {
-                solver.board.data.square[square][col + 3] === result;
+                solver.board.data.square[square][Number(col) + 3] = result;
             }
             else if ((lig == 2 || lig == 5 || lig == 8) && col > 5 && col <= 8) {
-                solver.board.data.square[square][col] === result;
+                solver.board.data.square[square][Number(col)] = result;
             }
 
         },
@@ -218,6 +218,7 @@ const solver = {
                     solver.board.data.ligne[ligne][column] = testedResult;
                     solver.board.data.column[column][ligne] = testedResult;
                     solver.board.writeInSquare(ligne, column, square, testedResult);
+                    console.log(solver.board.data.square[0]);
 
                     //on enlève les coordonnées de cette cellule du tableau des cellules vides
                     solver.board.data.emptyCells.shift();
