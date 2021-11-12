@@ -6,10 +6,17 @@ const boardData = require('../data/boardDatabase.json');
 const solver = require('../my_modules/solver');
 const { nextTick } = require('process');
 
+//variable à transmettre à EJS
+router.use((req, res, next) => {
+    res.locals.title = 'Solveur de Sudoku';
+    next();
+});
+
 router.get('/sudoku/', (req, res) => {
 
-    const title = 'Solveur de Sudoku';
-    res.render('index', { title: title });
+    // const title = 'Solveur de Sudoku';
+    // res.render('index', { title: title });
+    res.render('index');
 });
 
 
@@ -87,7 +94,7 @@ router.post('/solveBoard/', (req, res) => {
 
     //lancement du solveur en mode asynchrone
     const resultatSolver = async function () {
-        return solver.board.solve();
+        return solver.board.solve(false);
     }
 
     //A récupération des données du solver, on prépare le message JSON pour le front
@@ -127,5 +134,9 @@ router.get('/checkInput/:boardId/:inputId', (req, res) => {
         res.send(response);
     });
 });
+
+router.use((req, res) => {
+    res.status('404').render('404');
+})
 
 module.exports = router;

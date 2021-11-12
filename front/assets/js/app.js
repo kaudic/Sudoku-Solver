@@ -109,6 +109,14 @@ const app = {
 
         read: function () {
 
+            //on commence par vider emptyCells car sinon sans rafraichissement de la page client, la méthode push ne fait qu'augmenter la variable emptyCells avec les grilles précédentes
+
+            app.board.data.emptyCells = [];
+            app.board.data.ligne = [[], [], [], [], [], [], [], [], []];
+            app.board.data.column = [[], [], [], [], [], [], [], [], []];
+            app.board.data.square = [[], [], [], [], [], [], [], [], []];
+
+
             //récupérer tous les inputs de la grille et itérer sur chacun des éléments 
             const cellELements = document.getElementsByClassName('sudokValues');
 
@@ -119,6 +127,7 @@ const app = {
                 let inputValue = 0;
 
                 //les cellules vides sont transformées en 0 -> on en profite pour charger emptyCells
+
                 if (!cell.value) {
                     inputValue = 0;
                     app.board.data.emptyCells.push(numLigne + numColumn);
@@ -128,7 +137,7 @@ const app = {
                 }
 
                 //on remplit l'array sur les lignes
-                app.board.data.ligne[numLigne].push(inputValue);
+                app.board.data.ligne[numLigne][numColumn] = inputValue;
 
                 //on remplit l'array sur les colonnes
                 app.board.data.column[numColumn][numLigne] = inputValue;
@@ -448,13 +457,9 @@ const app = {
                 })
                 .then((board) => {
                     //On affiche les résultats dans la grille
-                    console.log(board);
                     app.applyDatasToBoard(board.data);
                     console.log('Results for Board loaded');
-
-
                 });
-
         }
 
         else {
@@ -470,6 +475,7 @@ const app = {
             const boardData = app.board.read(); //un objet qui contient des tableaux sur différentes propriétés
             const boardDataJSON = JSON.stringify(boardData);
 
+            //envoie de la grille sous format JSON
             fetch(route, {
                 method: 'POST',
                 body: boardDataJSON,
@@ -479,15 +485,17 @@ const app = {
 
             })
 
+                //réception des calculs du solveur, décryptage du json
                 .then(function (response) {
-
-                    const responseTreated = response.json(); //on décrypte la réponse du back
+                    // console.log('response: ' +response);
+                    const responseTreated = response.json();
                     return responseTreated;
                 })
 
-                .then((board) => { //on a récupéré le retour et on l'a décrypté
-                    //TODO il faudra mettre dans la board les chiffres reçus du back qui correspondent à la réponse
-                    console.log(board.data);
+                //le décryptage des calculs solveur est terminé, on écrit les données dans la grille html
+                .then((board) => {
+                    app.applyDatasToBoard(board.results);
+                    //on arrête aussi le chrono pour voir le temps de calcul total
                     app.stopWatch.setOff();
 
                 });

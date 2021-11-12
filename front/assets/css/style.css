@@ -11,6 +11,18 @@ body{
     font-size: 60px;
 }
 
+h2{
+    
+        color: yellowgreen;
+        font-size: 60px;
+    
+}
+
+a{
+    color: yellowgreen;
+    font-size: 20px;
+}
+
 .underline-title
  {
      background-color: orange;
