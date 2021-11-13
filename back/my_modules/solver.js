@@ -158,23 +158,29 @@ const solver = {
         },
 
         makeStepsBeforeBacktracing: function () {
-            //on écrit des 0 dans la board sur la dernière cellule pour ne pas fausser le prochain calcul //A FACTO
-            const ligne = solver.board.data.emptyCells[0].substr(0, 1);
-            const column = solver.board.data.emptyCells[0].substr(1, 1);
+
+            console.log('début des steps avant bactracing: ' + solver.board.data.emptyCells[0]);
+
+            //on recherche le dernier élément du tracker
+
+            const trackerLength = solver.board.tracker.length;
+            const lastCell = solver.board.tracker[trackerLength - 1];
+
+            //on récupère les num de ligne/colonne/square
+
+            const ligne = lastCell.cellCalculated.substr(0, 1);
+            const column = lastCell.cellCalculated.substr(1, 1);
             const square = solver.board.findSquare(ligne, column);
+
+            //on supprime les valeurs de cette cellule dans les data ligne/column et square
 
             solver.board.data.ligne[ligne][column] = 0;
             solver.board.data.column[column][ligne] = 0;
             solver.board.writeInSquare(ligne, column, square, 0);
 
-            //il faut aller sur celle d'avant. On enlève alors de emptyCells la cellule d'avant
-            solver.board.data.emptyCells.shift();
+            //on ajoute la cellule trouvée dans emptyCells afin qu'elle soit calculée au prochain passage
+            solver.board.data.emptyCells.unshift(lastCell.cellCalculated);
 
-            //on l'enlève aussi du tracker
-            const cellIndex = solver.board.tracker.findIndex((element) => {
-                return (element.cellCalculated) === (ligne + column);
-            });
-            solver.board.tracker.splice(cellIndex, 1);
         },
 
         solve: function (backtracing) { //fonction solver récursive
@@ -218,7 +224,6 @@ const solver = {
                     solver.board.data.ligne[ligne][column] = testedResult;
                     solver.board.data.column[column][ligne] = testedResult;
                     solver.board.writeInSquare(ligne, column, square, testedResult);
-                    console.log(solver.board.data.square[0]);
 
                     //on enlève les coordonnées de cette cellule du tableau des cellules vides
                     solver.board.data.emptyCells.shift();
@@ -241,18 +246,20 @@ const solver = {
                 }
                 else {
                     //on a pas trouvé de résultat sur la cellule en cours donc il faut revenir en arrière
-
                     solver.board.makeStepsBeforeBacktracing();
 
                     //on relance le solveur avec la valeur true (récursivité)
                     solver.board.solve(true);
 
+
                 }
             }
             else {
+
                 //on est là car le solveur a été relancé avec la valeur true. On recherche dans le tracker la première cellule de emptyCells (il faut y tester un autre résultat car il s'agit d'un retour arrière)
                 const ligne = solver.board.data.emptyCells[0].substr(0, 1);
                 const column = solver.board.data.emptyCells[0].substr(1, 1);
+
                 const cell = solver.board.tracker.find((element) => {
                     return (element.cellCalculated) === (ligne + column);
                 });
@@ -263,6 +270,7 @@ const solver = {
                 }
 
                 //on a trouvé la cellule donc on regarde s'il y avait d'autres résultats possibles.
+                console.log('Autres résultats possibles ?' + JSON.stringify(cell));
 
                 if (cell.possibleResults.length > 0) {
                     //Si oui on va tester un des autres résultats non testés encore
