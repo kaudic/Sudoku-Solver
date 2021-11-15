@@ -487,7 +487,6 @@ const app = {
 
                 //réception des calculs du solveur, décryptage du json
                 .then(function (response) {
-                    // console.log('response: ' +response);
                     const responseTreated = response.json();
                     return responseTreated;
                 })

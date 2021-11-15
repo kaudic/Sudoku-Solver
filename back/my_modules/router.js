@@ -58,6 +58,7 @@ router.get('/solveBoard/:boardId', (req, res) => {
             const boardData = JSON.parse(data);
 
             const boardDataRequired = boardData[boardId];
+            console.log(boardDataRequired);
 
             const response = {
                 id: boardId,
@@ -94,11 +95,13 @@ router.post('/solveBoard/', (req, res) => {
 
     //lancement du solveur en mode asynchrone
     const resultatSolver = async function () {
-        return solver.board.solve(false);
+        const response = solver.board.solve(false);
+        return response;
     }
 
     //A récupération des données du solver, on prépare le message JSON pour le front
     resultatSolver().then((data) => {
+        console.log(data);
         const responseTreated = {
             results: data,
         };

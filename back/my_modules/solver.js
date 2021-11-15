@@ -13,43 +13,39 @@ const solver = {
 
         isFinished: function () {//passera à true si le solveur a réussi: tous les chiffres >0 et un total par ligne/colonne/square de xx
 
-            console.log(solver.board.data.ligne);
+
             let boardOK = false;
-            let totalLigne, totalColumn, totalSquare = 0;
+            let totalLigne = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+            let totalColumn = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+            let totalSquare = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-            for (const element of solver.board.data.ligne) {
-                totalLigne += Number(element);
-                if (element === 0) {
+            for (let i = 0; i < 9; i++) {
+
+                for (let j = 0; j < 9; j++) {
+
+                    const colSquare = solver.board.findcolSquare(i, j);
+                    const square = solver.board.findSquare(i, j);
+
+                    totalLigne[i] += solver.board.data.ligne[i][j];
+                    totalColumn[i] += solver.board.data.column[i][j];
+                    totalSquare[i] += solver.board.data.square[square][colSquare];
+
+                    if (solver.board.data.ligne[i][j] == 0 || solver.board.data.column[i][j] == 0 || solver.board.data.square[square][colSquare] == 0) {
+
+                        boardOK = false;
+                        return boardOK;
+                    }
+
+                }
+
+                if (totalLigne[i] !== 45 || totalColumn[i] !== 45 || totalSquare[i] !== 45) {
                     boardOK = false;
                     return boardOK;
                 }
-            }
 
-            for (const element of solver.board.data.column) {
-                totalColumn += Number(element);
-                if (element === 0) {
-                    boardOK = false;
-                    return boardOK;
-                }
             }
-
-            for (const element of solver.board.data.square) {
-                totalSquare += Number(element);
-                if (element === 0) {
-                    boardOK = false;
-                    return boardOK;
-                }
-            }
-
-            if (totalLigne !== 45 || totalColumn !== 45 || totalSquare !== 45) {
-                boardOK = false;
-                return boardOK;
-            }
-
             boardOK = true;
             return boardOK;
-
-
         },
 
         tracker: [ //tableau recensent toutes les cellules calculées, chaque cellule est un objet (coordonnées, résultats possibles et résultats testés)
@@ -92,6 +88,42 @@ const solver = {
             }
 
             return square;
+        },
+
+        findcolSquare: function (lig, col) {
+
+            let colSquare = 0;
+
+            if ((lig == 0 || lig == 3 || lig == 6) && col <= 2) {
+                colSquare = Number(col);
+            }
+            else if ((lig == 0 || lig == 3 || lig == 6) && col > 2 && col <= 5) {
+                colSquare = Number(col) - 3;
+            }
+            else if ((lig == 0 || lig == 3 || lig == 6) && col > 5 && col <= 8) {
+                colSquare = Number(col) - 6;
+            }
+            else if ((lig == 1 || lig == 4 || lig == 7) && col <= 2) {
+                colSquare = Number(col) + 3;
+            }
+            else if ((lig == 1 || lig == 4 || lig == 7) && col > 2 && col <= 5) {
+                colSquare = Number(col);
+            }
+            else if ((lig == 1 || lig == 4 || lig == 7) && col > 5 && col <= 8) {
+                colSquare = Number(col) - 3;
+            }
+            else if ((lig == 2 || lig == 5 || lig == 8) && col <= 2 + 6) {
+                colSquare = Number(col) + 6;
+            }
+            else if ((lig == 2 || lig == 5 || lig == 8) && col > 2 && col <= 5) {
+                colSquare = Number(col) + 3;
+            }
+            else if ((lig == 2 || lig == 5 || lig == 8) && col > 5 && col <= 8) {
+                colSquare = Number(col);
+            }
+
+            return colSquare;
+
         },
 
         writeInSquare: function (lig, col, square, result) {
@@ -236,12 +268,14 @@ const solver = {
                     if (stopSolver) {
                         //-> si oui on fait un return pour stopper la fonction (et on ré-initialise le tracker)
                         solver.board.tracker = []; //si besoin faire une boucle avec du shift pour shooter les éléments un par un
-                        return solver.board.data.ligne;
+                        const solverResponse = solver.board.data.ligne;
+                        return solverResponse;
+
                     }
                     else {
                         //-> si non alors on relancer solver avec la valeur false pour aller sur la cellule suivante
                         // console.log(solver.board.data.ligne);
-                        solver.board.solve(false);
+                        return solver.board.solve(false);
                     }
 
                 }
@@ -251,7 +285,7 @@ const solver = {
                     solver.board.makeStepsBeforeBacktracing();
 
                     //on relance le solveur avec la valeur true (récursivité)
-                    solver.board.solve(true);
+                    return solver.board.solve(true);
 
 
                 }
@@ -268,13 +302,12 @@ const solver = {
                 });
 
                 if (!cell) {
-                    -
-                        console.log('Erreur de backtracing, la cellule n\'a pas été trouvée'); //on a pas retrouvé la cellule ce n'est pas normal donc arrêt de la fonction avec un log
+                    console.log('Erreur de backtracing, la cellule n\'a pas été trouvée'); //on a pas retrouvé la cellule ce n'est pas normal donc arrêt de la fonction avec un log
                     return;
                 }
 
                 //on a trouvé la cellule donc on regarde s'il y avait d'autres résultats possibles.
-                console.log('Autres résultats possibles sur e retour arrière: ' + JSON.stringify(cell));
+                console.log('Autres résultats possibles sur ce retour arrière: ' + JSON.stringify(cell));
 
                 if (cell.possibleResults.length > 0) {
                     //Si oui on va tester un des autres résultats non testés encore
@@ -283,7 +316,7 @@ const solver = {
                     cell.testedResults.push(testedResult);
                     console.log('On teste le résultat suivant: ' + testedResult);
                     //on relance le solveur avec la valeur false
-                    //! il manque qqch?! suppression de la cellule de emptyCells, écriture dans les datas
+                    //! à factoriser j'ai fait un copié/collé
                     //on remplit board.data (ligne/colonne/square) avec la valeur que l'on teste
                     const ligne = solver.board.data.emptyCells[0].substr(0, 1);
                     const column = solver.board.data.emptyCells[0].substr(1, 1);
@@ -295,7 +328,7 @@ const solver = {
 
                     //on enlève les coordonnées de cette cellule du tableau des cellules vides
                     solver.board.data.emptyCells.shift();
-                    solver.board.solve(false);
+                    return solver.board.solve(false);
                 }
                 else {
 
@@ -307,7 +340,7 @@ const solver = {
                     solver.board.makeStepsBeforeBacktracing();
 
                     //on relance le solveur avec la valeur true car on veur tester un autre résultat qui avait été calculé
-                    solver.board.solve(true);
+                    return solver.board.solve(true);
 
                 }
 
