@@ -9,6 +9,100 @@ const app = {
 
     },
 
+    isValid(e) {
+
+        //on récupère la valeur saisie, la ligne, la colonne et le carré concerné
+        const userValue = (e.target.value);
+        const idInput = e.target.id;
+        const lig = idInput.substr(0, 1);
+        const col = idInput.substr(1, 1);
+        const square = app.board.findSquare(lig, col);
+
+        //besoin d'un switch pour déterminer en fonction du carré quelles lignes et colonnes doivent être checkées
+
+        let squareMinLig = 0;
+        let squareMaxLig = 0;
+        let squareMinCol = 0;
+        let squareMaxCol = 0;
+
+        switch (square) {
+
+            case 0:
+                squareMinLig = 0;
+                squareMaxLig = 2;
+                squareMinCol = 0;
+                squareMaxCol = 2;
+                break;
+            case 1:
+                squareMinLig = 0;
+                squareMaxLig = 2;
+                squareMinCol = 3;
+                squareMaxCol = 5;
+                break;
+            case 2:
+                squareMinLig = 0;
+                squareMaxLig = 2;
+                squareMinCol = 6;
+                squareMaxCol = 8;
+                break;
+            case 3:
+                squareMinLig = 3;
+                squareMaxLig = 5;
+                squareMinCol = 0;
+                squareMaxCol = 2;
+                break;
+            case 4:
+                squareMinLig = 3;
+                squareMaxLig = 5;
+                squareMinCol = 3;
+                squareMaxCol = 5;
+                break;
+            case 5:
+                squareMinLig = 3;
+                squareMaxLig = 5;
+                squareMinCol = 6;
+                squareMaxCol = 8;
+                break;
+            case 6:
+                squareMinLig = 6;
+                squareMaxLig = 8;
+                squareMinCol = 0;
+                squareMaxCol = 2;
+                break;
+            case 7:
+                squareMinLig = 6;
+                squareMaxLig = 8;
+                squareMinCol = 3;
+                squareMaxCol = 5;
+                break;
+            case 8:
+                squareMinLig = 6;
+                squareMaxLig = 8;
+                squareMinCol = 6;
+                squareMaxCol = 8;
+                break;
+        };
+
+
+        //on récupère toutes les valeurs de input
+        const inputCells = document.getElementsByClassName('sudokValues');
+
+        //on cherche si la valeur existe déjà dans les lignes, colonnes et carrés
+        for (const cell of inputCells) {
+
+            const cellLig = cell.id.substr(0, 1);
+            const cellCol = cell.id.substr(1, 1);
+
+            if ((cellLig === lig && cellCol !== col) || (cellCol === col && cellLig !== lig) || (cellLig >= squareMinLig && cellLig <= squareMaxLig && cellCol >= squareMinCol && cellCol <= squareMaxCol && cellLig !== lig && cellCol !== col)) {
+                if (cell.value === userValue && cell.value != '') {
+                    //si oui, on efface la valeur et on met un alerte
+                    e.target.value = '';
+                    return alert(`Vous ne pouvez saisir la valeur ${userValue} dans la grille car cette valeur est déjà présente`);
+                }
+            }
+        }
+    },
+
     checkInput: (e) => {
         //regarder si l'utilisateur a coché l'option de checker ses saisies, si oui on exécute la fonction sinon on sort
         const inputCheckOn = document.getElementById('autoCheck').checked; //booléen
@@ -85,6 +179,7 @@ const app = {
 
                     const inputCellElt = document.createElement('input');
                     inputCellElt.addEventListener('change', app.checkInput);
+                    inputCellElt.addEventListener('change', app.isValid);
                     inputCellElt.style.width = app.board.cellSize;
                     inputCellElt.style.height = app.board.cellSize;
                     const boardCell = divColumns.appendChild(inputCellElt);
@@ -183,6 +278,120 @@ const app = {
                 app.board.data.square[8].push(inputValue);
             }
 
+
+        },
+
+        // isValid: function () {
+        //     //fonction qui va vérifier qu'il n'y a pas de doublons de chiffres avant envoie au serveur
+
+        //     //déclaration de fonction
+        //     const hasDuplicate = async function (emptyArray) {
+        //         emptyArray.find((element) => {
+        //             return element === cellNumber;
+        //         });
+        //     };
+
+        //     //vérification cellule par cellule
+
+        //     for (let i = 0; i < 9; i++) {
+
+        //         for (let j = 0; j < 9; j++) {
+
+        //             const emptyArray = [];
+        //             const square = app.board.findSquare(i, j);
+        //             const concatArray = app.board.data.ligne[i].concat(app.board.data.column[j], app.board.data.square[square]);
+
+        //             for (const cellNumber of concatArray) {
+
+        //                 if (cellNumber !== 0) {
+
+        //                     console.log('emptyArray: ' + emptyArray);
+
+        //                     hasDuplicate(emptyArray).then((promise) => {
+        //                         console.log(promise)
+        //                         if (!promise) {
+        //                             emptyArray.push(cellNumber);
+        //                             console.log(emptyArray);
+        //                         }
+        //                         else {
+        //                             return false;
+        //                         }
+        //                     })
+        //                 }
+        //             }
+        //         }
+        //     }
+        //     return true;
+        // },
+
+
+        findSquare: function (lig, col) { //cette fonction trouve le carré concerné à partir du numéro de ligne et de colonne
+            let square = '';
+
+            if (lig <= 2 && col <= 2) {
+                square = 0;
+            }
+            else if (lig <= 2 && col > 2 && col <= 5) {
+                square = 1;
+            }
+            else if (lig <= 2 && col > 5) {
+                square = 2;
+            }
+            else if (lig > 2 && lig <= 5 && col <= 2) {
+                square = 3;
+            }
+            else if (lig > 2 && lig <= 5 && col > 2 && col <= 5) {
+                square = 4;
+            }
+            else if (lig > 2 && lig <= 5 && col > 5) {
+                square = 5;
+            }
+            else if (lig > 5 && col <= 2) {
+                square = 6;
+            }
+            else if (lig > 5 && col > 2 && col <= 5) {
+                square = 7;
+            }
+            else if (lig > 5 && col > 5) {
+                square = 8;
+            }
+
+            return square;
+        },
+
+        findcolSquare: function (lig, col) {
+
+            let colSquare = 0;
+
+            if ((lig == 0 || lig == 3 || lig == 6) && col <= 2) {
+                colSquare = Number(col);
+            }
+            else if ((lig == 0 || lig == 3 || lig == 6) && col > 2 && col <= 5) {
+                colSquare = Number(col) - 3;
+            }
+            else if ((lig == 0 || lig == 3 || lig == 6) && col > 5 && col <= 8) {
+                colSquare = Number(col) - 6;
+            }
+            else if ((lig == 1 || lig == 4 || lig == 7) && col <= 2) {
+                colSquare = Number(col) + 3;
+            }
+            else if ((lig == 1 || lig == 4 || lig == 7) && col > 2 && col <= 5) {
+                colSquare = Number(col);
+            }
+            else if ((lig == 1 || lig == 4 || lig == 7) && col > 5 && col <= 8) {
+                colSquare = Number(col) - 3;
+            }
+            else if ((lig == 2 || lig == 5 || lig == 8) && col <= 2 + 6) {
+                colSquare = Number(col) + 6;
+            }
+            else if ((lig == 2 || lig == 5 || lig == 8) && col > 2 && col <= 5) {
+                colSquare = Number(col) + 3;
+            }
+            else if ((lig == 2 || lig == 5 || lig == 8) && col > 5 && col <= 8) {
+                colSquare = Number(col);
+            }
+
+            return colSquare;
 
         },
 
@@ -352,8 +561,6 @@ const app = {
         level: ['Facile1', 'Facile2', 'Moyen', 'Difficile', 'Démoniaque'],
 
     },
-
-
 
     emptyExercice: () => {
 

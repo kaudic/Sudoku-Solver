@@ -30,7 +30,7 @@ const solver = {
                     totalColumn[i] += solver.board.data.column[i][j];
                     totalSquare[i] += solver.board.data.square[square][colSquare];
 
-                    if (solver.board.data.ligne[i][j] == 0 || solver.board.data.column[i][j] == 0 || solver.board.data.square[square][colSquare] == 0) {
+                    if (solver.board.data.ligne[i][j] == 0 || solver.board.data.column[i][j] == 0) { //|| solver.board.data.square[square][colSquare] == 0
 
                         boardOK = false;
                         return boardOK;
@@ -38,7 +38,7 @@ const solver = {
 
                 }
 
-                if (totalLigne[i] !== 45 || totalColumn[i] !== 45 || totalSquare[i] !== 45) {
+                if (totalLigne[i] !== 45 || totalColumn[i] !== 45) { //|| totalSquare[i] !== 45
                     boardOK = false;
                     return boardOK;
                 }
