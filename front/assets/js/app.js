@@ -18,6 +18,14 @@ const app = {
         const col = idInput.substr(1, 1);
         const square = app.board.findSquare(lig, col);
 
+        //première vérification: s'assurer que le chiffre est compris entre 1 et 9 inclus
+
+        if (userValue < 1 || userValue > 9) {
+            e.target.value = '';
+            e.target.select();
+            return alert(`La valeur ${userValue} est refusée. Il faut saisir des chiffres entre 1 et 9`);
+        }
+
         //besoin d'un switch pour déterminer en fonction du carré quelles lignes et colonnes doivent être checkées
 
         let squareMinLig = 0;
@@ -83,7 +91,6 @@ const app = {
                 break;
         };
 
-
         //on récupère toutes les valeurs de input
         const inputCells = document.getElementsByClassName('sudokValues');
 
@@ -97,7 +104,8 @@ const app = {
                 if (cell.value === userValue && cell.value != '') {
                     //si oui, on efface la valeur et on met un alerte
                     e.target.value = '';
-                    return alert(`Vous ne pouvez saisir la valeur ${userValue} dans la grille car cette valeur est déjà présente`);
+                    e.target.select();
+                    return alert(`La valeur ${userValue} est refusée car déjà présente dans la ligne ou la colonne ou le carré!`);
                 }
             }
         }
@@ -542,8 +550,11 @@ const app = {
             autoCheckInput.type = 'checkbox';
             autoCheckInput.name = 'autoCheck';
             autoCheckInput.id = 'autoCheck';
+            autoCheckInput.style.display = 'none'; //sera masqué au départ et affiché si une grille est chargée
+            autoCheckInputLabel.id = 'autoCheckLabel';
             autoCheckInputLabel.setAttribute('for', 'autoCheck');
-            autoCheckInputLabel.textContent = 'Auto-Contrôle';
+            autoCheckInputLabel.style.display = 'none'; //sera masqué au départ et affiché si une grille est chargée
+            autoCheckInputLabel.textContent = 'Live-Correction';
 
 
             //Implentation des éléments du formulaire dans le formulaire
@@ -584,6 +595,13 @@ const app = {
         //supprimer le compte du chrono et le chrono html s'il existe
         app.stopWatch.setOff();
         app.stopWatch.delete();
+
+        //on enlève l'option de Live-Correction proposée pour les grilles chargées
+        const autoCheckInput = document.getElementById('autoCheck');
+        const autoCheckInputLabel = document.getElementById('autoCheckLabel');
+        autoCheckInput.style.display = 'none';
+        autoCheckInputLabel.style.display = 'none';
+        autoCheckInput.checked = false;
 
 
     },
@@ -639,6 +657,14 @@ const app = {
                 app.applyDatasToBoard(board.data);
 
             });
+
+        //on affiche l'option de Live-Correction proposée pour les grilles chargées et on le décoche
+
+        const autoCheckInput = document.getElementById('autoCheck');
+        const autoCheckInputLabel = document.getElementById('autoCheckLabel');
+        autoCheckInput.style.display = 'inline-block';
+        autoCheckInputLabel.style.display = 'inline-block';
+        autoCheckInput.checked = false;
 
     },
 

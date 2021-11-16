@@ -13,7 +13,6 @@ const solver = {
 
         isFinished: function () {//passera à true si le solveur a réussi: tous les chiffres >0 et un total par ligne/colonne/square de xx
 
-
             let boardOK = false;
             let totalLigne = [0, 0, 0, 0, 0, 0, 0, 0, 0];
             let totalColumn = [0, 0, 0, 0, 0, 0, 0, 0, 0];
