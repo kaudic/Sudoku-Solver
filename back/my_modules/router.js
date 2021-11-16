@@ -95,15 +95,20 @@ router.post('/solveBoard/', (req, res) => {
 
     //lancement du solveur en mode asynchrone
     const resultatSolver = async function () {
+        // try {
         const response = solver.board.solve(false);
         return response;
+        // } catch (e) {
+        //     console.log('erreur :' + e)
+        // }
+
     }
 
     //A récupération des données du solver, on prépare le message JSON pour le front
     resultatSolver().then((data) => {
         console.log(data);
         const responseTreated = {
-            results: data,
+            results: solver.board.data.ligne, //!avant data
         };
 
         //envoie du message au front

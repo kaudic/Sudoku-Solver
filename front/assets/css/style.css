@@ -91,21 +91,29 @@ border-radius: 5px;
     background-color: burlywood;
  }
 
+ .sudokuColumn:nth-child(3n) { 
+    border-right: 4px solid black;
+ }
+
+ #sudokuBoard .sudokuRow:nth-child(3n) { 
+    border-bottom: 4px solid black;
+ }
+
 
  #sudokuBoard .sudokuRow:last-of-type input{
-    border-bottom:4px solid yellowgreen;
+    border-bottom:6px solid orange;
 }
 
 #sudokuBoard .sudokuRow:first-of-type input{
-    border-top:4px solid yellowgreen;
+    border-top:6px solid orange;
 }
 
 #sudokuBoard .sudokuRow .sudokuColumn:last-of-type input{
-    border-right:4px solid yellowgreen;
+    border-right:6px solid orange;
 }
 
 #sudokuBoard .sudokuRow .sudokuColumn:first-of-type input{
-    border-left:4px solid yellowgreen;
+    border-left:6px solid orange;
 }
 
 #stopWatch

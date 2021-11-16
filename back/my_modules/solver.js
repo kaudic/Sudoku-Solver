@@ -227,9 +227,15 @@ const solver = {
                 //On prends la première cellule vide dans [emptyCells]
                 //On calcule cette cellule vide (tous les résultats possibles) à l'aide de la fonction calculateCell
 
-                const cellResults = solver.board.calculateCell(solver.board.data.emptyCells[0]);
+                let nextCell = solver.board.speedUpSolve();
 
-                console.log('Cellule calculée: ' + solver.board.data.emptyCells[0]);
+                if (!nextCell) {
+                    nextCell = solver.board.data.emptyCells[0];
+                }
+
+                const cellResults = solver.board.calculateCell(nextCell);
+
+                console.log('Cellule calculée: ' + nextCell);
                 console.log('Résultats possibles: ' + cellResults);
 
                 //Si on a plusieurs résultats possibles:
@@ -241,7 +247,7 @@ const solver = {
                     console.log('on teste le résultat suivant: ' + testedResult);
 
                     const cellTrackerData = {
-                        cellCalculated: solver.board.data.emptyCells[0],
+                        cellCalculated: nextCell,
                         possibleResults: cellResults,
                         testedResults: [testedResult]
                     };
@@ -250,8 +256,8 @@ const solver = {
                     solver.board.tracker.push(cellTrackerData);
 
                     //on remplit board.data (ligne/colonne/square) avec la valeur que l'on teste
-                    const ligne = solver.board.data.emptyCells[0].substr(0, 1);
-                    const column = solver.board.data.emptyCells[0].substr(1, 1);
+                    const ligne = nextCell.substr(0, 1);
+                    const column = nextCell.substr(1, 1);
                     const square = solver.board.findSquare(ligne, column);
 
                     solver.board.data.ligne[ligne][column] = testedResult;
@@ -259,7 +265,12 @@ const solver = {
                     solver.board.writeInSquare(ligne, column, square, testedResult);
 
                     //on enlève les coordonnées de cette cellule du tableau des cellules vides
-                    solver.board.data.emptyCells.shift();
+                    const cellToDelete = solver.board.data.emptyCells.findIndex(cell => cell === nextCell);
+                    solver.board.data.emptyCells.splice(cellToDelete, 1);
+
+
+
+                    // solver.board.data.emptyCells.shift();
 
                     //on vérifie si la grille est terminée avec la méthode isFinished 
                     const stopSolver = solver.board.isFinished();
@@ -350,8 +361,43 @@ const solver = {
 
 
 
-        speedUpSolve: function () { //fonction qui résous quelques cellules pour lesquelles il n'y avait qu'un seul résultat possible
+        speedUpSolve: function () { //fonction qui renvoie la prochaine cellule à calculer (pour améliorer les perfs)
 
+            // on déclare une variable dans laquelle on va stocker par ordre les cellules à calculer
+            const sortedEmptyCells = [];
+
+            // Vérifier que emptyCell n'est pas vide à moins que ce soit à l'appel de la fonction
+
+            //Calculer chaque cells de emptyCells
+            for (const emptyCell of solver.board.data.emptyCells) {
+                const cellResults = solver.board.calculateCell(emptyCell);
+                const cellResultsLength = cellResults.length;
+
+                if (cellResultsLength === 1) {
+                    const cell = {
+                        id: emptyCell,
+                        resultsLength: cellResultsLength
+                    };
+                    sortedEmptyCells.push(cell);
+                }
+
+            }
+
+            if (sortedEmptyCells.length === 0) {
+                return false;
+            }
+            else {
+
+
+                //trier les résultats par ordre de longueur
+
+                // sortedEmptyCells.sort(function (a, b) {
+                //     return a.resultsLength - b.resultsLength;
+                // });
+
+                console.log('prochaine cellule conseillée: ' + sortedEmptyCells[0].id);
+                return (sortedEmptyCells[0].id);
+            }
         },
     }
 };
