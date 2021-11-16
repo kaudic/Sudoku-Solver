@@ -224,7 +224,7 @@ const solver = {
 
             if (!backtracing) {
 
-                //On prends la première cellule vide dans [emptyCells]
+                //La première cellule calculée sera donnée soit par speedUpSolve (renvoie la première cellule qui n'a qu'un seul résultat possible), si speedUpSolve n'en trouve pas, alors on calcule la première cellule vide
                 //On calcule cette cellule vide (tous les résultats possibles) à l'aide de la fonction calculateCell
 
                 let nextCell = solver.board.speedUpSolve();
@@ -267,10 +267,6 @@ const solver = {
                     //on enlève les coordonnées de cette cellule du tableau des cellules vides
                     const cellToDelete = solver.board.data.emptyCells.findIndex(cell => cell === nextCell);
                     solver.board.data.emptyCells.splice(cellToDelete, 1);
-
-
-
-                    // solver.board.data.emptyCells.shift();
 
                     //on vérifie si la grille est terminée avec la méthode isFinished 
                     const stopSolver = solver.board.isFinished();
@@ -326,8 +322,9 @@ const solver = {
 
                     cell.testedResults.push(testedResult);
                     console.log('On teste le résultat suivant: ' + testedResult);
+
                     //on relance le solveur avec la valeur false
-                    //! à factoriser j'ai fait un copié/collé
+                    //! on devrait pouvoir factoriser car j'ai fait un copié/collé
                     //on remplit board.data (ligne/colonne/square) avec la valeur que l'on teste
                     const ligne = solver.board.data.emptyCells[0].substr(0, 1);
                     const column = solver.board.data.emptyCells[0].substr(1, 1);
@@ -355,16 +352,13 @@ const solver = {
 
                 }
 
-
             }
         },
-
-
 
         speedUpSolve: function () { //fonction qui renvoie la prochaine cellule à calculer (pour améliorer les perfs)
 
             // on déclare une variable dans laquelle on va stocker par ordre les cellules à calculer
-            const sortedEmptyCells = [];
+            let nextCell = '';
 
             // Vérifier que emptyCell n'est pas vide à moins que ce soit à l'appel de la fonction
 
@@ -374,30 +368,13 @@ const solver = {
                 const cellResultsLength = cellResults.length;
 
                 if (cellResultsLength === 1) {
-                    const cell = {
-                        id: emptyCell,
-                        resultsLength: cellResultsLength
-                    };
-                    sortedEmptyCells.push(cell);
+                    console.log('prochaine cellule conseillée: ' + emptyCell);
+                    return nextCell = emptyCell;
                 }
 
             }
+            return false;
 
-            if (sortedEmptyCells.length === 0) {
-                return false;
-            }
-            else {
-
-
-                //trier les résultats par ordre de longueur
-
-                // sortedEmptyCells.sort(function (a, b) {
-                //     return a.resultsLength - b.resultsLength;
-                // });
-
-                console.log('prochaine cellule conseillée: ' + sortedEmptyCells[0].id);
-                return (sortedEmptyCells[0].id);
-            }
         },
     }
 };
