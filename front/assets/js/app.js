@@ -289,50 +289,6 @@ const app = {
 
         },
 
-        // isValid: function () {
-        //     //fonction qui va vérifier qu'il n'y a pas de doublons de chiffres avant envoie au serveur
-
-        //     //déclaration de fonction
-        //     const hasDuplicate = async function (emptyArray) {
-        //         emptyArray.find((element) => {
-        //             return element === cellNumber;
-        //         });
-        //     };
-
-        //     //vérification cellule par cellule
-
-        //     for (let i = 0; i < 9; i++) {
-
-        //         for (let j = 0; j < 9; j++) {
-
-        //             const emptyArray = [];
-        //             const square = app.board.findSquare(i, j);
-        //             const concatArray = app.board.data.ligne[i].concat(app.board.data.column[j], app.board.data.square[square]);
-
-        //             for (const cellNumber of concatArray) {
-
-        //                 if (cellNumber !== 0) {
-
-        //                     console.log('emptyArray: ' + emptyArray);
-
-        //                     hasDuplicate(emptyArray).then((promise) => {
-        //                         console.log(promise)
-        //                         if (!promise) {
-        //                             emptyArray.push(cellNumber);
-        //                             console.log(emptyArray);
-        //                         }
-        //                         else {
-        //                             return false;
-        //                         }
-        //                     })
-        //                 }
-        //             }
-        //         }
-        //     }
-        //     return true;
-        // },
-
-
         findSquare: function (lig, col) { //cette fonction trouve le carré concerné à partir du numéro de ligne et de colonne
             let square = '';
 

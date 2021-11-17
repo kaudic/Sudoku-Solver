@@ -1,11 +1,11 @@
-const { application } = require("express");
+const { application } = require('express');
 
 const solver = {
 
     board: {
         data: {
 
-            line: [], //contiendra les données de la grille en lecture en lignes
+            ligne: [], //contiendra les données de la grille en lecture en lignes //!attention avant c'était line
             column: [], //contiendra les données de la grille en lecture en colonnes
             square: [], //contiendra les données de la grille en lecture en carrés
             emptyCells: [], //tableau des cellules vides, leurs coordonnées (le premier enregistrement est la prochaine cellule à être calculée)
@@ -375,6 +375,93 @@ const solver = {
             return false;
 
         },
+
+        generator: function () {
+
+            //!il manque une gestion de emptyCells
+
+            //initialisation des arrays
+            solver.board.data.ligne =
+                [[0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0]];
+
+            solver.board.data.column =
+                [[0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0]];
+
+            solver.board.data.square =
+                [[0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0]];
+
+            //déclaration d'une fonction de génération de nombre aléatoire
+            const randomNumber = (min, max) => {
+                return Math.floor(
+                    Math.random() * (max - min) + min
+                );
+            };
+
+            //Lancement d'une boucle pour générer plusieurs nombres
+
+            for (let i = 0; i < 20; i++) {
+
+                //Génération de 2 numéros de strings pour simuler une cellule et vérifier qu'elle a pour valeur 0 (sinon elle a déjà été calculée)
+                let lig = randomNumber(0, 8).toString();
+                let col = randomNumber(0, 8).toString();
+                console.log('cellule aléatoire proposée: ' + lig + col);
+                console.log('Valeur courante de la cellule: ' + solver.board.data.ligne[lig][col]);
+
+                if (solver.board.data.ligne[lig][col] != 0) {
+                    console.log('Cellule aléatoire non valide, génération d\'une nouvelle cellule');
+
+                    while (solver.board.data.ligne[lig][col] !== 0) {
+                        lig = randomNumber(0, 8).toString();
+                        col = randomNumber(0, 8).toString();
+                    }
+                }
+                console.log('cellule aléatoire validée: ' + lig + col);
+
+                //On calcule les possibilités de nombre sur cette cellule
+                const cellResults = solver.board.calculateCell(lig + col);
+                const cellResultsLength = cellResults.length;
+                console.log('longueur de résultat: ' + cellResultsLength);
+
+                //On choisit l'une des valeurs possibles de manière aléatoire
+                const randomResult = randomNumber(0, cellResultsLength);
+                const cellResult = cellResults[randomResult];
+                console.log('on applique la valeur: ' + cellResult);
+
+
+                //on remplit board.data (ligne/colonne/square) avec la valeur que l'on teste
+
+                const square = solver.board.findSquare(lig, col);
+                solver.board.data.ligne[lig][col] = cellResult;
+                solver.board.data.column[col][lig] = cellResult;
+                solver.board.writeInSquare(lig, col, square, cellResult);
+            }
+            return solver.board.data.ligne;
+        },
+
     }
 };
 
