@@ -129,9 +129,16 @@ const controller = {
 
     database: (req, res) => {
 
-        const newBoard = solver.board.generator();
-        const resultNewBoard = solver.board.solve(false); //on envoie false car nous ne sommes pas en backtracing
-        res.send(JSON.stringify(resultNewBoard));
+        const newSolvedBoard = solver.board.generatorSupervisor();
+
+        res.send(JSON.stringify(newSolvedBoard));
+
+        //remise à 0 du tracker et de emptyCells pour éviter de mélanger les données
+        solver.board.data.emptyCells = [];
+        solver.board.tracker = [];
+
+        console.log(solver.board.data.ligne);
+        console.log(solver.board.data.emptyCells);
 
     }
 

@@ -214,7 +214,18 @@ const solver = {
 
         },
 
+        solveIteration: 0,
+
         solve: function (backtracing) { //fonction solver récursive
+
+            solver.board.solveIteration += 1; //compteur qui sert à sortir de la fonction avant le plantage (environ 3500 itérations)
+
+            if (solver.board.solveIteration > 3500) {
+                solver.board.solveIteration = 0;
+                return 'Non solvable';
+            }
+
+            console.log('compteur: ' + solver.board.solveIteration);
 
             console.log('backtracing: ' + backtracing);
             //on regarde si backtracing est à true/false
@@ -275,6 +286,7 @@ const solver = {
                         //-> si oui on fait un return pour stopper la fonction (et on ré-initialise le tracker)
                         solver.board.tracker = []; //si besoin faire une boucle avec du shift pour shooter les éléments un par un
                         const solverResponse = solver.board.data.ligne;
+                        solver.board.solveIteration = 0; //remise à 0 du compteur car c'est la fin de la fonction
                         return solverResponse;
 
                     }
@@ -309,6 +321,7 @@ const solver = {
 
                 if (!cell) {
                     console.log('Erreur de backtracing, la cellule n\'a pas été trouvée'); //on a pas retrouvé la cellule ce n'est pas normal donc arrêt de la fonction avec un log
+                    solver.board.solveIteration = 0;
                     return;
                 }
 
@@ -378,8 +391,6 @@ const solver = {
 
         generator: function () {
 
-            //!il manque une gestion de emptyCells
-
             //initialisation des arrays
             solver.board.data.ligne =
                 [[0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -413,6 +424,8 @@ const solver = {
                 [0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0]];
+
+            solver.board.data.emptyCells = [];
 
             //déclaration d'une fonction de génération de nombre aléatoire
             const randomNumber = (min, max) => {
@@ -459,7 +472,51 @@ const solver = {
                 solver.board.data.column[col][lig] = cellResult;
                 solver.board.writeInSquare(lig, col, square, cellResult);
             }
+
+            //on va remplir la variable emptyCells 
+
+            for (let lig = 0; lig < 9; lig++) {
+                for (let col = 0; col < 9; col++) {
+                    if (solver.board.data.ligne[lig][col] === 0) {
+                        solver.board.data.emptyCells.push(lig.toString() + col.toString());
+                    }
+                }
+            }
+
+            console.log(solver.board.data.ligne);
+            console.log(solver.board.data.emptyCells);
+
+            const retour = {
+                data: solver.board.data.ligne,
+                empty: solver.board.data.emptyCells,
+            };
+
+            return retour;
+        },
+
+        generatorSupervisor: function () { //fonction récursive qui génère une grille aléatoire et essaie de la résoudre, tant qu'il n'y a pas une grille de résolue, la récursion continue
+
+            //Génération d'une grille aléatoire
+            //Résolution de la grille aléatoire
+            //Beaucoup de grilles ne sont pas solvables. Dans ce cas, le retour est 'Non solvable'
+            //On veut itérer le temps d'obtenir une grille solvable avec son résultat
+
+            const newBoard = solver.board.generator();
+
+            const resultNewBoard = async () => solver.board.solve(false); //on envoie false car nous ne sommes pas en backtracing
+
+            const newSolvedBoard = resultNewBoard().then((data) => {
+
+                if (data === 'Non solvable') {
+                    return solver.board.generatorSupervisor(); //récursion
+                } else {
+                    return data;
+                }
+
+            });
+
             return solver.board.data.ligne;
+
         },
 
     }
