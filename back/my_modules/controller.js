@@ -129,16 +129,56 @@ const controller = {
 
     database: (req, res) => {
 
-        const newSolvedBoard = solver.board.generatorSupervisor();
+        //lecture du fichier json initial
+        fs.readFile('../back/data/boardDatabase2.json', ((err, data) => {
+            if (err) throw err;
 
-        res.send(JSON.stringify(newSolvedBoard));
+            const initialDatabase = JSON.parse(data);
+            let nextID = (initialDatabase.length) - 1;
 
-        //remise à 0 du tracker et de emptyCells pour éviter de mélanger les données
-        solver.board.data.emptyCells = [];
-        solver.board.tracker = [];
+            //Boucle de Générations de grilles aléatoires avec leurs solutions
 
-        console.log(solver.board.data.ligne);
-        console.log(solver.board.data.emptyCells);
+            let newSolvedBoard = [];
+
+            for (let i = 0; i < 10; i++) {
+
+                nextID += 1;
+
+                //Génération grille
+                newSolvedBoard = solver.board.generatorSupervisor();
+                const newSolvedBoardObject = {
+                    id: "id" + nextID,
+                    data: newSolvedBoard
+                };
+
+                //On pousse les nouvelles grilles dans un objet qui deviendra la nouvelle base de données JSON
+                initialDatabase.push(newSolvedBoardObject);
+
+                //remise à 0 du tracker et de emptyCells pour éviter de mélanger les données
+                solver.board.data.emptyCells = [];
+                solver.board.tracker = [];
+            }
+
+            const finalDatabase = JSON.stringify(initialDatabase);
+
+            fs.writeFile('../back/data/boardDatabase2.json', finalDatabase, (err) => {
+                if (err) throw err;
+            });
+            console.log('Nouvelles grilles enregistrées en base de données JSON');
+            //On renvoie un fichier EJS qui affiche les données
+            res.send(JSON.stringify(initialDatabase));
+
+
+
+        }));
+
+
+
+
+
+
+
+
 
     }
 
