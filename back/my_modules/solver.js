@@ -292,14 +292,30 @@ const solver = {
                     }
                     else {
                         //-> si non alors on relancer solver avec la valeur false pour aller sur la cellule suivante
+                        // par contre par sécurité on vérifie quand même qu'il reste une cellule vide dans emptyCells
+                        //si ce n'est pas le cas, il y a forcément une erreur (la grille n'est pas réalisable)
                         // console.log(solver.board.data.ligne);
-                        return solver.board.solve(false);
+                        if (solver.board.data.emptyCells.length === 0) {
+                            console.log('il n\'y a plus de cellules vides, la grille n\'a pas de solution');
+                            return 'Non solvable';
+                        }
+                        else {
+
+                            return solver.board.solve(false);
+                        }
+
                     }
 
                 }
                 else {
                     //on a pas trouvé de résultat sur la cellule en cours donc il faut revenir en arrière
                     console.log('Pas de résultat possible');
+
+                    if (solver.board.tracker.length === 0) {
+                        console.log('Pas de retour arrière possible non plus, la grille n\'a pas de solution');
+                        return 'Non solvable';
+                    }
+
                     solver.board.makeStepsBeforeBacktracing();
 
                     //on relance le solveur avec la valeur true (récursivité)
@@ -357,6 +373,11 @@ const solver = {
                     // solver.board.data.emptyCells.pop();
                     console.log('Pas d\'autres résultats possibles, suppression cellule: ' + JSON.stringify(deletedCell));
 
+                    if (solver.board.tracker.length === 0) {
+                        console.log('Pas de retour arrière possible non plus, la grille n\'a pas de solution');
+                        return 'Non solvable';
+                    }
+
                     solver.board.makeStepsBeforeBacktracing();
 
                     //on relance le solveur avec la valeur true car on veur tester un autre résultat qui avait été calculé
@@ -370,7 +391,6 @@ const solver = {
         speedUpSolve: function () { //fonction qui renvoie la prochaine cellule à calculer (pour améliorer les perfs)
 
             // on déclare une variable dans laquelle on va stocker par ordre les cellules à calculer
-            let nextCell = '';
 
             // Vérifier que emptyCell n'est pas vide à moins que ce soit à l'appel de la fonction
 
@@ -381,7 +401,7 @@ const solver = {
 
                 if (cellResultsLength === 1) {
                     console.log('prochaine cellule conseillée: ' + emptyCell);
-                    return nextCell = emptyCell;
+                    return emptyCell;
                 }
 
             }
@@ -510,8 +530,6 @@ const solver = {
             } else {
                 return solver.board.data.ligne;
             }
-
-
 
         },
 
