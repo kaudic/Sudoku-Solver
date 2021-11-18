@@ -138,14 +138,14 @@ const controller = {
 
             //Boucle de Générations de grilles aléatoires avec leurs solutions
 
-            let newSolvedBoard = [];
+            // let newSolvedBoard = [];
 
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 5; i++) {
 
                 nextID += 1;
 
                 //Génération grille
-                newSolvedBoard = solver.board.generatorSupervisor();
+                const newSolvedBoard = solver.board.generatorSupervisor();
                 const newSolvedBoardObject = {
                     id: "id" + nextID,
                     data: newSolvedBoard
@@ -161,23 +161,18 @@ const controller = {
 
             const finalDatabase = JSON.stringify(initialDatabase);
 
+
             fs.writeFile('../back/data/boardDatabase2.json', finalDatabase, (err) => {
                 if (err) throw err;
             });
             console.log('Nouvelles grilles enregistrées en base de données JSON');
             //On renvoie un fichier EJS qui affiche les données
-            res.send(JSON.stringify(initialDatabase));
+            res.send(JSON.stringify(finalDatabase));
+
 
 
 
         }));
-
-
-
-
-
-
-
 
 
     }

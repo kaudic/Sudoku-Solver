@@ -389,7 +389,7 @@ const solver = {
 
         },
 
-        generator: function () {
+        generator: function () { //générateur de grille non résolue
 
             //initialisation des arrays
             solver.board.data.ligne =
@@ -501,21 +501,17 @@ const solver = {
             //Beaucoup de grilles ne sont pas solvables. Dans ce cas, le retour est 'Non solvable'
             //On veut itérer le temps d'obtenir une grille solvable avec son résultat
 
-            const newBoard = solver.board.generator();
+            solver.board.generator();
 
-            const resultNewBoard = async () => solver.board.solve(false); //on envoie false car nous ne sommes pas en backtracing
+            const resultNewBoard = solver.board.solve(false); //on envoie false car nous ne sommes pas en backtracing
 
-            const newSolvedBoard = resultNewBoard().then((data) => {
+            if (resultNewBoard === 'Non solvable') {
+                return solver.board.generatorSupervisor(); //récursion
+            } else {
+                return solver.board.data.ligne;
+            }
 
-                if (data === 'Non solvable') {
-                    return solver.board.generatorSupervisor(); //récursion
-                } else {
-                    return data;
-                }
 
-            });
-
-            return solver.board.data.ligne;
 
         },
 
