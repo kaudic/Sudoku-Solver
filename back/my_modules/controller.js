@@ -16,13 +16,15 @@ const controller = {
 
         //la base de données a été require dans la variable boardData -> plus besoin de faire des fs.readFile
 
-        const max = Object.keys(boardData).length;
+        // const max = Object.keys(boardData).length;
+        const max = boardData.length;
         const randomNumber = serverMethods.getRandomNumber(0, max);
-        const randomId = 'id' + randomNumber;
-        const boardDataLevelTreated = serverMethods.takeOutNumbersFromBoard(level, boardData[randomId]);
+        // const randomId = 'id' + randomNumber;
+        const boardDataLevelTreated = serverMethods.takeOutNumbersFromBoard(level, boardData[randomNumber].data);
 
         const response = {
-            id: randomId,
+            // id: randomId,
+            id: boardData[randomNumber].id,
             data: boardDataLevelTreated
         };
 
@@ -42,12 +44,14 @@ const controller = {
                 if (err) throw err;
                 const boardData = JSON.parse(data);
 
-                const boardDataRequired = boardData[boardId];
+                const boardDataRequired = boardData.find((element) => {
+                    return element.id === boardId;
+                });
                 console.log(boardDataRequired);
 
                 const response = {
                     id: boardId,
-                    data: boardDataRequired
+                    data: boardDataRequired.data
                 };
 
                 res.setHeader('Access-Control-Allow-Origin', '*');
@@ -79,21 +83,26 @@ const controller = {
 
         //lancement du solveur en mode asynchrone
         const resultatSolver = async function () {
-            // try {
+
             const response = solver.board.solve(false);
             return response;
-            // } catch (e) {
-            //     console.log('erreur :' + e)
-            // }
 
         }
 
         //A récupération des données du solver, on prépare le message JSON pour le front
         resultatSolver().then((data) => {
-            console.log(data);
-            const responseTreated = {
-                results: solver.board.data.ligne, //!avant data
-            };
+
+            let responseTreated = null;
+
+            if (data === 'Non solvable') {
+                responseTreated = {
+                    results: 'Il n\'y a pas de solution pour cette grille',
+                };
+            } else {
+                responseTreated = {
+                    results: solver.board.data.ligne,
+                };
+            }
 
             //envoie du message au front
             res.setHeader('Access-Control-Allow-Origin', '*');
@@ -116,8 +125,12 @@ const controller = {
             if (err) throw err;
             const boardData = JSON.parse(data);
 
+            const searchedBoard = boardData.find((element) => {
+                return element.id === boardId;
+            });
+
             const response = {
-                inputSolution: boardData[boardId][ligne][column]
+                inputSolution: searchedBoard.data[ligne][column]
             };
 
             console.log('solution: ' + response.inputSolution);
@@ -130,7 +143,7 @@ const controller = {
     database: (req, res) => {
 
         //lecture du fichier json initial
-        fs.readFile('../back/data/boardDatabase2.json', ((err, data) => {
+        fs.readFile('../back/data/boardDatabase.json', ((err, data) => {
             if (err) throw err;
 
             const initialDatabase = JSON.parse(data);
@@ -138,9 +151,7 @@ const controller = {
 
             //Boucle de Générations de grilles aléatoires avec leurs solutions
 
-            // let newSolvedBoard = [];
-
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 5; i++) {
 
                 nextID += 1;
 
@@ -162,14 +173,12 @@ const controller = {
             const finalDatabase = JSON.stringify(initialDatabase);
 
 
-            fs.writeFile('../back/data/boardDatabase2.json', finalDatabase, (err) => {
+            fs.writeFile('../back/data/boardDatabase.json', finalDatabase, (err) => {
                 if (err) throw err;
             });
             console.log('Nouvelles grilles enregistrées en base de données JSON');
             //On renvoie un fichier EJS qui affiche les données
             res.send(JSON.stringify(finalDatabase));
-
-
 
 
         }));
