@@ -6,16 +6,13 @@ body{
 }
 
 .main-title{
-    
     color: yellowgreen;
     font-size: 60px;
 }
 
 h2{
-    
         color: yellowgreen;
         font-size: 60px;
-    
 }
 
 a{
@@ -64,6 +61,12 @@ border-radius: 5px;
 #sudokuBoard{
     margin: 50px;
 
+}
+
+.errorMessage{
+    color: red;
+    margin-top: 20px;
+    padding: 10px;
 }
 
 .sudokuRow{

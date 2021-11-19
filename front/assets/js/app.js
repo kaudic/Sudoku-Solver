@@ -11,6 +11,9 @@ const app = {
 
     isValid(e) {
 
+        //On met la zone de message d'erreur à vide (au cas ou)
+        app.emptyErrorMessage();
+
         //on récupère la valeur saisie, la ligne, la colonne et le carré concerné
         const userValue = (e.target.value);
         const idInput = e.target.id;
@@ -20,10 +23,14 @@ const app = {
 
         //première vérification: s'assurer que le chiffre est compris entre 1 et 9 inclus
 
-        if (userValue < 1 || userValue > 9) {
+        if ((userValue < 1 || userValue > 9) && userValue !== '') {
             e.target.value = '';
             e.target.select();
-            return alert(`La valeur ${userValue} est refusée. Il faut saisir des chiffres entre 1 et 9`);
+            //On affiche un message d'erreur dans la zone prévue
+            const messageErrorElt = document.getElementById('errorMessage');
+            messageErrorElt.textContent = `La valeur ${userValue} est refusée. Il faut saisir des chiffres entre 1 et 9.`;
+            return;
+
         }
 
         //besoin d'un switch pour déterminer en fonction du carré quelles lignes et colonnes doivent être checkées
@@ -105,13 +112,21 @@ const app = {
                     //si oui, on efface la valeur et on met un alerte
                     e.target.value = '';
                     e.target.select();
-                    return alert(`La valeur ${userValue} est refusée car déjà présente dans la ligne ou la colonne ou le carré!`);
+
+                    //On affiche un message d'erreur dans la zone prévue
+                    const messageErrorElt = document.getElementById('errorMessage');
+                    messageErrorElt.textContent = `La valeur ${userValue} n'est pas possible. Valeur déjà présente.`;
+                    return;
                 }
             }
         }
     },
 
     checkInput: (e) => {
+
+        //On met la zone de message d'erreur à vide (au cas ou)
+        app.emptyErrorMessage();
+
         //regarder si l'utilisateur a coché l'option de checker ses saisies, si oui on exécute la fonction sinon on sort
         const inputCheckOn = document.getElementById('autoCheck').checked; //booléen
 
@@ -136,9 +151,14 @@ const app = {
                 })
                 .then((response) => {
 
+                    const userAttempt = Number(e.target.value);
                     //On compare la solution du back avec la valeur saisie et si c'est mauvais on met en rouge
-                    if (response.inputSolution !== Number(e.target.value)) {
+                    //et On affiche un message d'erreur dans la zone prévue
+                    if (response.inputSolution !== userAttempt) {
                         document.getElementById(idInput).style.backgroundColor = 'red';
+                        const messageErrorElt = document.getElementById('errorMessage');
+                        messageErrorElt.textContent = `La valeur ${userAttempt} n'est pas la bonne solution.`;
+                        document.getElementById(idInput).value = userAttempt;
                     }
                     else {
                         document.getElementById(idInput).style.backgroundColor = 'lightgrey';
@@ -195,6 +215,15 @@ const app = {
                     boardCell.className = 'sudokValues';
                 }
             }
+
+            //Création d'une zone HTML pour y mettre le message d'erreur
+            const messageErreurElt = document.createElement('p');
+            messageErreurElt.className = 'errorMessage';
+            messageErreurElt.id = 'errorMessage';
+
+            //Sélection d'une zone pour insertion du message d'erreur
+            const sudokBoardElt = document.getElementById('sudokuBoard');
+            sudokBoardElt.appendChild(messageErreurElt);
         },
 
         rows: 9,
@@ -529,7 +558,16 @@ const app = {
 
     },
 
+    emptyErrorMessage: () => {
+        //On met la zone de message d'erreur à vide (au cas ou)
+        const messageErreurElt = document.getElementById('errorMessage');
+        messageErreurElt.textContent = '';
+    },
+
     emptyExercice: () => {
+
+        //On met la zone de message d'erreur à vide (au cas ou)
+        app.emptyErrorMessage();
 
         //Mettre toute la grille à 0 et enlever l'Id de grille (s'il existe) des dataset du bouton de résolution
         //Remettre les background des input avec la couleur d'origine
@@ -564,6 +602,9 @@ const app = {
 
     applyDatasToBoard: (data) => {
 
+        //On met la zone de message d'erreur à vide (au cas ou)
+        app.emptyErrorMessage();
+
         //On parcours le tableau reçu dans le paramètre data et on boucle sur les cellules de la board pour les mettre à jour
         //On remet également tous les background à l'origine
 
@@ -588,6 +629,9 @@ const app = {
     loadExercice: (e) => {
 
         e.preventDefault();
+
+        //On met la zone de message d'erreur à vide (au cas ou)
+        app.emptyErrorMessage();
 
         //On met la grille à 0 au cas ou
         app.emptyExercice();
@@ -686,7 +730,11 @@ const app = {
 
                     if (board.results === 'Il n\'y a pas de solution pour cette grille') {
                         app.stopWatch.setOff();
-                        //TODO fonction de mise à jour d'une zone HTML avec le message
+
+                        //Mise à jour du message d'erreur
+                        const messageErreurElt = document.getElementById('errorMessage');
+                        messageErreurElt.textContent = board.results;
+
                     }
                     else {
 
