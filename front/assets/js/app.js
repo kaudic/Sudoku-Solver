@@ -682,9 +682,19 @@ const app = {
 
                 //le décryptage des calculs solveur est terminé, on écrit les données dans la grille html
                 .then((board) => {
-                    app.applyDatasToBoard(board.results);
-                    //on arrête aussi le chrono pour voir le temps de calcul total
-                    app.stopWatch.setOff();
+                    console.log(board.results);
+
+                    if (board.results === 'Il n\'y a pas de solution pour cette grille') {
+                        app.stopWatch.setOff();
+                        //TODO fonction de mise à jour d'une zone HTML avec le message
+                    }
+                    else {
+
+
+                        app.applyDatasToBoard(board.results);
+                        //on arrête aussi le chrono pour voir le temps de calcul total
+                        app.stopWatch.setOff();
+                    }
 
                 });
         }
