@@ -11,6 +11,7 @@ router.use((req, res, next) => {
 
 //liste des routes
 router.get('/sudoku/', controller.welcome);
+router.get('/sudoku/login', controller.login);
 router.get('/getBoard/:level', controller.loadBoard);
 router.get('/solveBoard/:boardId', controller.loadResult);
 router.post('/solveBoard/', controller.solveBoard);

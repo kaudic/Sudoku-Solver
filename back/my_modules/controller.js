@@ -9,6 +9,10 @@ const controller = {
         res.render('index');
     },
 
+    login: (req, res) => {
+        res.render('login');
+    },
+
     loadBoard: (req, res) => {
 
         //on récupère le niveau de difficulté demandé par le client (envoyé dans la route)
@@ -178,7 +182,8 @@ const controller = {
             });
             console.log('Nouvelles grilles enregistrées en base de données JSON');
             //On renvoie un fichier EJS qui affiche les données
-            res.send(JSON.stringify(finalDatabase));
+
+            res.render('adminDB');
 
 
         }));
