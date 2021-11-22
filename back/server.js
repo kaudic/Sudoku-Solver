@@ -1,7 +1,9 @@
 //importation et gestion des modules externes
+require("dotenv").config();
 const express = require('express');
 const router = require('./my_modules/router');
 const app = express();
+const session = require("express-session");
 
 app.set('views', '../front/views');
 app.set('view engine', 'ejs');

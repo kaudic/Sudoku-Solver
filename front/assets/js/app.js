@@ -479,47 +479,48 @@ const app = {
     form: {
 
         create: function () {
-
+            //Je commente tout le code car j'implémente en dur le formulaire
             console.log('Generating Form ...');
 
             //Sélection de la zone Main pour y mettre le Formulaire
-            const formContainerElt = document.querySelector('main');
-            const formElt = document.createElement('form');
-            formElt.classList.add('main-form');
-            formContainerElt.appendChild(formElt);
+            // const formContainerElt = document.querySelector('main');
+            // const formElt = document.createElement('form');
+            // formElt.classList.add('main-form');
+            // formContainerElt.appendChild(formElt);
 
             //Création des éléments du formulaire
 
             //Element Select
-            const selectElt = document.createElement('select');
-            const labelForSelectElt = document.createElement('label');
-            labelForSelectElt.textContent = 'Choisir un exercice';
-            labelForSelectElt.setAttribute('for', 'level-selection');
-            selectElt.id = 'level-selection';
+            // const selectElt = document.createElement('select');
+            // const labelForSelectElt = document.createElement('label');
+            // labelForSelectElt.textContent = 'Choisir un exercice';
+            // labelForSelectElt.setAttribute('for', 'level-selection');
+            // selectElt.id = 'level-selection';
 
-            app.form.level.forEach((level) => {
-                selectElt.add(new Option(level));
+            // app.form.level.forEach((level) => {
+            //     selectElt.add(new Option(level));
 
-            });
+            // });
 
             //Buttons
-            const loadExerciceBtnElt = document.createElement('button');
-            loadExerciceBtnElt.textContent = 'Charger Exercice';
+            const loadExerciceBtnElt = document.getElementById('loadExerciceBtnElt');
+            // loadExerciceBtnElt.textContent = 'Charger Exercice';
             loadExerciceBtnElt.addEventListener('click', app.loadExercice);
 
-            const emptyBoardBtnElt = document.createElement('button');
-            emptyBoardBtnElt.textContent = 'Vider la grille';
-            emptyBoardBtnElt.type = 'button';
+            const emptyBoardBtnElt = document.getElementById('emptyBoardBtnElt');
+            // emptyBoardBtnElt.textContent = 'Vider la grille';
+            // emptyBoardBtnElt.type = 'button';
             emptyBoardBtnElt.addEventListener('click', app.emptyExercice);
 
-            const solveExerciceBtnElt = document.createElement('button');
-            solveExerciceBtnElt.id = 'solveBoardBtn';
-            solveExerciceBtnElt.textContent = 'Résoudre la grille';
+            const solveExerciceBtnElt = document.getElementById('solveBoardBtn');
+            // solveExerciceBtnElt.id = 'solveBoardBtn';
+            // solveExerciceBtnElt.textContent = 'Résoudre la grille';
             solveExerciceBtnElt.addEventListener('click', app.solveExercice);
 
-            const newChrono = document.createElement('button');
-            newChrono.id = 'newChrono';
-            newChrono.textContent = 'Lancer un chrono';
+
+            const newChrono = document.getElementById('newChrono');
+            // newChrono.id = 'newChrono';
+            // newChrono.textContent = 'Lancer un chrono';
             newChrono.addEventListener('click', (e) => {
                 e.preventDefault();
                 app.stopWatch.setOff();
@@ -530,27 +531,28 @@ const app = {
 
 
             //Checkbox option
-            const autoCheckInput = document.createElement('input');
-            const autoCheckInputLabel = document.createElement('label');
-            autoCheckInput.type = 'checkbox';
-            autoCheckInput.name = 'autoCheck';
-            autoCheckInput.id = 'autoCheck';
-            autoCheckInput.style.display = 'none'; //sera masqué au départ et affiché si une grille est chargée
-            autoCheckInputLabel.id = 'autoCheckLabel';
-            autoCheckInputLabel.setAttribute('for', 'autoCheck');
-            autoCheckInputLabel.style.display = 'none'; //sera masqué au départ et affiché si une grille est chargée
-            autoCheckInputLabel.textContent = 'Live-Correction';
+            // const autoCheckInput = document.createElement('input');
+            // const autoCheckInputLabel = document.createElement('label');
+            // autoCheckInput.type = 'checkbox';
+            // autoCheckInput.name = 'autoCheck';
+            // autoCheckInput.id = 'autoCheck';
+            // autoCheckInput.style.display = 'none'; //sera masqué au départ et affiché si une grille est chargée
+            // autoCheckInputLabel.id = 'autoCheckLabel';
+            // autoCheckInputLabel.setAttribute('for', 'autoCheck');
+            // autoCheckInputLabel.style.display = 'none'; //sera masqué au départ et affiché si une grille est chargée
+            // autoCheckInputLabel.textContent = 'Live-Correction';
 
 
             //Implentation des éléments du formulaire dans le formulaire
-            formElt.appendChild(labelForSelectElt);
-            formElt.appendChild(selectElt);
-            formElt.appendChild(loadExerciceBtnElt);
-            formElt.appendChild(emptyBoardBtnElt);
-            formElt.appendChild(solveExerciceBtnElt);
-            formElt.appendChild(newChrono);
-            formElt.appendChild(autoCheckInput);
-            formElt.appendChild(autoCheckInputLabel);
+
+            // formElt.appendChild(labelForSelectElt);
+            // formElt.appendChild(selectElt);
+            // formElt.appendChild(loadExerciceBtnElt);
+            // formElt.appendChild(emptyBoardBtnElt);
+            // formElt.appendChild(solveExerciceBtnElt);
+            // formElt.appendChild(newChrono);
+            // formElt.appendChild(autoCheckInput);
+            // formElt.appendChild(autoCheckInputLabel);
 
         },
 
