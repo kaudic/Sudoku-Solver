@@ -2,6 +2,9 @@ const fs = require('fs');
 const serverMethods = require('./serverMethods');
 const boardData = require('../data/boardDatabase.json');
 const solver = require('../my_modules/solver');
+const { createUser } = require('../dataMapper.js');
+const bcrypt = require('bcrypt');
+
 
 const controller = {
     welcome: (req, res) => {
@@ -10,7 +13,74 @@ const controller = {
     },
 
     login: (req, res) => {
-        res.render('login');
+        const loginMessage = '';
+        res.render('login', { loginMessage });
+    },
+
+    addLogin: (req, res) => {
+
+        //récupérer les informations dans le req.body et les affecter à un nouvel objet
+        const actorObject = {
+            actor_login: req.body.login,
+            actor_name: req.body.name,
+            actor_surname: req.body.surname,
+            actor_email: req.body.email,
+        }
+
+        //crypter les données du password
+        bcrypt.hash(req.body.password, 10, function (err, hash) {
+            // Store hash in your password DB.
+
+            if (err) {
+                res.status(500).send('500');
+            }
+
+            actorObject.actor_password = hash;
+
+            createUser(actorObject, (error, results) => {
+
+                if (error) {
+                    req.error = error;
+                    console.log('error: ' + error);
+                    res.status(500).send('500');
+                }
+                else if (!results) {
+                    req.error = new Error('L\'insertion n\'a pas pas fonctionnée');
+                }
+                else {
+                    //rendre réponse pour dire que le login est créé en affichant un message sur la page de login
+
+                    const loginMessage = 'Utilisateur créé, vous pouvez désormais vous connecter.';
+                    res.render('login', { loginMessage });
+                }
+            })
+        });
+
+        //appeler datamapper.createUser pour mettre en base de données un nouveau login et lui passer un objet contenant le user_login et le user_password
+
+
+    },
+
+    connect: (req, res) => {
+
+        //TODO récupérer le login et le password dans le req.body
+
+        //Faire appel à un datamapper pour vérifier la présence du login dans la base (SELECT)
+
+        //Si non présent, renvoyer la page /sudoku/login avec un message info non correcte
+
+        //Si présent, lancer une fonction de comparaison bcrypt sur le mot de passe
+
+        //si incorrecte renvoyer la page /sudoku/login avec un message info non correcte
+
+        //si correcte, renseigner le login dans req.session et remplacer le logo de connexion par le log in
+        //render dans l'index directement
+
+    },
+
+    formCreation: (req, res) => {
+        const loginCreationMessage = ''
+        res.render('createLogin', { loginCreationMessage });
     },
 
     loadBoard: (req, res) => {

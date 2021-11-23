@@ -9,14 +9,19 @@ router.use((req, res, next) => {
     next();
 });
 
-//liste des routes
+//liste des routes GET
 router.get('/sudoku/', controller.welcome);
 router.get('/sudoku/login', controller.login);
+router.get('/sudoku/Login/FormCreation', controller.formCreation);
 router.get('/getBoard/:level', controller.loadBoard);
 router.get('/solveBoard/:boardId', controller.loadResult);
-router.post('/solveBoard/', controller.solveBoard);
 router.get('/checkInput/:boardId/:inputId', controller.checkCellResult);
 router.get('/sudoku/database/', controller.database);
+
+//liste des routes POST
+router.post('/solveBoard/', controller.solveBoard);
+router.post('/sudoku/login/add', controller.addLogin);
+router.post('/sudoku/login/connect', controller.connect);
 
 //aucune route trouvée, gestion de la 404
 router.use((req, res) => {

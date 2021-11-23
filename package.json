@@ -4,7 +4,8 @@
   "description": "My first solver app",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "start-dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
+    "nodemon": "^2.0.15",
     "pg": "^8.7.1"
   }
 }

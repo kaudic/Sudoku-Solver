@@ -1,0 +1,39 @@
+<%- include('./partials/header'); %>
+
+    <form action="/sudoku/login/connect" method="POST" class="loginForm">
+
+        <div class="mainDivLogin">
+
+            <div class="loginFormDiv">
+
+                <div class="loginFormSousDiv">
+                    <label class="loginFormLabel">Login</label>
+                    <input class="loginFormInput" name="login" placeholder="Entrer votre login">
+                </div>
+
+                <div class="loginFormSousDiv">
+                    <label class="loginFormLabel">Password</label>
+                    <input class="loginFormInput" type="password" name="password"
+                        placeholder="Entrer votre mot de passe">
+                </div>
+
+                <p class="loginMessage">
+                    <%= loginMessage %>
+                </p>
+                <p class="loginCreation"><a href="/sudoku/Login/FormCreation">Pas de compte ? Créer un compte</a></p>
+
+            </div>
+
+        </div>
+        <button class="loginFormBtn">Se connecter</button>
+
+
+
+
+    </form>
+
+    <%- include('./partials/footer') %>
+
+
+
+        </body>

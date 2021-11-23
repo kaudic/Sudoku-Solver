@@ -4,6 +4,7 @@ const { Client } = require("pg");
 // cela équivaut à const Client = require("pg").Client;
 // On ce connecte à la bdd local
 // (on ne cherche pas à comprendre ce que fait ce new, on vera ça en saison5)
+
 const client = new Client({
     user: process.env.DB_USER,
     password: process.env.DB_USER_PASSWORD,
