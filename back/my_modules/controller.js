@@ -2,7 +2,7 @@ const fs = require('fs');
 const serverMethods = require('./serverMethods');
 const boardData = require('../data/boardDatabase.json');
 const solver = require('../my_modules/solver');
-const { createUser } = require('../dataMapper.js');
+const { createUser, getOneUser } = require('../dataMapper.js');
 const bcrypt = require('bcrypt');
 
 
@@ -27,49 +27,105 @@ const controller = {
             actor_email: req.body.email,
         }
 
-        //crypter les données du password
-        bcrypt.hash(req.body.password, 10, function (err, hash) {
-            // Store hash in your password DB.
+        //vérifier que le compte actor_login n'existe pas déjà et si oui faire un render de la page de création
 
-            if (err) {
+        getOneUser(actorObject.actor_login, (error, results) => {
+
+            if (error) {
+                console.log(error);
                 res.status(500).send('500');
             }
+            else if (results.length > 0) { //le compte existe déjà
+                const createLoginMessage = 'ce login existe déjà en base de données.'
+                res.render('createLogin', { createLoginMessage });
+            }
+            else {
+                //crypter les données du password
+                bcrypt.hash(req.body.password, 10, function (err, hash) {
 
-            actorObject.actor_password = hash;
+                    // Controler que le hash a fonctionné sans erreur
 
-            createUser(actorObject, (error, results) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send('500');
+                    }
 
-                if (error) {
-                    req.error = error;
-                    console.log('error: ' + error);
-                    res.status(500).send('500');
-                }
-                else if (!results) {
-                    req.error = new Error('L\'insertion n\'a pas pas fonctionnée');
-                }
-                else {
-                    //rendre réponse pour dire que le login est créé en affichant un message sur la page de login
+                    actorObject.actor_password = hash;
 
-                    const loginMessage = 'Utilisateur créé, vous pouvez désormais vous connecter.';
-                    res.render('login', { loginMessage });
-                }
-            })
-        });
+                    //appeler datamapper.createUser pour mettre en base de données un nouveau login et lui passer un objet contenant le user_login et le user_password
 
-        //appeler datamapper.createUser pour mettre en base de données un nouveau login et lui passer un objet contenant le user_login et le user_password
+                    createUser(actorObject, (error, results) => {
 
+                        if (error) {
+                            req.error = error;
+                            console.log('error: ' + error);
+                            res.status(500).send('500');
+                        }
+                        else if (!results) {
+                            req.error = new Error('L\'insertion n\'a pas pas fonctionnée');
+                        }
+                        else {
+
+                            //rendre réponse pour dire que le login est créé en affichant un message sur la page de login
+                            const loginMessage = 'Utilisateur créé, vous pouvez désormais vous connecter.';
+                            res.render('login', { loginMessage });
+                        }
+                    })
+                });
+
+            }
+
+        })
 
     },
 
     connect: (req, res) => {
 
-        //TODO récupérer le login et le password dans le req.body
+        //récupérer le login et le password dans le req.body
+
+        const actor_login = req.body.login;
+        const password = req.body.password;
 
         //Faire appel à un datamapper pour vérifier la présence du login dans la base (SELECT)
 
-        //Si non présent, renvoyer la page /sudoku/login avec un message info non correcte
+        getOneUser(req.body.login, (error, results) => {
 
-        //Si présent, lancer une fonction de comparaison bcrypt sur le mot de passe
+            if (error) {
+                console.log(error);
+                res.status(500).send('500');
+            }
+            else if (results.length === 0) {
+                //le login n'existe pas en base, on prévient l'utilisateur
+                const loginMessage = 'Le login n\'existe pas en base de données.';
+                res.render('login', { loginMessage });
+            }
+            else {
+
+                const hash = results[0].actor_password;
+                console.log(hash);
+
+                bcrypt.compare(password, hash, function (error, result) { //return true/false
+                    if (error) {
+                        console.log(error);
+                        res.status(500).send('500');
+                    }
+                    else if (!result) {
+
+                        console.log('coucou');
+
+                        const loginMessage = 'Mot de passe incorrect';
+                        res.render('login', { loginMessage });
+
+                    }
+                    else {
+                        req.session.connected = results[0].actor_login;
+                        res.locals.connectedPerson = req.session.connected;
+                        res.render('index');
+                    }
+                });
+
+            }
+        })
 
         //si incorrecte renvoyer la page /sudoku/login avec un message info non correcte
 
@@ -217,7 +273,7 @@ const controller = {
     database: (req, res) => {
 
         //lecture du fichier json initial
-        fs.readFile('../back/data/boardDatabase.json', ((err, data) => {
+        fs.readFile('../sudoku-solver/back/data/boardDatabase.json', ((err, data) => {
             if (err) throw err;
 
             const initialDatabase = JSON.parse(data);
@@ -247,7 +303,7 @@ const controller = {
             const finalDatabase = JSON.stringify(initialDatabase);
 
 
-            fs.writeFile('../back/data/boardDatabase.json', finalDatabase, (err) => {
+            fs.writeFile('../sudoku-solver/back/data/boardDatabase.json', finalDatabase, (err) => {
                 if (err) throw err;
             });
             console.log('Nouvelles grilles enregistrées en base de données JSON');

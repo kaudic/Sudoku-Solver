@@ -9,6 +9,8 @@ const session = require("express-session");
 app.set('views', './front/views');
 app.set('view engine', 'ejs');
 app.use(express.static('./front/assets'));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 app.use(session({
     secret: 'sudoku style',
@@ -17,8 +19,11 @@ app.use(session({
 
 }));
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+app.use((req, res, next) => {
+    res.locals.connectedPerson = req.session.connected;
+    next();
+});
+
 
 app.use(router);
 

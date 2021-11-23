@@ -26,6 +26,25 @@ const dataMapper = {
 
         });
 
+    },
+
+    getOneUser: (login, callback) => {
+
+        const sqlQuery = {
+            text: 'SELECT * FROM actor WHERE actor_login = $1',
+            values: [login]
+        };
+
+        client.query(sqlQuery, (error, results) => {
+
+            if (error) {
+                callback(error, results.rows);
+            }
+            else {
+                callback(undefined, results.rows);
+            }
+
+        });
     }
 
 };

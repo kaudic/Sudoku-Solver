@@ -31,10 +31,11 @@
                     <input type="password" class="loginFormInput" name="password"
                         placeholder="Entrer votre mot de passe">
                 </div>
-
-                <p class="loginCreationMessage">
-                    <%= loginCreationMessage %>
-                </p>
+                <% if (locals.createLoginMessage) { %>
+                    <p class="createLoginMessage">
+                        <%= createLoginMessage %>
+                    </p>
+                    <%}%>
 
             </div>
 

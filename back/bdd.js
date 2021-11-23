@@ -12,6 +12,7 @@ const client = new Client({
     database: process.env.DB_NAME,
     port: process.env.DB_PORT,
 });
+
 client.connect();
 
 module.exports = client;

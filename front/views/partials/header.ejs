@@ -20,6 +20,18 @@
             <h1 class="main-title">
                 <%=title%>
             </h1>
-            <a href="/sudoku/login" class="header--Login"><i class="fas fa-power-off"></i></a>
+
+            <% if (locals.connectedPerson) { %>
+
+                <p class="header--Login">
+                    <%=locals.connectedPerson%>
+                </p>
+
+                <% } else { %>
+
+                    <a href="/sudoku/login" class="header--Login"><i class="fas fa-power-off"></i></a>
+
+                    <% } %>
+
         </div>
         <div class="underline-title"></div>
