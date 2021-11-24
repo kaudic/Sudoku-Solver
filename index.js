@@ -16,6 +16,10 @@ app.use(session({
     secret: 'sudoku style',
     resave: false,
     saveUninitialized: true,
+    cookie: {
+        // secure: true,
+        maxAge: 60000 * 60 /* 1 hour */
+    }
 
 }));
 

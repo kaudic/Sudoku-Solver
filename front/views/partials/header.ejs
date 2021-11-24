@@ -21,10 +21,10 @@
                 <%=title%>
             </h1>
 
-            <% if (locals.connectedPerson) { %>
+            <% if (locals.actorConnected) { %>
 
                 <p class="header--Login">
-                    <%=locals.connectedPerson%>
+                    <%=locals.actorConnected.login%>
                 </p>
 
                 <% } else { %>

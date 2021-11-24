@@ -16,7 +16,7 @@ router.get('/sudoku/Login/FormCreation', controller.formCreation);
 router.get('/getBoard/:level', controller.loadBoard);
 router.get('/solveBoard/:boardId', controller.loadResult);
 router.get('/checkInput/:boardId/:inputId', controller.checkCellResult);
-router.get('/sudoku/database/', controller.database);
+router.get('/sudoku/database/', controller.adminAuth, controller.database);
 
 //liste des routes POST
 router.post('/solveBoard/', controller.solveBoard);

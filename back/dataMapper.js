@@ -31,7 +31,7 @@ const dataMapper = {
     getOneUser: (login, callback) => {
 
         const sqlQuery = {
-            text: 'SELECT * FROM actor WHERE actor_login = $1',
+            text: 'SELECT * FROM actor a INNER JOIN role r ON a.actor_role_id = r.role_id WHERE actor_login = $1',
             values: [login]
         };
 

@@ -17,6 +17,31 @@ const controller = {
         res.render('login', { loginMessage });
     },
 
+    adminAuth: (req, res, next) => {
+
+        console.log(JSON.stringify(req.session));
+
+        if (!req.session.actorConnected) {
+
+            console.log('Vous devez d\'abord vous connecter pour accéder à cette route.');
+
+        }
+        else {
+            if (req.session.actorConnected.role.toString().toLowerCase() !== 'admin') {
+
+                console.log(req.session.actorConnected.role.toString().toLowerCase());
+
+                console.log('Pas d\'autorisation suffisante.');
+            }
+            else {
+                console.log('Bienvenu Mr l\'administrateur');
+            }
+        }
+
+        next();
+
+    },
+
     addLogin: (req, res) => {
 
         //récupérer les informations dans le req.body et les affecter à un nouvel objet
@@ -111,15 +136,18 @@ const controller = {
                     }
                     else if (!result) {
 
-                        console.log('coucou');
-
                         const loginMessage = 'Mot de passe incorrect';
                         res.render('login', { loginMessage });
 
                     }
                     else {
-                        req.session.connected = results[0].actor_login;
-                        res.locals.connectedPerson = req.session.connected;
+                        req.session.actorConnected = {
+                            login: results[0].actor_login,
+                            role: results[0].role_description
+                        };
+                        res.locals.actorConnected = req.session.actorConnected;
+                        // console.log('locals: ' + JSON.stringify(res.locals.actorConnected));
+                        // console.log('session: ' + JSON.stringify(req.session.actorConnected));
                         res.render('index');
                     }
                 });
@@ -272,47 +300,47 @@ const controller = {
 
     database: (req, res) => {
 
-        //lecture du fichier json initial
-        fs.readFile('../sudoku-solver/back/data/boardDatabase.json', ((err, data) => {
-            if (err) throw err;
+        // //lecture du fichier json initial
+        // fs.readFile('../sudoku-solver/back/data/boardDatabase.json', ((err, data) => {
+        //     if (err) throw err;
 
-            const initialDatabase = JSON.parse(data);
-            let nextID = (initialDatabase.length) - 1;
+        //     const initialDatabase = JSON.parse(data);
+        //     let nextID = (initialDatabase.length) - 1;
 
-            //Boucle de Générations de grilles aléatoires avec leurs solutions
+        //     //Boucle de Générations de grilles aléatoires avec leurs solutions
 
-            for (let i = 0; i < 5; i++) {
+        //     for (let i = 0; i < 5; i++) {
 
-                nextID += 1;
+        //         nextID += 1;
 
-                //Génération grille
-                const newSolvedBoard = solver.board.generatorSupervisor();
-                const newSolvedBoardObject = {
-                    id: "id" + nextID,
-                    data: newSolvedBoard
-                };
+        //         //Génération grille
+        //         const newSolvedBoard = solver.board.generatorSupervisor();
+        //         const newSolvedBoardObject = {
+        //             id: "id" + nextID,
+        //             data: newSolvedBoard
+        //         };
 
-                //On pousse les nouvelles grilles dans un objet qui deviendra la nouvelle base de données JSON
-                initialDatabase.push(newSolvedBoardObject);
+        //         //On pousse les nouvelles grilles dans un objet qui deviendra la nouvelle base de données JSON
+        //         initialDatabase.push(newSolvedBoardObject);
 
-                //remise à 0 du tracker et de emptyCells pour éviter de mélanger les données
-                solver.board.data.emptyCells = [];
-                solver.board.tracker = [];
-            }
+        //         //remise à 0 du tracker et de emptyCells pour éviter de mélanger les données
+        //         solver.board.data.emptyCells = [];
+        //         solver.board.tracker = [];
+        //     }
 
-            const finalDatabase = JSON.stringify(initialDatabase);
-
-
-            fs.writeFile('../sudoku-solver/back/data/boardDatabase.json', finalDatabase, (err) => {
-                if (err) throw err;
-            });
-            console.log('Nouvelles grilles enregistrées en base de données JSON');
-            //On renvoie un fichier EJS qui affiche les données
-
-            res.render('adminDB');
+        //     const finalDatabase = JSON.stringify(initialDatabase);
 
 
-        }));
+        //     fs.writeFile('../sudoku-solver/back/data/boardDatabase.json', finalDatabase, (err) => {
+        //         if (err) throw err;
+        //     });
+        //     console.log('Nouvelles grilles enregistrées en base de données JSON');
+        //     //On renvoie un fichier EJS qui affiche les données
+
+        res.render('adminDB');
+
+
+        // }));
 
 
     }
