@@ -19,22 +19,21 @@ const controller = {
 
     adminAuth: (req, res, next) => {
 
-        console.log(JSON.stringify(req.session));
-
         if (!req.session.actorConnected) {
 
-            console.log('Vous devez d\'abord vous connecter pour accéder à cette route.');
+            console.log('Accès refusé, utilisateur non connecté.');
+            const loginMessage = 'Vous devez vous connecter pour accéder à cette page.';
+            res.render('login', { loginMessage });
 
         }
         else {
             if (req.session.actorConnected.role.toString().toLowerCase() !== 'admin') {
 
-                console.log(req.session.actorConnected.role.toString().toLowerCase());
-
-                console.log('Pas d\'autorisation suffisante.');
+                console.log('L\'utilisateur n\'a pas les droits suffisants pour accéder à cette page.');
+                res.redirect('/sudoku');
             }
             else {
-                console.log('Bienvenu Mr l\'administrateur');
+                console.log('Utilisateur connecté à une page administrateur.');
             }
         }
 
@@ -50,6 +49,17 @@ const controller = {
             actor_name: req.body.name,
             actor_surname: req.body.surname,
             actor_email: req.body.email,
+            actor_password: req.body.password
+        }
+
+        //vérifier que tous les champs ont été complétés sinon il faut refuser la création
+
+        for (const actorInfo in actorObject) {
+            if (actorObject[actorInfo] === null || actorObject[actorInfo] === '') {
+                const createLoginMessage = 'Il manque des données, tous les champs sont obligatoires.';
+                res.render('createLogin', { createLoginMessage });
+                return;
+            };
         }
 
         //vérifier que le compte actor_login n'existe pas déjà et si oui faire un render de la page de création
@@ -108,7 +118,11 @@ const controller = {
 
         //récupérer le login et le password dans le req.body
 
+        console.log('connexion en cours');
+
         const actor_login = req.body.login;
+        console.log('login: ' + actor_login);
+
         const password = req.body.password;
 
         //Faire appel à un datamapper pour vérifier la présence du login dans la base (SELECT)
@@ -127,7 +141,6 @@ const controller = {
             else {
 
                 const hash = results[0].actor_password;
-                console.log(hash);
 
                 bcrypt.compare(password, hash, function (error, result) { //return true/false
                     if (error) {
@@ -145,10 +158,8 @@ const controller = {
                             login: results[0].actor_login,
                             role: results[0].role_description
                         };
-                        res.locals.actorConnected = req.session.actorConnected;
-                        // console.log('locals: ' + JSON.stringify(res.locals.actorConnected));
-                        // console.log('session: ' + JSON.stringify(req.session.actorConnected));
-                        res.render('index');
+                        res.locals.actorConnected = req.session.actorConnected; //on transmet les infos de session à EJS
+                        res.redirect('/sudoku');
                     }
                 });
 
@@ -162,6 +173,17 @@ const controller = {
 
     },
 
+    deconnect: (req, res) => {
+
+        req.session.destroy(function (err) {
+            console.log('Erreur destrcution session: ' + err);
+        });
+
+        res.locals = null;
+
+        res.redirect('/sudoku/login');
+    },
+
     formCreation: (req, res) => {
         const loginCreationMessage = ''
         res.render('createLogin', { loginCreationMessage });
@@ -173,15 +195,11 @@ const controller = {
         const { level } = req.params;
 
         //la base de données a été require dans la variable boardData -> plus besoin de faire des fs.readFile
-
-        // const max = Object.keys(boardData).length;
         const max = boardData.length;
         const randomNumber = serverMethods.getRandomNumber(0, max);
-        // const randomId = 'id' + randomNumber;
         const boardDataLevelTreated = serverMethods.takeOutNumbersFromBoard(level, boardData[randomNumber].data);
 
         const response = {
-            // id: randomId,
             id: boardData[randomNumber].id,
             data: boardDataLevelTreated
         };
@@ -192,13 +210,13 @@ const controller = {
 
     loadResult: (req, res) => {
 
-        //on récupère le niveau de difficulté demandé par le client (envoyé dans la route)
+        //on récupère l'ID de la grille affichée sur le navigateur (provient d'un dataset)
         const { boardId } = req.params;
 
         if (boardId !== 'none') {
 
             //lecture de la base de données json et on renvoie la grille de l'ID recherchée
-            fs.readFile('./data/boardDatabase.json', (err, data) => {
+            fs.readFile('./back/data/boardDatabase.json', (err, data) => {
                 if (err) throw err;
                 const boardData = JSON.parse(data);
 
@@ -279,7 +297,7 @@ const controller = {
         const column = inputId.substr(1, 1);
 
         //lecture de la base de données json et on renvoie l'élément recherché
-        fs.readFile('./data/boardDatabase.json', (err, data) => {
+        fs.readFile('./back/data/boardDatabase.json', (err, data) => {
             if (err) throw err;
             const boardData = JSON.parse(data);
 

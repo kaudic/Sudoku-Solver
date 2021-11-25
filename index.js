@@ -14,7 +14,7 @@ app.use(express.json());
 
 app.use(session({
     secret: 'sudoku style',
-    resave: false,
+    resave: true,
     saveUninitialized: true,
     cookie: {
         // secure: true,
@@ -24,7 +24,7 @@ app.use(session({
 }));
 
 app.use((req, res, next) => {
-    res.locals.connectedPerson = req.session.connected;
+    res.locals.actorConnected = req.session.actorConnected;
     next();
 });
 

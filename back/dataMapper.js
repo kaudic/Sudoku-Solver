@@ -4,12 +4,14 @@ const dataMapper = {
 
     createUser: ({ actor_login, actor_password, actor_name, actor_surname, actor_email }, callback) => {
 
+        console.log(actor_login, actor_password, actor_name, actor_surname, actor_email);
+
         const sqlQuery = {
-            text: 'INSERT INTO "actor" ("actor_login", "actor_password", "actor_name","actor_surname","actor_email") VALUES ($1,$2,$3,$4,$5);',
-            values: [actor_login, actor_password, actor_name, actor_surname, actor_email]
+            text: 'INSERT INTO "actor" ("actor_login", "actor_password", "actor_name","actor_surname","actor_email", "actor_role_id") VALUES ($1,$2,$3,$4,$5,$6);',
+            values: [actor_login, actor_password, actor_name, actor_surname, actor_email, 2] //le 2 fait référence à un profil VISITOR (table role)
         };
 
-        //TODO avant d'insérer la valeur il faudrait que l'on vérifie si l'utilisateur est déjà créé ou non
+
 
         //insertion du nouveau compte et envoie des résultats ou erreur à la callback dans laquelle on fera un render de la vue
         client.query(sqlQuery, (err, results) => {

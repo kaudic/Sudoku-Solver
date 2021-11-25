@@ -18,13 +18,14 @@
     <main>
         <div class="header">
             <h1 class="main-title">
-                <%=title%>
+                Solveur de Sudoku
             </h1>
 
             <% if (locals.actorConnected) { %>
 
                 <p class="header--Login">
                     <%=locals.actorConnected.login%>
+                        <btn id="menuBurger"><i class="fas fa-bars"></i></btn>
                 </p>
 
                 <% } else { %>
@@ -35,3 +36,13 @@
 
         </div>
         <div class="underline-title"></div>
+
+        <div class="menuBurger">
+            <ul class="menuBurger--list">
+                <a href="/sudoku/deconnect" class="menuBurger--option">
+                    <li class="menuBurger--option">Se déconnecter</li>
+                </a>
+            </ul>
+        </div>
+
+        <script src="/js/menu.js" charset="utf-8"></script>

@@ -7,6 +7,7 @@ const app = {
         app.form.create();
         app.board.draw();
 
+
     },
 
     isValid(e) {
@@ -96,7 +97,7 @@ const app = {
                 squareMinCol = 6;
                 squareMaxCol = 8;
                 break;
-        };
+        }
 
         //on récupère toutes les valeurs de input
         const inputCells = document.getElementsByClassName('sudokValues');

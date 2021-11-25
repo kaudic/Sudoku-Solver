@@ -35,10 +35,58 @@ h2{
         font-size: 60px;
 }
 
-a{
-    color: yellowgreen;
-    /* font-size: 20px; TEST LE 23/11*/
+.menuBurger{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    display: none;
+    margin-top: 8px;
+
 }
+
+.menuBurger--list{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    background:rgb(80, 80, 80);
+    padding: 10px;
+    
+}
+
+.menuBurger--option{
+margin-left: 10px;
+color: orange;
+text-decoration: none;
+}
+
+.form__consigne{
+    
+    font-size: large;
+    line-height: 25px;
+}
+
+.form__btn{
+    padding: 12px;
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: large;
+    text-transform: uppercase;
+    border-radius: 0.3em;
+    height: 60%;
+    margin: 10px;
+    background-color: lightgrey;
+    color: black;
+    border-radius: 5px;
+    display: block;
+    font-family: arial, monospace;
+    
+}
+
+.form__btn--admin{
+    background-color: orange;
+}
+
 
 .underline-title
  {
@@ -48,7 +96,6 @@ a{
      width: 770px;
  }
 
-
  .main-form{
     display: flex;
     justify-content: flex-start;
@@ -56,14 +103,12 @@ a{
     border-radius: 10px;
     margin-top: 40px;
     background:rgb(80, 80, 80);
+    padding: 10px;
 }
 
 
 .main-form button, .main-form select{
-margin: 10px;
-background-color: lightgrey;
-color: black;
-border-radius: 5px;
+
 }
 
 .main-form label{
@@ -88,6 +133,9 @@ border-radius: 5px;
     color: red;
     margin-top: 20px;
     padding: 10px;
+    width: 410px; /*si cette largeur est trop grande alors les bordures
+    de lignes de la grille sudoku déborde et c'est très moche, à modifier
+    car cela reste très manuel */
 }
 
 .sudokuRow{
@@ -102,8 +150,6 @@ border-radius: 5px;
     display: block;
     border: 1px solid black;
     color: black;
-    /* width: 30px;
-    height: 30px; */
     margin: 0px;
     text-align: center;
     background-color: lightgrey;
@@ -157,12 +203,9 @@ border-radius: 5px;
    align-items: center;
 }
 
-
-
 .stopWatchText
 {
    display:block;
-   /* padding-top:20%; */
    background: none;
    font-size: 30px;
 }
@@ -175,7 +218,7 @@ border-radius: 5px;
     height: 10%;
     padding: 10px;
     border-radius: 1em;
-    /* margin: auto; */
+
 }
 
 /* SPECIFIQUE 404 */
