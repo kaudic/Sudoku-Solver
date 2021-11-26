@@ -326,10 +326,10 @@ const controller = {
 
             const initialDatabase = JSON.parse(data);
             console.log(initialDatabase);
+            console.log(initialDatabase.length);
 
             //On renvoie un fichier EJS qui affiche les données
-            res.render('adminDB', { data });
-
+            res.render('adminDB', { data: initialDatabase });
 
         }));
 

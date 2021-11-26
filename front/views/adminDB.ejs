@@ -19,31 +19,21 @@
                 </thead>
 
                 <tbody>
-                    <tr class="tableRow">
-                        <td class="tableCells">The table body</td>
-                        <td class="tableCells">The table body</td>
-                        <td class="tableCells">The table
-                            bodyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy</td>
-                        <td class="tableCells"><button class="deleteBtn">Supprimer</button></td>
-                    </tr>
-                    <tr class="tableRow">
-                        <td class="tableCells">The table body</td>
-                        <td class="tableCells">The table body</td>
-                        <td class="tableCells">The table
-                            bodyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy</td>
-                    </tr>
-                    <tr class="tableRow">
-                        <td class="tableCells">The table body</td>
-                        <td class="tableCells">The table body</td>
-                        <td class="tableCells">The table
-                            bodyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy</td>
-                    </tr>
-                    <tr class="tableRow">
-                        <td class="tableCells">The table body</td>
-                        <td class="tableCells">The table body</td>
-                        <td class="tableCells">The table
-                            bodyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy</td>
-                    </tr>
+
+                    <% for (i=0; i<data.length; i++) { %>
+                        <tr class="tableRow">
+                            <td class="tableCells">
+                                <%= i+1 %>
+                            </td>
+                            <td class="tableCells">
+                                <%= data[i].id %>
+                            </td>
+                            <td class="tableCells">
+                                <%= data[i].data %>
+                            </td>
+                            <td class="tableCells"><button class="deleteBtn">Supprimer</button></td>
+                        </tr>
+                        <%}%>
 
                 </tbody>
 
