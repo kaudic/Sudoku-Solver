@@ -4,8 +4,6 @@ const dataMapper = {
 
     createUser: ({ actor_login, actor_password, actor_name, actor_surname, actor_email }, callback) => {
 
-        console.log(actor_login, actor_password, actor_name, actor_surname, actor_email);
-
         const sqlQuery = {
             text: 'INSERT INTO "actor" ("actor_login", "actor_password", "actor_name","actor_surname","actor_email", "actor_role_id") VALUES ($1,$2,$3,$4,$5,$6);',
             values: [actor_login, actor_password, actor_name, actor_surname, actor_email, 2] //le 2 fait référence à un profil VISITOR (table role)

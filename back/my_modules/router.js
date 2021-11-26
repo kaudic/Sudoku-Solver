@@ -17,7 +17,7 @@ router.get('/sudoku/Login/FormCreation', controller.formCreation);
 router.get('/getBoard/:level', controller.loadBoard);
 router.get('/solveBoard/:boardId', controller.loadResult);
 router.get('/checkInput/:boardId/:inputId', controller.checkCellResult);
-router.get('/sudoku/database/', controller.adminAuth, controller.database); //TODO passer admin comme un argument de fonction
+router.get('/sudoku/database/', controller.adminAuth, controller.databaseRead); //TODO passer admin comme un argument de fonction
 
 //liste des routes POST
 router.post('/solveBoard/', controller.solveBoard);

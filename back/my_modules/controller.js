@@ -24,6 +24,7 @@ const controller = {
             console.log('Accès refusé, utilisateur non connecté.');
             const loginMessage = 'Vous devez vous connecter pour accéder à cette page.';
             res.render('login', { loginMessage });
+            return;
 
         }
         else {
@@ -31,6 +32,7 @@ const controller = {
 
                 console.log('L\'utilisateur n\'a pas les droits suffisants pour accéder à cette page.');
                 res.redirect('/sudoku');
+                return;
             }
             else {
                 console.log('Utilisateur connecté à une page administrateur.');
@@ -316,52 +318,70 @@ const controller = {
         });
     },
 
-    database: (req, res) => {
+    databaseRead: (req, res) => {
 
-        // //lecture du fichier json initial
-        // fs.readFile('../sudoku-solver/back/data/boardDatabase.json', ((err, data) => {
-        //     if (err) throw err;
+        //lecture du fichier json initial
+        fs.readFile('../sudoku-solver/back/data/boardDatabase.json', ((err, data) => {
+            if (err) throw err;
 
-        //     const initialDatabase = JSON.parse(data);
-        //     let nextID = (initialDatabase.length) - 1;
+            const initialDatabase = JSON.parse(data);
+            console.log(initialDatabase);
 
-        //     //Boucle de Générations de grilles aléatoires avec leurs solutions
-
-        //     for (let i = 0; i < 5; i++) {
-
-        //         nextID += 1;
-
-        //         //Génération grille
-        //         const newSolvedBoard = solver.board.generatorSupervisor();
-        //         const newSolvedBoardObject = {
-        //             id: "id" + nextID,
-        //             data: newSolvedBoard
-        //         };
-
-        //         //On pousse les nouvelles grilles dans un objet qui deviendra la nouvelle base de données JSON
-        //         initialDatabase.push(newSolvedBoardObject);
-
-        //         //remise à 0 du tracker et de emptyCells pour éviter de mélanger les données
-        //         solver.board.data.emptyCells = [];
-        //         solver.board.tracker = [];
-        //     }
-
-        //     const finalDatabase = JSON.stringify(initialDatabase);
+            //On renvoie un fichier EJS qui affiche les données
+            res.render('adminDB', { data });
 
 
-        //     fs.writeFile('../sudoku-solver/back/data/boardDatabase.json', finalDatabase, (err) => {
-        //         if (err) throw err;
-        //     });
-        //     console.log('Nouvelles grilles enregistrées en base de données JSON');
-        //     //On renvoie un fichier EJS qui affiche les données
-
-        res.render('adminDB');
+        }));
 
 
-        // }));
+    },
+
+    dataBaseWrite: (req, res) => {
+
+        //lecture du fichier json initial
+        fs.readFile('../sudoku-solver/back/data/boardDatabase.json', ((err, data) => {
+            if (err) throw err;
+
+            const initialDatabase = JSON.parse(data);
+            let nextID = (initialDatabase.length) - 1;
+
+            //Boucle de Générations de grilles aléatoires avec leurs solutions
+
+            for (let i = 0; i < 5; i++) {
+
+                nextID += 1;
+
+                //Génération grille
+                const newSolvedBoard = solver.board.generatorSupervisor();
+                const newSolvedBoardObject = {
+                    id: "id" + nextID,
+                    data: newSolvedBoard
+                };
+
+                //On pousse les nouvelles grilles dans un objet qui deviendra la nouvelle base de données JSON
+                initialDatabase.push(newSolvedBoardObject);
+
+                //remise à 0 du tracker et de emptyCells pour éviter de mélanger les données
+                solver.board.data.emptyCells = [];
+                solver.board.tracker = [];
+            }
+
+            const finalDatabase = JSON.stringify(initialDatabase);
 
 
-    }
+            fs.writeFile('../sudoku-solver/back/data/boardDatabase.json', finalDatabase, (err) => {
+                if (err) throw err;
+            });
+            console.log('Nouvelles grilles enregistrées en base de données JSON');
+            //On renvoie un fichier EJS qui affiche les données
+
+            res.render('adminDB');
+
+
+        }));
+
+
+    },
 
 };
 

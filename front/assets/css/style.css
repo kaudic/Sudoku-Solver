@@ -3,6 +3,7 @@ body{
     flex-direction: column;
     background-color: rgb(39, 39, 39);
     font-family: 'Holtwood One SC', sans-serif;
+    margin: 5px 10px;
 }
 
 .header{
@@ -201,6 +202,7 @@ text-decoration: none;
    flex-direction: column;
    justify-content:space-evenly;
    align-items: center;
+   background:rgb(80, 80, 80);
 }
 
 .stopWatchText
@@ -211,13 +213,78 @@ text-decoration: none;
 }
 
 #breakBtn{
-    border: 2px solid yellowgreen;
+    border: 2px solid orange;
     line-height: ;
     display: inline;
     width: 40%;
     height: 10%;
     padding: 10px;
     border-radius: 1em;
+
+}
+
+/* PAGE DATABASE ADMIN */
+
+.inputAdmin{
+    display: block;
+    border: 3px solid orange;
+    padding: 12px;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: large;
+    text-transform: uppercase;
+    height: 30%;
+    margin: 10px;
+    background-color: lightgrey;
+    color: black;
+    border-radius: 5px;
+    font-family: arial, monospace;
+    width: 70px;
+    text-align: center;
+
+}
+
+.tableDatabase{
+
+    border: 3px solid yellowgreen;
+    border-radius: 10px;
+    margin-top: 40px;
+    background:rgb(80, 80, 80);
+    padding: 10px;
+    background-color: lightgrey;
+
+}
+
+.tableRow{
+    background:rgb(80, 80, 80);
+    background-color: lightgrey;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.tableHeadCells{
+    border: 1px solid black;
+    font-size: 15px;
+    padding: 5px;
+}
+
+.tableCells{
+    font-family: Arial, Helvetica, sans-serif;
+    border: 1px solid black;
+    border-collapse: collapse;
+    font-size: 15px;
+    padding: 5px;
+}
+
+.deleteBtn{
+    background: rgb(241, 137, 137);
+    /* font-weight: bold; */
+}
+
+/* PAGE LOGIN */
+
+.login_création{
+    color: yellowgreen;
 
 }
 
@@ -243,7 +310,6 @@ text-decoration: none;
     color: yellowgreen;
     border-radius: 20px;
     padding: 30px 60px 30px 60px;
-    /* width: 60%; */
     margin: 90px auto 20px auto;
     text-align: center;
     background:rgb(80, 80, 80);
@@ -348,7 +414,6 @@ text-decoration: none;
 
 .Footer-nav{
     height:60px;
-    /* background: black; */
     background:rgb(80, 80, 80);
     
     }
