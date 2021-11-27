@@ -5,7 +5,9 @@ const serverMethods = {
 
     },
 
-    emptyCells: function (board, goalOfCellsEmptyPerLine) {
+    emptyCells: function (stringBoard, goalOfCellsEmptyPerLine) {
+
+        const board = JSON.parse(stringBoard);
 
         //TODO on récupère l'objectif de suppression de cellules, par contre ça ne semble pas fonctionner systématiquement
 

@@ -1,8 +1,7 @@
 const fs = require('fs');
 const serverMethods = require('./serverMethods');
-const boardData = require('../data/boardDatabase.json');
 const solver = require('../my_modules/solver');
-const { createUser, getOneUser, loadBoardTable } = require('../dataMapper.js');
+const { createUser, getOneUser, getOneRandomBoard, getOneBoardById, getAllBoards } = require('../dataMapper.js');
 const bcrypt = require('bcrypt');
 const client = require('../bdd');
 
@@ -197,54 +196,59 @@ const controller = {
         //on récupère le niveau de difficulté demandé par le client (envoyé dans la route)
         const { level } = req.params;
 
-        //la base de données a été require dans la variable boardData -> plus besoin de faire des fs.readFile
-        const max = boardData.length;
-        const randomNumber = serverMethods.getRandomNumber(0, max);
-        const boardDataLevelTreated = serverMethods.takeOutNumbersFromBoard(level, boardData[randomNumber].data);
+        //Appel du datamapper, il va renvoyer une grille aléatoire.
 
-        const response = {
-            id: boardData[randomNumber].id,
-            data: boardDataLevelTreated
-        };
+        getOneRandomBoard((error, board) => {
 
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.send(response);
+            if (error) {
+                res.status(500).send('500');
+                return;
+            }
+            else {
+
+                //on la passe à la fonction aléatoire pour lui retirer des valeurs
+
+                const boardDataLevelTreated = serverMethods.takeOutNumbersFromBoard(level, board.board_data);
+
+                const response = {
+                    id: board.board_id,
+                    data: boardDataLevelTreated
+                };
+
+                res.setHeader('Access-Control-Allow-Origin', '*');
+                res.send(response);
+
+            }
+
+        })
+
     },
 
     loadResult: (req, res) => {
 
         //on récupère l'ID de la grille affichée sur le navigateur (provient d'un dataset)
-        const { boardId } = req.params;
+        const boardId = Number(req.params.boardId);
 
-        if (boardId !== 'none') {
+        //Appel du dataMapper pour rechercher la grille avec l'ID fourni
 
-            //lecture de la base de données json et on renvoie la grille de l'ID recherchée
-            fs.readFile('./back/data/boardDatabase.json', (err, data) => {
-                if (err) throw err;
-                const boardData = JSON.parse(data);
-
-                const boardDataRequired = boardData.find((element) => {
-                    return element.id === boardId;
-                });
-                console.log(boardDataRequired);
+        getOneBoardById(boardId, (error, board) => {
+            if (error) {
+                res.status(500).send('500');
+                return;
+            }
+            else {
 
                 const response = {
-                    id: boardId,
-                    data: boardDataRequired.data
+                    id: board.board_id,
+                    data: JSON.parse(board.board_data)
                 };
 
                 res.setHeader('Access-Control-Allow-Origin', '*');
                 res.send(response);
-            });
-        }
 
-        else {
+            }
 
-            return nextTick();
-
-
-        };
-
+        })
     },
 
     solveBoard: (req, res) => {
@@ -321,45 +325,15 @@ const controller = {
 
     databaseRead: (req, res) => {
 
-        //lecture du fichier json initial
-        fs.readFile('../sudoku-solver/back/data/boardDatabase.json', ((err, data) => {
-            if (err) throw err;
+        //lecture de la base de données
 
-            const initialDatabase = JSON.parse(data);
-            console.log(initialDatabase);
-            console.log(initialDatabase.length);
+        getAllBoards((error, results) => {
 
-
-            for (i = 0; i < initialDatabase.length; i++) {
-
-                console.log(`initialDatabase[${i}]: ${JSON.stringify(initialDatabase[i].data)}`);
-
-                //préparation requête
-
-                sqlQuery = {
-                    text: `INSERT INTO "board" ("board_data") VALUES($1)`,
-                    values: [JSON.stringify(initialDatabase[i].data)]
-                };
-
-                //écriture en table
-
-                client.query(sqlQuery, (error, results) => {
-                    console.log('error: ' + error);
-                })
-            }
-
-
+            console.log(results);
             //On renvoie un fichier EJS qui affiche les données
-            res.render('adminDB', { data: initialDatabase });
+            res.render('adminDB', { data: results });
 
-
-
-            // }
-
-
-
-        }));
-
+        })
 
     },
 

@@ -305,6 +305,10 @@ text-decoration: none;
     margin-top: 30px;
 }
 
+.lienAccueil404{
+    color: orange;
+}
+
 .mainDivLogin{
     border: 4px solid yellowgreen;
     color: yellowgreen;
