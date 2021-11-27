@@ -2,8 +2,9 @@ const fs = require('fs');
 const serverMethods = require('./serverMethods');
 const boardData = require('../data/boardDatabase.json');
 const solver = require('../my_modules/solver');
-const { createUser, getOneUser } = require('../dataMapper.js');
+const { createUser, getOneUser, loadBoardTable } = require('../dataMapper.js');
 const bcrypt = require('bcrypt');
+const client = require('../bdd');
 
 
 const controller = {
@@ -328,8 +329,34 @@ const controller = {
             console.log(initialDatabase);
             console.log(initialDatabase.length);
 
+
+            for (i = 0; i < initialDatabase.length; i++) {
+
+                console.log(`initialDatabase[${i}]: ${JSON.stringify(initialDatabase[i].data)}`);
+
+                //préparation requête
+
+                sqlQuery = {
+                    text: `INSERT INTO "board" ("board_data") VALUES($1)`,
+                    values: [JSON.stringify(initialDatabase[i].data)]
+                };
+
+                //écriture en table
+
+                client.query(sqlQuery, (error, results) => {
+                    console.log('error: ' + error);
+                })
+            }
+
+
             //On renvoie un fichier EJS qui affiche les données
             res.render('adminDB', { data: initialDatabase });
+
+
+
+            // }
+
+
 
         }));
 

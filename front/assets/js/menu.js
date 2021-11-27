@@ -3,8 +3,14 @@ const menu = {
     menuBurger: () => {
         const menuBurger = document.getElementById('menuBurger');
         menuBurger.addEventListener('click', () => {
-            const menuBurgerMenu = document.getElementsByClassName('menuBurger');
-            menuBurgerMenu[0].style.display = 'block';
+            const menuBurgerMenu = document.getElementsByClassName('menuBurger')[0];
+
+            if (menuBurgerMenu.style.display != 'block') {
+                menuBurgerMenu.style.display = 'block';
+
+            } else {
+                menuBurgerMenu.style.display = 'none';
+            }
         });
     }
 };
