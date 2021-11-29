@@ -8,29 +8,45 @@
 
                 <div class="loginFormSousDiv">
                     <label class="loginFormLabel">Nom</label>
-                    <input class="loginFormInput" name="surname" placeholder="">
+
+
+                    <input class="loginFormInput" name="surname" placeholder="" <% if (locals.actorConnected) { %>
+                    value="<%=locals.actorConnected.surname%>
+                        <% }%>"disabled>
+
                 </div>
 
                 <div class="loginFormSousDiv">
                     <label class="loginFormLabel">Prénom</label>
-                    <input class="loginFormInput" name="name" placeholder="">
+                    <input class="loginFormInput" name="name" placeholder="" <% if (locals.actorConnected) { %>
+                    value="<%=locals.actorConnected.name%>
+                        <% }%>"disabled>
                 </div>
 
                 <div class="loginFormSousDiv">
                     <label class="loginFormLabel">E-mail</label>
-                    <input type="email" class="loginFormInput" name="email" placeholder="">
+                    <input type="email" class="loginFormInput" name="email" placeholder="" <% if (locals.actorConnected)
+                        { %>
+                    value="<%=locals.actorConnected.email%>
+                        <% }%>"disabled>
                 </div>
 
                 <div class="loginFormSousDiv">
                     <label class="loginFormLabel">Login</label>
-                    <input class="loginFormInput" name="login" placeholder="Entrer votre login">
+                    <input class="loginFormInput" name="login" placeholder="Entrer votre login" <% if
+                        (locals.actorConnected) { %>
+                    value="<%=locals.actorConnected.login%>
+                        <% }%>"disabled>
                 </div>
 
                 <div class="loginFormSousDiv">
                     <label class="loginFormLabel">Password</label>
-                    <input type="password" class="loginFormInput" name="password"
-                        placeholder="Entrer votre mot de passe">
+                    <input type="password" class="loginFormInput" name="password" <% if (locals.actorConnected) {
+                        %>placeholder="Modif de mot de passe non développé">
+                    <% } else { %>placeholder="Entrer votre mot de passe">
+                        <% }%>
                 </div>
+
                 <% if (locals.createLoginMessage) { %>
                     <p class="createLoginMessage">
                         <%= createLoginMessage %>
@@ -41,7 +57,21 @@
 
         </div>
 
-        <button class="loginFormBtn">Créer mon compte</button>
+        <div class='loginBtnBar' id='loginBtnBar'>
+
+            <% if (!locals.actorConnected) { %>
+
+                <button class="loginFormBtn">Créer mon compte</button>
+
+                <%} else { %>
+
+                    <button id="amendAccount" class="loginFormBtn">Modifier</button>
+                    <button href='/sudoku' id="cancelAccountModification" class="loginFormBtn">Annuler</button>
+
+                    <% } %>
+
+        </div>
+
 
 
     </form>
@@ -49,5 +79,5 @@
     <%- include('./partials/footer') %>
 
 
-
+        <script src="/js/login.js" charset="utf-8"></script>
         </body>

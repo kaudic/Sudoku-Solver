@@ -1,10 +1,9 @@
 const fs = require('fs');
 const serverMethods = require('./serverMethods');
 const solver = require('../my_modules/solver');
-const { createUser, getOneUser, getOneRandomBoard, getOneBoardById, getAllBoards } = require('../dataMapper.js');
+const { insertNewBoards, deleteOneUser, createUser, getOneUser, getOneRandomBoard, getOneBoardById, getAllBoards, updateOneUser } = require('../dataMapper.js');
 const bcrypt = require('bcrypt');
 const client = require('../bdd');
-
 
 const controller = {
     welcome: (req, res) => {
@@ -116,6 +115,73 @@ const controller = {
 
     },
 
+    amendActor: (req, res) => {
+
+        //récupérer les informations dans le req.body et les affecter à un nouvel objet
+        const actorObject = {
+            actor_id: req.session.actorConnected.id,
+            actor_login: req.body.login,
+            actor_name: req.body.name,
+            actor_surname: req.body.surname,
+            actor_email: req.body.email,
+        }
+
+        //vérifier que tous les champs ont été complétés sinon il faut refuser la création
+
+        for (const actorInfo in actorObject) {
+            if (actorObject[actorInfo] === null || actorObject[actorInfo] === '') {
+                const createLoginMessage = 'Il manque des données, tous les champs sont obligatoires.';
+                res.render('createLogin', { createLoginMessage });
+                return;
+            };
+        }
+
+        //lancer le dataMapper qui met à jour les données pour l'id de session en cours
+
+        updateOneUser(actorObject, (error, results) => {
+
+            if (error) {
+                res.status(500).send('500');
+                return;
+            }
+            else {
+
+                //on remet à jour les données de la session et les locals
+
+                req.session.actorConnected.login = actorObject.actor_login;
+                req.session.actorConnected.name = actorObject.actor_name;
+                req.session.actorConnected.surname = actorObject.actor_surname;
+                req.session.actorConnected.email = actorObject.actor_email;
+
+                res.locals.actorConnected = req.session.actorConnected; //on transmet les infos de session à EJS
+
+                res.redirect('/sudoku');
+            }
+
+        })
+
+    },
+
+    deleteActor: (req, res) => {
+
+        const id = Number(req.session.actorConnected.id);
+
+        //Appel du datamapper
+        deleteOneUser(id, (error, results) => {
+
+            if (error) {
+                res.status(500).send('500');
+                return;
+            }
+            else {
+                console.log('Résultat suppression: ' + JSON.stringify(results));
+                res.redirect('/sudoku/deconnect'); //on renvoie sur la route qui supprime la session
+            }
+
+        })
+
+    },
+
     connect: (req, res) => {
 
         //récupérer le login et le password dans le req.body
@@ -158,7 +224,11 @@ const controller = {
                     else {
                         req.session.actorConnected = {
                             login: results[0].actor_login,
-                            role: results[0].role_description
+                            role: results[0].role_description,
+                            id: results[0].actor_id,
+                            name: results[0].actor_name,
+                            surname: results[0].actor_surname,
+                            email: results[0].actor_email,
                         };
                         res.locals.actorConnected = req.session.actorConnected; //on transmet les infos de session à EJS
                         res.redirect('/sudoku');
@@ -168,22 +238,26 @@ const controller = {
             }
         })
 
-        //si incorrecte renvoyer la page /sudoku/login avec un message info non correcte
-
-        //si correcte, renseigner le login dans req.session et remplacer le logo de connexion par le log in
-        //render dans l'index directement
-
     },
 
     deconnect: (req, res) => {
 
         req.session.destroy(function (err) {
-            console.log('Erreur destrcution session: ' + err);
+            if (err) {
+                console.log('Erreur destrcution session: ' + err);
+            }
         });
 
         res.locals = null;
 
         res.redirect('/sudoku/login');
+    },
+
+    displayAccount: (req, res) => {
+
+        const { login } = req.params;
+        res.render('createLogin'); //on exploitera les infos de session de façon indirecte via res.locals qui est enregistré à chaque requête
+
     },
 
     formCreation: (req, res) => {
@@ -329,7 +403,6 @@ const controller = {
 
         getAllBoards((error, results) => {
 
-            console.log(results);
             //On renvoie un fichier EJS qui affiche les données
             res.render('adminDB', { data: results });
 
@@ -339,48 +412,40 @@ const controller = {
 
     dataBaseWrite: (req, res) => {
 
-        //lecture du fichier json initial
-        fs.readFile('../sudoku-solver/back/data/boardDatabase.json', ((err, data) => {
-            if (err) throw err;
+        const qty = Number(req.query.qtyNewBoards);
 
-            const initialDatabase = JSON.parse(data);
-            let nextID = (initialDatabase.length) - 1;
+        const arrayOfNewBoards = [];
 
-            //Boucle de Générations de grilles aléatoires avec leurs solutions
+        //Boucle de Générations de grilles aléatoires avec leurs solutions
 
-            for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < qty; i++) {
 
-                nextID += 1;
+            //Génération grille
+            const newSolvedBoard = solver.board.generatorSupervisor();
 
-                //Génération grille
-                const newSolvedBoard = solver.board.generatorSupervisor();
-                const newSolvedBoardObject = {
-                    id: "id" + nextID,
-                    data: newSolvedBoard
-                };
+            //On pousse les nouvelles grilles dans un tableau qui contiendra toutes les nouvelles grilles
 
-                //On pousse les nouvelles grilles dans un objet qui deviendra la nouvelle base de données JSON
-                initialDatabase.push(newSolvedBoardObject);
+            arrayOfNewBoards.push(newSolvedBoard);
 
-                //remise à 0 du tracker et de emptyCells pour éviter de mélanger les données
-                solver.board.data.emptyCells = [];
-                solver.board.tracker = [];
+            //remise à 0 du tracker et de emptyCells pour éviter de mélanger les données
+            solver.board.data.emptyCells = [];
+            solver.board.tracker = [];
+        }
+
+        const boards = JSON.stringify(arrayOfNewBoards);
+
+        //Datamapper pour écrire les résultats
+        insertNewBoards(boards, (error, results) => {
+            if (error) {
+                res.status(500).send('500');
+                return;
+            }
+            else {
+                console.log(results);
+                res.redirect('/sudoku/database/');
             }
 
-            const finalDatabase = JSON.stringify(initialDatabase);
-
-
-            fs.writeFile('../sudoku-solver/back/data/boardDatabase.json', finalDatabase, (err) => {
-                if (err) throw err;
-            });
-            console.log('Nouvelles grilles enregistrées en base de données JSON');
-            //On renvoie un fichier EJS qui affiche les données
-
-            res.render('adminDB');
-
-
-        }));
-
+        })
 
     },
 

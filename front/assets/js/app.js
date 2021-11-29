@@ -7,7 +7,6 @@ const app = {
         app.form.create();
         app.board.draw();
 
-
     },
 
     isValid(e) {
@@ -483,25 +482,6 @@ const app = {
             //Je commente tout le code car j'implémente en dur le formulaire
             console.log('Generating Form ...');
 
-            //Sélection de la zone Main pour y mettre le Formulaire
-            // const formContainerElt = document.querySelector('main');
-            // const formElt = document.createElement('form');
-            // formElt.classList.add('main-form');
-            // formContainerElt.appendChild(formElt);
-
-            //Création des éléments du formulaire
-
-            //Element Select
-            // const selectElt = document.createElement('select');
-            // const labelForSelectElt = document.createElement('label');
-            // labelForSelectElt.textContent = 'Choisir un exercice';
-            // labelForSelectElt.setAttribute('for', 'level-selection');
-            // selectElt.id = 'level-selection';
-
-            // app.form.level.forEach((level) => {
-            //     selectElt.add(new Option(level));
-
-            // });
 
             //Buttons
             const loadExerciceBtnElt = document.getElementById('loadExerciceBtnElt');
@@ -529,31 +509,6 @@ const app = {
                 app.stopWatch.create();
                 app.stopWatch.launch();
             });
-
-
-            //Checkbox option
-            // const autoCheckInput = document.createElement('input');
-            // const autoCheckInputLabel = document.createElement('label');
-            // autoCheckInput.type = 'checkbox';
-            // autoCheckInput.name = 'autoCheck';
-            // autoCheckInput.id = 'autoCheck';
-            // autoCheckInput.style.display = 'none'; //sera masqué au départ et affiché si une grille est chargée
-            // autoCheckInputLabel.id = 'autoCheckLabel';
-            // autoCheckInputLabel.setAttribute('for', 'autoCheck');
-            // autoCheckInputLabel.style.display = 'none'; //sera masqué au départ et affiché si une grille est chargée
-            // autoCheckInputLabel.textContent = 'Live-Correction';
-
-
-            //Implentation des éléments du formulaire dans le formulaire
-
-            // formElt.appendChild(labelForSelectElt);
-            // formElt.appendChild(selectElt);
-            // formElt.appendChild(loadExerciceBtnElt);
-            // formElt.appendChild(emptyBoardBtnElt);
-            // formElt.appendChild(solveExerciceBtnElt);
-            // formElt.appendChild(newChrono);
-            // formElt.appendChild(autoCheckInput);
-            // formElt.appendChild(autoCheckInputLabel);
 
         },
 

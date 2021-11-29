@@ -78,17 +78,69 @@ const dataMapper = {
 
     getAllBoards: (callback) => {
 
-        const sqlQuery = `SELECT * FROM board;`;
+        const sqlQuery = `SELECT COUNT(*) OVER(), board_id, board_data  FROM board;`;
 
         client.query(sqlQuery, (error, results) => {
             if (error) {
                 callback(error, false);
             } else {
-                console.log(results.rows);
+
                 callback(undefined, results.rows);
             }
         });
     },
+
+    updateOneUser: ({ actor_login, actor_name, actor_surname, actor_email, actor_id }, callback) => {
+
+        // j'enlève les espaces du login dans la requête car je n'arrivais pas à le faire en JS
+        const sqlQuery = {
+            text: `UPDATE actor 
+            SET actor_login = replace($1,' ',''), 
+            actor_name= $2, 
+            actor_surname= $3, 
+            actor_email= $4
+            WHERE actor_id = $5`,
+            values: [actor_login, actor_name, actor_surname, actor_email, actor_id]
+        };
+
+        client.query(sqlQuery, (error, results) => {
+            if (error) {
+                console.log('error: ' + error);
+                callback(error, false);
+            } else {
+                callback(undefined, results);
+            }
+        });
+
+    },
+
+    deleteOneUser: (id, callback) => {
+
+        const sqlQuery = {
+            text: `DELETE FROM actor WHERE actor_id = $1`,
+            values: [id]
+        };
+
+        client.query(sqlQuery, (error, results) => {
+
+            if (error) {
+                callback(error, false);
+                return;
+            } else {
+                callback(undefined, results);
+            }
+
+        });
+
+    },
+
+    insertNewBoards: (boards, callback) => {
+
+        sqlQery = {
+            text: `INSERT `
+        }
+
+    }
 };
 
 module.exports = dataMapper;

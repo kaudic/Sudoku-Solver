@@ -346,17 +346,34 @@ text-decoration: none;
 
 }
 
+.loginBtnBar{
+    display: flex;
+    
+}
+
 .loginFormBtn{
 
     color: yellowgreen;
     font-family: 'Holtwood One SC', sans-serif;
     border-radius: 7px;
-    margin: 20px auto 0 auto;
+    margin: 20px 10px 0 10px;
     display: block;
     padding: 6px 15px 6px 15px;
     background: none;
     border: 2px solid orange;
    
+}
+
+.loginFormBtnDelete{
+
+    color: white;
+    font-family: 'Holtwood One SC', sans-serif;
+    border-radius: 7px;
+    margin: 20px 10px 0 10px;
+    display: block;
+    padding: 6px 15px 6px 15px;
+    background: red;
+    border: 2px solid orange;
 }
 
 .loginCreation {

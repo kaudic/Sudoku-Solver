@@ -28,7 +28,6 @@ app.use((req, res, next) => {
     next();
 });
 
-
 app.use(router);
 
 app.listen(3000, () => console.log('server running and listenning to port 3000'));
