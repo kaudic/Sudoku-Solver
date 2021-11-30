@@ -40,6 +40,9 @@
         <% if (locals.actorConnected) { %>
             <div class="menuBurger">
                 <ul class="menuBurger--list">
+                    <span><i class="fas fa-moon toggleDayNightIcon"></i></span>
+                    <input type="range" max="1" id="toggleDayNight">
+                    <span><i class="fas fa-lightbulb toggleDayNightIcon"></i></span>
                     <a href="/sudoku/myAccount/<%= locals.actorConnected.login%>" class="menuBurger--option">
                         <li class="menuBurger--option">Mon compte</li>
                     </a>

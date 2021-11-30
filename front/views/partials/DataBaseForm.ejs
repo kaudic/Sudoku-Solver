@@ -1,12 +1,14 @@
 <form class="main-form" action="/sudoku/generate" method="GET">
 
-    <label class="form__consigne" for="level-selection">NB GRILLES EN BASE</label>
-    <span class="inputAdmin" id="boardsCount">
+    <label class="form__consigne" for="level-selection">NB GRILLES<br> EN BASE</label>
+    <input class="inputAdmin" id="boardsCount" value="<% if (data[0].count){ %>
         <%= locals.data[0].count %>
-    </span>
+            <% } %>">
 
-    <label class="form__consigne" id="nbGrillesLabel" for="nbGrilles">Nb de grilles à génerer</label>
+
+    <label class="form__consigne" id="nbGrillesLabel" for="nbGrilles">Nb de grilles<br> à génerer</label>
     <input class="inputAdmin" type="value" name="qtyNewBoards" id="nbGrilles">
     <button class="form__btn" id="dataGeneratorBtn">Générer</button>
+    <a href="/sudoku" class="form__btn form__btn--admin">RETOUR</a>
 
 </form>

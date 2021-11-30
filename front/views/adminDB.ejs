@@ -2,8 +2,6 @@
 
     <%- include('./partials/DataBaseForm'); %>
 
-        <!-- Boucle for à mettre -->
-
         <div>
 
             <table class='tableDatabase'>
@@ -20,7 +18,8 @@
 
                 <tbody>
 
-                    <% for (i=0; i<data.length; i++) { %>
+
+                    <% if (locals.data) { for (i=0; i<data.length; i++) { %>
                         <tr class="tableRow">
                             <td class="tableCells">
                                 <%= i+1 %>
@@ -31,9 +30,10 @@
                             <td class="tableCells">
                                 <%= JSON.stringify(data[i].board_data) %>
                             </td>
-                            <td class="tableCells"><button class="deleteBtn">Supprimer</button></td>
+                            <td class="tableCells"><a href="/sudoku/delete/<%= data[i].board_id %>"
+                                    class="deleteBtn">Supprimer</a></td>
                         </tr>
-                        <%}%>
+                        <%}}%>
 
                 </tbody>
 

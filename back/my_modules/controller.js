@@ -1,7 +1,7 @@
 const fs = require('fs');
 const serverMethods = require('./serverMethods');
 const solver = require('../my_modules/solver');
-const { insertNewBoards, deleteOneUser, createUser, getOneUser, getOneRandomBoard, getOneBoardById, getAllBoards, updateOneUser } = require('../dataMapper.js');
+const { updateDisplaySettingsById, getDisplaySettingsById, deleteOneBoardById, insertNewBoards, deleteOneUser, createUser, getOneUser, getOneRandomBoard, getOneBoardById, getAllBoards, updateOneUser } = require('../dataMapper.js');
 const bcrypt = require('bcrypt');
 const client = require('../bdd');
 
@@ -325,6 +325,59 @@ const controller = {
         })
     },
 
+    getDisplaySettings: (req, res) => {
+
+        //on récupère l'ID de l'utilisateur connecté dans la session
+        const id = req.session.actorConnected.id;
+
+        //Appel du dataMapper pour rechercher les couleurs de cet utilisateur
+
+        getDisplaySettingsById(id, (error, colors) => {
+            if (error) {
+                res.status(500).send('500');
+                return;
+            }
+            else {
+
+                const response = {
+                    display_color1: (colors[0].display_color1),
+                    display_color2: (colors[0].display_color2),
+                    display_color3: (colors[0].display_color3),
+                    display_color4: (colors[0].display_color4),
+                    display_color5: (colors[0].display_color5)
+                };
+
+                res.setHeader('Access-Control-Allow-Origin', '*');
+                console.log('response: ' + JSON.stringify(response));
+                res.send(response);
+
+            }
+
+        })
+    },
+
+    updateDisplaySettings: (req, res) => {
+
+        const displayId = req.params.displayId;
+        const actorId = req.session.actorConnected.id;
+
+        console.log('displayID: ' + displayId);
+        console.log('actorID: ' + actorId);
+
+        updateDisplaySettingsById(actorId, displayId, (error, results) => {
+            if (error) {
+                res.status(500).send('500');
+                return;
+            }
+            else {
+                res.setHeader('Access-Control-Allow-Origin', '*');
+                console.log('response: ' + JSON.stringify(results));
+                res.send(results);
+
+            }
+        })
+    },
+
     solveBoard: (req, res) => {
         console.log('Solveur démarré');
 
@@ -377,24 +430,27 @@ const controller = {
         const ligne = inputId.substr(0, 1);
         const column = inputId.substr(1, 1);
 
-        //lecture de la base de données json et on renvoie l'élément recherché
-        fs.readFile('./back/data/boardDatabase.json', (err, data) => {
-            if (err) throw err;
-            const boardData = JSON.parse(data);
+        //lecture de la base de données et on renvoie l'élément recherché
 
-            const searchedBoard = boardData.find((element) => {
-                return element.id === boardId;
-            });
+        getOneBoardById(boardId, (error, results) => {
+            if (error) {
+                res.status(500).send('500');
+                return;
 
-            const response = {
-                inputSolution: searchedBoard.data[ligne][column]
-            };
+            } else {
 
-            console.log('solution: ' + response.inputSolution);
 
-            res.setHeader('Access-Control-Allow-Origin', '*');
-            res.send(response);
-        });
+                const response = {
+                    inputSolution: results.board_data[ligne][column]
+                };
+
+                console.log('solution: ' + response.inputSolution);
+
+                res.setHeader('Access-Control-Allow-Origin', '*');
+                res.send(response);
+
+            }
+        })
     },
 
     databaseRead: (req, res) => {
@@ -448,6 +504,21 @@ const controller = {
         })
 
     },
+
+    deleteBoard: (req, res) => {
+        const id = Number(req.params.id);
+
+        deleteOneBoardById(id, (error, results) => {
+
+            if (error) {
+                res.status(500).send('500');
+            }
+            else {
+                res.redirect('/sudoku/database/');
+            }
+
+        })
+    }
 
 };
 

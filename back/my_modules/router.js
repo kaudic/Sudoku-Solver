@@ -19,7 +19,9 @@ router.get('/checkInput/:boardId/:inputId', controller.checkCellResult); //mode 
 router.get('/sudoku/database/', controller.adminAuth, controller.databaseRead); //TODO passer admin comme un argument de fonction
 router.get('/sudoku/myAccount/:login', controller.displayAccount); //afficher les infos de compte et pouvoir les modifier
 router.get('/sudoku/generate', controller.dataBaseWrite); //créer de nouvelles grilles en base de données
-
+router.get('/sudoku/delete/:id', controller.deleteBoard); //supprimer certaines grilles de la base de données
+router.get('/sudoku/displaySettings/getColors', controller.getDisplaySettings); //récupérer les valeurs choisies par l'utilisateur
+router.get('/sudoku/displaySettings/update/:displayId', controller.updateDisplaySettings); //récupérer les valeurs choisies par l'utilisateur
 
 //liste des routes POST
 router.post('/solveBoard/', controller.solveBoard); //résolution récursive (solveur) d'une grille saisie
