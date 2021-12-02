@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('./controller');
+const controller = require('./controllers/controller');
 
 //variable à transmettre à EJS
 router.use((req, res, next) => {

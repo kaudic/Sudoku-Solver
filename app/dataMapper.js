@@ -182,7 +182,7 @@ const dataMapper = {
     getDisplaySettingsById: (id, callback) => {
 
         const sqlQuery = {
-            text: `SELECT d.display_color1,d.display_color2,d.display_color3,d.display_color4,d.display_color5
+            text: `SELECT d.display_type, d.display_color1,d.display_color2,d.display_color3,d.display_color4,d.display_color5
             FROM actor a INNER JOIN display d ON a.actor_display_id = d.display_id 
             WHERE a.actor_id=$1`,
             values: [id]

@@ -14,11 +14,20 @@ body{
     margin: 5px 10px;
 }
 
+main{
+    
+}
+
+.globalMenu{
+    
+}
+
 .header{
     display: flex;
     flex-direction: row;
     justify-content:space-between;
     align-items: center;
+    
 }
 
 .header--Login{
@@ -26,13 +35,10 @@ body{
     margin: 20px;
     font-size: 50px;
     color: var(--color3);
+    
 }
 
-.tableDatabase{
 
-background:var(--color4); ;
-
-}
 
 .main-title{
     color: var(--color3);
@@ -260,6 +266,7 @@ text-decoration: none;
 
 }
 
+
 .tableDatabase{
 
     border: 3px solid var(--color3);
@@ -268,6 +275,8 @@ text-decoration: none;
     background:var(--color4);
     padding: 10px;
     background-color: var(--color5);
+    margin-bottom: 100px;
+    /* position: relative; */
 
 }
 
@@ -282,6 +291,10 @@ text-decoration: none;
     border: 1px solid black;
     font-size: 15px;
     padding: 5px;
+    position: sticky;
+    top: 0;
+    color: white;
+    background-color: var(--color4);
 }
 
 .tableCells{

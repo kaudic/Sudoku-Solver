@@ -1,7 +1,7 @@
 const fs = require('fs');
-const serverMethods = require('./serverMethods');
-const solver = require('../my_modules/solver');
-const { updateDisplaySettingsById, getDisplaySettingsById, deleteOneBoardById, insertNewBoards, deleteOneUser, createUser, getOneUser, getOneRandomBoard, getOneBoardById, getAllBoards, updateOneUser } = require('../dataMapper.js');
+const serverMethods = require('../serverMethods');
+const solver = require('../solver');
+const dataMapper = require('../dataMapper.js');
 const bcrypt = require('bcrypt');
 const client = require('../bdd');
 
@@ -65,7 +65,7 @@ const controller = {
 
         //vérifier que le compte actor_login n'existe pas déjà et si oui faire un render de la page de création
 
-        getOneUser(actorObject.actor_login, (error, results) => {
+        dataMapper.getOneUser(actorObject.actor_login, (error, results) => {
 
             if (error) {
                 console.log(error);
@@ -90,7 +90,7 @@ const controller = {
 
                     //appeler datamapper.createUser pour mettre en base de données un nouveau login et lui passer un objet contenant le user_login et le user_password
 
-                    createUser(actorObject, (error, results) => {
+                    dataMapper.createUser(actorObject, (error, results) => {
 
                         if (error) {
                             req.error = error;
@@ -138,7 +138,7 @@ const controller = {
 
         //lancer le dataMapper qui met à jour les données pour l'id de session en cours
 
-        updateOneUser(actorObject, (error, results) => {
+        dataMapper.updateOneUser(actorObject, (error, results) => {
 
             if (error) {
                 res.status(500).send('500');
@@ -167,7 +167,7 @@ const controller = {
         const id = Number(req.session.actorConnected.id);
 
         //Appel du datamapper
-        deleteOneUser(id, (error, results) => {
+        dataMapper.deleteOneUser(id, (error, results) => {
 
             if (error) {
                 res.status(500).send('500');
@@ -195,7 +195,7 @@ const controller = {
 
         //Faire appel à un datamapper pour vérifier la présence du login dans la base (SELECT)
 
-        getOneUser(req.body.login, (error, results) => {
+        dataMapper.getOneUser(req.body.login, (error, results) => {
 
             if (error) {
                 console.log(error);
@@ -222,6 +222,10 @@ const controller = {
 
                     }
                     else {
+
+                        // l'utilisateur existe en base de données. On enregistre donc des informations de session
+                        // on va chercher les préférences d'affichage.
+
                         req.session.actorConnected = {
                             login: results[0].actor_login,
                             role: results[0].role_description,
@@ -272,7 +276,7 @@ const controller = {
 
         //Appel du datamapper, il va renvoyer une grille aléatoire.
 
-        getOneRandomBoard((error, board) => {
+        dataMapper.getOneRandomBoard((error, board) => {
 
             if (error) {
                 res.status(500).send('500');
@@ -305,7 +309,7 @@ const controller = {
 
         //Appel du dataMapper pour rechercher la grille avec l'ID fourni
 
-        getOneBoardById(boardId, (error, board) => {
+        dataMapper.getOneBoardById(boardId, (error, board) => {
             if (error) {
                 res.status(500).send('500');
                 return;
@@ -332,7 +336,7 @@ const controller = {
 
         //Appel du dataMapper pour rechercher les couleurs de cet utilisateur
 
-        getDisplaySettingsById(id, (error, colors) => {
+        dataMapper.getDisplaySettingsById(id, (error, colors) => {
             if (error) {
                 res.status(500).send('500');
                 return;
@@ -340,6 +344,7 @@ const controller = {
             else {
 
                 const response = {
+                    display_type: (colors[0].display_type),
                     display_color1: (colors[0].display_color1),
                     display_color2: (colors[0].display_color2),
                     display_color3: (colors[0].display_color3),
@@ -364,7 +369,7 @@ const controller = {
         console.log('displayID: ' + displayId);
         console.log('actorID: ' + actorId);
 
-        updateDisplaySettingsById(actorId, displayId, (error, results) => {
+        dataMapper.updateDisplaySettingsById(actorId, displayId, (error, results) => {
             if (error) {
                 res.status(500).send('500');
                 return;
@@ -432,7 +437,7 @@ const controller = {
 
         //lecture de la base de données et on renvoie l'élément recherché
 
-        getOneBoardById(boardId, (error, results) => {
+        dataMapper.getOneBoardById(boardId, (error, results) => {
             if (error) {
                 res.status(500).send('500');
                 return;
@@ -457,7 +462,7 @@ const controller = {
 
         //lecture de la base de données
 
-        getAllBoards((error, results) => {
+        dataMapper.getAllBoards((error, results) => {
 
             //On renvoie un fichier EJS qui affiche les données
             res.render('adminDB', { data: results });
@@ -491,7 +496,7 @@ const controller = {
         const boards = JSON.stringify(arrayOfNewBoards);
 
         //Datamapper pour écrire les résultats
-        insertNewBoards(boards, (error, results) => {
+        dataMapper.insertNewBoards(boards, (error, results) => {
             if (error) {
                 res.status(500).send('500');
                 return;
@@ -508,7 +513,7 @@ const controller = {
     deleteBoard: (req, res) => {
         const id = Number(req.params.id);
 
-        deleteOneBoardById(id, (error, results) => {
+        dataMapper.deleteOneBoardById(id, (error, results) => {
 
             if (error) {
                 res.status(500).send('500');
