@@ -1,9 +1,7 @@
-const fs = require('fs');
 const serverMethods = require('../serverMethods');
 const solver = require('../solver');
 const dataMapper = require('../dataMapper.js');
 const bcrypt = require('bcrypt');
-const client = require('../bdd');
 
 const controller = {
     welcome: (req, res) => {
@@ -443,7 +441,6 @@ const controller = {
                 return;
 
             } else {
-
 
                 const response = {
                     inputSolution: results.board_data[ligne][column]
