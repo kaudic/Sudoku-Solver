@@ -636,6 +636,7 @@ const app = {
         console.log('Bouton "Résoudre Grille activé"');
         const solveBoardBtn = document.getElementById('solveBoardBtn');
         const boardId = solveBoardBtn.dataset.id;
+        console.log('app.baseUrl:' + app.baseUrl);
         let route = `${app.baseUrl}/solveBoard/`;
 
         //On teste la présence d'un id dans les dataset du bouton solve et si oui on fetch la grille concernée et on l'affiche (route1)
@@ -659,6 +660,7 @@ const app = {
         else {
 
             //Route du solveur car la grille n'est pas connue en base. Il faut donc lire la grille et l'envoyer dans le fetch
+            console.log('BoardId non identifiée, route:' + route);
 
             //déjà démarrage du chrono pour mesurer la performance du système solveur
             app.stopWatch.setOff();
