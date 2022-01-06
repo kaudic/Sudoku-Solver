@@ -636,7 +636,9 @@ const app = {
         console.log('Bouton "Résoudre Grille activé"');
         const solveBoardBtn = document.getElementById('solveBoardBtn');
         const boardId = solveBoardBtn.dataset.id;
+        console.log('boardId: ' + boardId);
         let route = `${app.baseUrl}/solveBoard/`;
+        console.log('route: ' + route);
 
         //On teste la présence d'un id dans les dataset du bouton solve et si oui on fetch la grille concernée et on l'affiche (route1)
         if (boardId) {
