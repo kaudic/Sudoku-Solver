@@ -6,9 +6,7 @@ const app = express();
 const cors = require('cors');
 const session = require("express-session");
 
-app.use(cors({
-    origin: '*',
-}));
+app.use(cors());
 
 app.set('views', './views');
 app.set('view engine', 'ejs');
