@@ -25,6 +25,7 @@ app.use(session({
 
 app.use((req, res, next) => {
     res.locals.actorConnected = req.session.actorConnected;
+    res.locals.baseUrl = `${process.env.BASEURL}:${process.env.PORT}`;
     next();
 });
 
