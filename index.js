@@ -3,8 +3,12 @@ require('dotenv').config();
 const express = require('express');
 const router = require('./app/router');
 const app = express();
+const cors = require('cors');
 const session = require("express-session");
 
+app.use(cors({
+    origin: '*',
+}));
 
 app.set('views', './views');
 app.set('view engine', 'ejs');
