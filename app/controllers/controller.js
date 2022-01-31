@@ -1,10 +1,10 @@
-const serverMethods = require('../serverMethods');
+const serverMethods = require('../services/serverMethods');
 const solver = require('../solver');
 const dataMapper = require('../dataMapper.js');
 const bcrypt = require('bcrypt');
 
 const controller = {
-    welcome: (req, res) => {
+    home: (req, res) => {
 
         res.render('index');
     },

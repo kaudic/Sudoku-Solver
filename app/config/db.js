@@ -1,3 +1,4 @@
+//TODO passer en mode pool
 const { Client } = require("pg");
 
 // ecrire {Client} est une ecriture ES6 "destructuré" (destructuring)
