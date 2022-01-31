@@ -6,7 +6,7 @@ const express = require('express');
 // const schema = require('../../validation/schemas/postSchema');
 
 //Import des contrôleurs avec des alias
-const { solverController: controller } = require('../../controllers/api');
+const { boardController: controller } = require('../../controllers/api');
 
 //TODO faire le handler
 //Import du controllerHandler pour factoriser le try/catch et la levée des erreurs

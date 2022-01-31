@@ -18,6 +18,6 @@ router.route('/generate')
     .get(controller.dataBaseWrite); //créer de nouvelles grilles en base de données
 
 router.route('/:id')
-    .delete(controller.dataBaseWrite); //créer de nouvelles grilles en base de données
+    .delete(controller.deleteBoard); //créer de nouvelles grilles en base de données
 
 module.exports = router;

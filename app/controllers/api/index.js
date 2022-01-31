@@ -1,6 +1,6 @@
 const dbController = require('./dbController');
 const settingsController = require('./settingsController');
-const solverController = require('./solverController');
+const boardController = require('./boardController');
 const userController = require('./userController');
 
 const apiController = {
@@ -19,4 +19,4 @@ const apiController = {
     },
 };
 
-module.exports = { apiController, dbController, settingsController, solverController, userController };
+module.exports = { apiController, dbController, settingsController, boardController, userController };
