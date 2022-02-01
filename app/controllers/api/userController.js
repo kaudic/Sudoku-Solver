@@ -1,7 +1,6 @@
-//TODO voir comment ce fichier pourra être utilisé par la suite
+// TODO voir comment ce fichier pourra être utilisé par la suite
 
 const controller = {
-
 
 };
 

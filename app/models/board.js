@@ -22,7 +22,7 @@ module.exports = {
 
     getOneBoardById: (id, callback) => {
 
-        const sqlQuery = {
+const sqlQuery = {
             text: `SELECT * FROM board WHERE board_id = $1;`,
             values: [id]
         };
