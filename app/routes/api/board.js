@@ -17,7 +17,7 @@ const router = express.Router();
 router.route('/getBoard/:level')
     .get(controller.loadBoard); //chargement d'une grille en fonction d'un level demandé
 
-router.route('/solveBoard/:boardId')
+router.route('/solveBoard/:boardId(//d+)')
     .get(controller.loadResult); //chargement des résultats d'une grille chargée
 
 router.route('/solveBoard')

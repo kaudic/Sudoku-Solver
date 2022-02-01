@@ -3,7 +3,8 @@
         "browser": true,
         "commonjs": true,
         "es2021": true,
-        "node": true
+        "node": true,
+        "es6": true
     },
     "extends": [
         "airbnb-base"
@@ -12,17 +13,28 @@
         "ecmaVersion": "latest"
     },
     "rules": {
-        // enable additional rules
-        "indent": ["error", 4],
-        "linebreak-style": ["error", "windows"],
-        "quotes": ["error", "double"],
-        "semi": ["error", "always"],
+        "quotes": [2, "single"],
+        "indent": ["error", 4, { "SwitchCase": 1 }],
+        // nb de lignes max par fichier
+        "max-lines": ["error", 200],
+        // nb de lignes max par fonction
+        "max-lines-per-function": ["error", 20],
+        // réduit la taille des if/else
+        "complexity": ["error", 5],
+        // réduit le nombre de callbacks autorisé
+        "max-nested-callbacks":["error", 2],
+        // réduit la profondeur des enchainements de while avec if avec foreach etc
+        "max-depth":["error",3],
+        // nombre de paramètres en entrée de fct, on préfère mettre un objet
+        "max-params": ["error",2],
+        // on évite les var et les let
+        "prefer-const": "error",
+        // on évite les fonctions dans les boucles
+        "no-loop-func": "error",
+        // on ne supprime pas les variables
+        "no-delete-var": "error",
+        // on évite cette règle qui me pose des soucis
+        "no-unused-expressions": "off"
 
-        // override default options for rules from base configurations
-        "comma-dangle": ["error", "always"],
-        "no-cond-assign": ["error", "always"],
-
-        // disable rules from base configurations
-        "no-console": "off",
     }
 }
