@@ -20,7 +20,6 @@ module.exports = {
     },
 
     getAllBoards: (callback) => {
-
         // eslint-disable-next-line quotes
         const sqlQuery = `SELECT COUNT(*) OVER(), board_id, board_data  FROM board;`;
 
@@ -28,7 +27,6 @@ module.exports = {
             if (error) {
                 callback(error, false);
             } else {
-
                 callback(undefined, results.rows);
             }
         });

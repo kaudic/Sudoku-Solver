@@ -13,6 +13,6 @@ const router = express.Router();
 
 router.route('/colors/:userId')
     .get(handler(controller.getDisplaySettings))
-    .patch(handler(controller.updateDisplaySettings))
+    .patch(handler(controller.updateDisplaySettings));
 
 module.exports = router;

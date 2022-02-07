@@ -20,4 +20,5 @@ router.route('/account/:userId')
 
 router.route('/login')
     .post(handler(controller.connect));
+
 module.exports = router;
