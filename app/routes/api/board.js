@@ -1,30 +1,30 @@
 const express = require('express');
+const handler = require('../../helpers/handler');
 
-//TODO faire les schémas de validation avec Joi
-//Import du système de validation des données au niveau applicatif
+// TODO faire les schémas de validation avec Joi
+// Import du système de validation des données au niveau applicatif
 // const validate = require('../../validation/validator');
 // const schema = require('../../validation/schemas/postSchema');
 
-//Import des contrôleurs avec des alias
+// Import des contrôleurs avec des alias
 const { boardController: controller } = require('../../controllers/api');
 
-//TODO faire le handler
-//Import du controllerHandler pour factoriser le try/catch et la levée des erreurs
-// const controllerHandler = require('../../helpers/apiControllerHandler');
-
+// chargement d'une grille en fonction d'un level demandé
 const router = express.Router();
 
 router.route('/getBoard/:level')
-    .get(controller.loadBoard); //chargement d'une grille en fonction d'un level demandé
+    .get(handler(controller.loadBoard));
 
+// chargement des résultats d'une grille chargée
 router.route('/solveBoard/:boardId(//d+)')
-    .get(controller.loadResult); //chargement des résultats d'une grille chargée
+    .get(handler(controller.loadResult));
 
+// résolution récursive (solveur) d'une grille saisie
 router.route('/solveBoard')
-    .post(controller.solveBoard); //résolution récursive (solveur) d'une grille saisie
+    .post(handler(controller.solveBoard));
 
+// mode auto-correction, on contrôle la valeur saisie d'une cellule
 router.route('/checkInput/:boardId/:inputId')
-    .post(controller.checkCellResult); //mode auto-correction, on contrôle la valeur saisie d'une cellule
-
+    .post(handler(controller.checkCellResult));
 
 module.exports = router;

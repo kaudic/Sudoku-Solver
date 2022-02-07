@@ -11,20 +11,12 @@ module.exports = {
         return client.query('SELECT * FROM board ORDER BY random() LIMIT 1');
     },
 
-    getOneBoardById: (id, callback) => {
-
+    async getOneBoardById(id) {
         const sqlQuery = {
-            text: `SELECT * FROM board WHERE board_id = $1;`,
-            values: [id]
+            text: 'SELECT * FROM board WHERE board_id = $1',
+            values: [id],
         };
-
-        client.query(sqlQuery, (error, results) => {
-            if (error) {
-                callback(error, false);
-            } else {
-                callback(undefined, results.rows[0]);
-            }
-        });
+        return client.query(sqlQuery);
     },
 
     getAllBoards: (callback) => {

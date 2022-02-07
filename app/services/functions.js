@@ -30,12 +30,12 @@ module.exports = {
         board.forEach((boardLine) => {
             const arrOfRanNum = this.getArrayOfRandNum({
                 min: 0,
-                max: 0,
+                max: 9,
                 arrayLen: goalOfCellsEmptyPerLine,
             });
 
             arrOfRanNum.forEach((number) => {
-                boardLine[number] === '';
+                boardLine[number] = '';
             });
         });
         return board;

@@ -31,59 +31,34 @@ const controller = {
     },
 
     async solveBoard(req, res) {
-
         // on récupère les données de la grille du front
         const frontBoardData = req.body;
-
-        // enregistrer les données reçues du front (frontBoardData) vers notre variable en back : "solver.board.data"
+        // enregistrer les données reçues du front (frontBoardData) vers notre variable en back
         solver.board.data.ligne = frontBoardData.ligne;
         solver.board.data.column = frontBoardData.column;
         solver.board.data.square = frontBoardData.square;
-        solver.board.data.ligne = frontBoardData.ligne;
         solver.board.data.emptyCells = frontBoardData.emptyCells;
 
-        // lancement du solveur en mode asynchrone
+        // !lancement du solveur en mode asynchrone peut être il faudra une fonction anonyme ici
         const resultatSolver = await solver.board.solve(false);
-
-        // A récupération des données du solver, on prépare le message JSON pour le front
         resultatSolver().then((data) => {
-            let responseTreated = null;
-
             if (data === 'Non solvable') {
                 return res.json({ results: 'Il n\'y a pas de solution pour cette grille' });
             }
             return res.json({ results: solver.board.data.ligne });
-        }
+        });
+    },
 
-        }),
-
-
-    checkCellResult: (req, res) => {
+    async checkCellResult(req, res) {
         // on récupère l'Id de la grille et l'Id de l'input
         const { boardId, inputId } = req.params;
-        console.log(`Id grille reçu: ${boardId}`);
-        console.log(`Input n° modifié : ${inputId}`);
         const ligne = inputId.substr(0, 1);
         const column = inputId.substr(1, 1);
 
         // lecture de la base de données et on renvoie l'élément recherché
-
-        dataMapper.getOneBoardById(boardId, (error, results) => {
-            if (error) {
-                res.status(500).send('500');
-            } else {
-                const response = {
-                    inputSolution: results.board_data[ligne][column],
-                };
-
-                console.log(`solution: ${response.inputSolution}`);
-
-                res.setHeader('Access-Control-Allow-Origin', '*');
-                res.send(response);
-            }
-        });
+        const results = await dataMapper.getOneBoardById(boardId);
+        res.json({ inputSolution: results.board_data[ligne][column] });
     },
-
 };
 
 module.exports = controller;

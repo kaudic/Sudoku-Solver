@@ -6,7 +6,7 @@ const client = require('../config/db');
 
 module.exports = {
 
-    createUser: ({ actor_login, actor_password, actor_name, actor_surname, actor_email }, callback) => {
+    createUser: ({ actor_login, actor_password, actor_name, actor_surname, actor_email }) => {
 
         const sqlQuery = {
             text: 'INSERT INTO "actor" ("actor_login", "actor_password", "actor_name","actor_surname","actor_email", "actor_role_id") VALUES ($1,$2,$3,$4,$5,$6);',
@@ -51,14 +51,14 @@ module.exports = {
         });
     },
 
-    updateOneUser: ({ actor_login, actor_name, actor_surname, actor_email, actor_id }, callback) => {
+    updateOneUser: ({ actor_login, actor_name, actor_surname, actor_email, actor_id }) => {
 
         // j'enlève les espaces du login dans la requête car je n'arrivais pas à le faire en JS
         const sqlQuery = {
-            text: `UPDATE actor 
-            SET actor_login = replace($1,' ',''), 
-            actor_name= $2, 
-            actor_surname= $3, 
+            text: `UPDATE actor
+            SET actor_login = replace($1,' ',''),
+            actor_name= $2,
+            actor_surname= $3,
             actor_email= $4
             WHERE actor_id = $5`,
             values: [actor_login, actor_name, actor_surname, actor_email, actor_id]
