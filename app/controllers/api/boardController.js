@@ -33,6 +33,7 @@ const controller = {
     async solveBoard(req, res) {
         // on récupère les données de la grille du front
         const frontBoardData = req.body;
+        console.log('coucou');
         // enregistrer les données reçues du front (frontBoardData) vers notre variable en back
         solver.board.data.ligne = frontBoardData.ligne;
         solver.board.data.column = frontBoardData.column;

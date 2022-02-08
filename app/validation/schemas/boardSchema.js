@@ -1,7 +1,23 @@
 const Joi = require('joi');
 
 module.exports = Joi.object({
-    data: Joi.string()
-        .pattern(/^\[(\[([0-9],)+[0-9]\],){8}\[([0-9],){8}[0-9]\]\]$/)
+    emptyCells: Joi.array().max(81).min(1)
+        .items(Joi.string()
+            .pattern(/^(\d){2}$/))
         .required(),
+    ligne: Joi.array()
+        .items(Joi.array().items(Joi.number().integer().min(0).max(9)).length(9))
+        .length(9)
+        .required(),
+    column: Joi.array()
+        .items(Joi.array().items(Joi.number().integer().min(0).max(9)).length(9))
+        .length(9)
+        .required(),
+    square: Joi.array()
+        .items(Joi.array().items(Joi.number().integer().min(0).max(9)).length(9))
+        .length(9)
+        .required(),
+
+    //     .pattern(/^\[(\[([0-9],)+[0-9]\],){8}\[([0-9],){8}[0-9]\]\]$/)
+
 }).required();

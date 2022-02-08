@@ -1,7 +1,7 @@
 const Joi = require('joi');
 
 module.exports = Joi.object({
-    id: Joi.integer().pattern(/^(\d+)$/).required(),
+    id: Joi.number().integer().required(),
     login: Joi.string().required(),
     name: Joi.string().required(),
     surname: Joi.string().required(),

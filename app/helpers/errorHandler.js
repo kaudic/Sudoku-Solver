@@ -1,4 +1,4 @@
-const sudokError = require('../errors/sudokError');
+const SudokError = require('../errors/sudokError');
 const logger = require('./logger');
 
 const errorHandler = (err, res) => {
@@ -22,6 +22,6 @@ const errorHandler = (err, res) => {
 };
 
 module.exports = {
-    sudokError,
+    SudokError,
     errorHandler,
 };

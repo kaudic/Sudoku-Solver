@@ -7,7 +7,9 @@ const { settingsController: controller } = require('../../controllers/api');
 const router = express.Router();
 
 router.route('/colors/:userId(\\d+)')
+    .put(handler(controller.updateDisplaySettings));
+
+router.route('/colors/')
     .get(handler(controller.getDisplaySettings))
-    .patch(handler(controller.updateDisplaySettings));
 
 module.exports = router;

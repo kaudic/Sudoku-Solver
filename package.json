@@ -1,42 +1,42 @@
 {
-  "name": "Sudoku-Solver",
-  "version": "1.0.0",
-  "description": "My first solver app",
-  "main": "server.js",
-  "scripts": {
-    "start": "node index.js",
-    "start-dev": "nodemon index.js",
-    "test": "jest"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kaudic/Sudoku-Solver.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/kaudic/Sudoku-Solver/issues"
-  },
-  "homepage": "https://github.com/kaudic/Sudoku-Solver#readme",
-  "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.15.4",
-    "bcrypt": "^5.0.1",
-    "bunyan": "^1.8.15",
-    "cors": "^2.8.5",
-    "debug": "^4.3.3",
-    "dotenv": "^10.0.0",
-    "ejs": "^3.1.6",
-    "express": "^4.17.1",
-    "express-session": "^1.17.2",
-    "joi": "^17.6.0",
-    "pg": "^8.7.1"
-  },
-  "devDependencies": {
-    "eslint": "^8.8.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.25.4",
-    "eslint-plugin-jest": "^26.0.0",
-    "nodemon": "^2.0.15"
-  }
+    "name": "Sudoku-Solver",
+    "version": "1.0.0",
+    "description": "My first solver app",
+    "main": "server.js",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "nodemon index.js",
+        "test": "jest"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kaudic/Sudoku-Solver.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/kaudic/Sudoku-Solver/issues"
+    },
+    "homepage": "https://github.com/kaudic/Sudoku-Solver#readme",
+    "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.15.4",
+        "bcrypt": "^5.0.1",
+        "bunyan": "^1.8.15",
+        "cors": "^2.8.5",
+        "debug": "^4.3.3",
+        "dotenv": "^10.0.0",
+        "ejs": "^3.1.6",
+        "express": "^4.17.1",
+        "express-session": "^1.17.2",
+        "joi": "^17.6.0",
+        "pg": "^8.7.1"
+    },
+    "devDependencies": {
+        "eslint": "^8.8.0",
+        "eslint-config-airbnb-base": "^15.0.0",
+        "eslint-plugin-import": "^2.25.4",
+        "eslint-plugin-jest": "^26.0.0",
+        "nodemon": "^2.0.15"
+    }
 }

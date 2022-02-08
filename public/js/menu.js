@@ -1,18 +1,16 @@
 const menu = {
 
     init: () => {
-
         menu.menuBurger();
         menu.setDisplaySettings();
-
     },
 
-    menuBurger: () => {
+    menuBurger() {
 
         //Gestion de l'affichage du Menu
         const menuBurger = document.getElementById('menuBurger');
 
-        if (menuBurger) { //condition qui permet de savoir si on est sur la page de connexion et si oui on appliquera qd même les couleurs présentes dans le localstorage 
+        if (menuBurger) { //condition qui permet de savoir si on est sur la page de connexion et si oui on appliquera qd même les couleurs présentes dans le localstorage
             menuBurger.addEventListener('click', () => {
                 const menuBurgerMenu = document.getElementsByClassName('menuBurger')[0];
 
@@ -45,11 +43,12 @@ const menu = {
                         displayId = 1;
                         break;
                 };
+                const route = '/api/settings/colors/' + displayId;
+                console.log(route, {
+                    method: PUT
+                });
 
-                const route = '/sudoku/displaySettings/update/' + displayId;
-                console.log(route);
-
-                //On met à jour la table client 
+                //On met à jour la table client
                 //(si val = 0 alors mode nuit on met l'id 2 dans la table actor)
                 //(si val = 1 alors mode jour on met l'id 1 dans la table actor)
 
@@ -62,7 +61,7 @@ const menu = {
 
 
                 //on requête la table actor pour récupérer les couleurs correspondants à son choix
-                fetch('/sudoku/displaySettings/getColors') //on fait une demande au back des couleurs choisies par l'utilisateur
+                fetch('/api/settings/colors') //on fait une demande au back des couleurs choisies par l'utilisateur
                     .then(function (response) {
                         const responseTreated = response.json(); //on décrypte la réponse du back
                         return responseTreated;

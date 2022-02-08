@@ -3,7 +3,9 @@ const dataMapper = require('../../models/user');
 
 const controller = {
 
-    home: (req, res) => res.render('index'),
+    home(req, res) {
+        res.render('index');
+    },
 
     async databaseRead(req, res) {
         // lecture de la base de données

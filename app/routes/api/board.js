@@ -9,7 +9,7 @@ const { boardController: controller } = require('../../controllers/api');
 // chargement d'une grille en fonction d'un level demandé
 const router = express.Router();
 
-router.route('/getBoard/:level(/[A-Z][a-z]+[1-2]?/)')
+router.route('/getBoard/:level([A-Z][a-z]+[1-2]?)')
     .get(handler(controller.loadBoard));
 
 // chargement des résultats d'une grille chargée
