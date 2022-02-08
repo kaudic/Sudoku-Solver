@@ -18,7 +18,7 @@ router.route('/solveBoard/:boardId(\\d+)')
 
 // résolution récursive (solveur) d'une grille saisie
 router.route('/solveBoard')
-    .post(validate(schema), handler(controller.solveBoard));
+    .post(validate('body', schema), handler(controller.solveBoard));
 
 // mode auto-correction, on contrôle la valeur saisie d'une cellule
 router.route('/checkInput/:boardId(\\d+)/:inputId(\\d+)')

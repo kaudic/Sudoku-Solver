@@ -10,10 +10,10 @@ const SudokError = require('../errors/sudokError');
  * le corp de la requête en utilisant le schema passé en paramètre.
  * Renvoi une erreur 400 si la validation échoue.
  */
-module.exports = (schema) => async (request, _, next) => {
+module.exports = (prop, schema) => async (request, _, next) => {
     try {
-        debug(request.body);
-        await schema.validateAsync(request.body);
+        debug(request[prop]);
+        await schema.validateAsync(request[prop]);
         next();
     } catch (error) {
         // Je dois afficher l'erreur à l'utilisateur

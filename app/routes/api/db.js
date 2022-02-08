@@ -1,18 +1,14 @@
 const express = require('express');
+const handler = require('../../helpers/handler');
+const { dbController: controller } = require('../../controllers/api');
+const validate = require('../../validation/validator');
+const schema = require('../../validation/schemas/generatorSchema');
 
 const router = express.Router();
-const handler = require('../../helpers/handler');
-
-// TODO faire les schémas de validation avec Joi
-// Import du système de validation des données au niveau applicatif
-// const validate = require('../../validation/validator');
-// const schema = require('../../validation/schemas/postSchema');
-// Import des contrôleurs avec des alias
-const { dbController: controller } = require('../../controllers/api');
 
 // créer de nouvelles grilles en base de données
 router.route('/generate')
-    .get(handler(controller.dataBaseWrite));
+    .get(validate('query', schema), handler(controller.dataBaseWrite));
 
 // supprimer une grille en base de données
 router.route('/:id(\\d+)')

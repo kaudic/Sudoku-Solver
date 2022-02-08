@@ -1,7 +1,8 @@
-//importation et gestion des modules externes
+// importation et gestion des modules externes
 require('dotenv').config();
+const debug = require('debug')('app:server');
 const http = require('http');
-//TODO mettre en place le debug
+
 // const debug = require('debug')('app:server');
 const app = require('./app');
 

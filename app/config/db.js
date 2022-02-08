@@ -1,19 +1,37 @@
-// TODO passer en mode pool
-const { Client } = require('pg');
+const { Pool } = require('pg');
+const debug = require('debug')('SQL:log');
 
-// ecrire {Client} est une ecriture ES6 "destructuré" (destructuring)
-// cela équivaut à const Client = require("pg").Client;
-// On ce connecte à la bdd local
-// (on ne cherche pas à comprendre ce que fait ce new, on vera ça en saison5)
+const config = {};
 
-const client = new Client({
-    user: process.env.DB_USER,
-    password: process.env.DB_USER_PASSWORD,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    port: process.env.DB_PORT,
-});
+// si j'exécute l'appli sur Héroku, je complète mon object de config
+// DATABASE_URL est une variable d'environnement présente sur Heroku
+if (process.env.NODE_ENV === 'production') {
+    config.connectionString = process.env.DATABASE_URL;
+    debug(process.env.DATABASE_URL);
+    // ici, on désactive l'obligation pour notre app node de se
+    // connecter à la BDD en ssl (mode sécurisé)
+    config.ssl = {
+        rejectUnauthorized: false,
+    };
+}
 
-client.connect();
+const pool = new Pool(config);
 
-module.exports = client;
+module.exports = {
+    // On expose quand même le client original "au cas ou"
+    originalClient: pool,
+
+    // On fait une méthode pour "intercepter"
+    // les requêtes afin de pouvoir les afficher
+    // L'opérateur de "rest" permet de transformer
+    // ici X variables en param. en un tableau
+    async query(...params) {
+        debug(...params);
+
+        // L'opérateur ici fait l'effet inverse on transforme
+        // un tableau en une liste
+        // de variables / paramétre ce qui fait que la méthode query du client sera
+        // appelé exactement de la même façon que celle de notre module
+        return this.originalClient.query(...params);
+    },
+};
