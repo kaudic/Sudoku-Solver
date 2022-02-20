@@ -5,120 +5,89 @@ const menu = {
         menu.setDisplaySettings();
     },
 
-    menuBurger() {
-
-        //Gestion de l'affichage du Menu
+    // Création Listenner pour afficher/masquer le menu burger
+    menuBurgerSetDisplay() {
         const menuBurger = document.getElementById('menuBurger');
-
-        if (menuBurger) { //condition qui permet de savoir si on est sur la page de connexion et si oui on appliquera qd même les couleurs présentes dans le localstorage
+        if (menuBurger) {
             menuBurger.addEventListener('click', () => {
                 const menuBurgerMenu = document.getElementsByClassName('menuBurger')[0];
-
-                if (menuBurgerMenu.style.display != 'block') {
+                if (menuBurgerMenu.style.display !== 'block') {
+                    menu.menuBurgerInitialModeState();
                     menuBurgerMenu.style.display = 'block';
-
                 } else {
                     menuBurgerMenu.style.display = 'none';
                 }
             });
-
-
-            //Gestion du bouton nuit/jour, menu accessible uniquement pour les utilisateurs connectés
-            //On va mettre à jour la table actor avec le choix décidé
-            //Puis on va requêter la table actor et display pour connaître les couleurs choisies
-
-            const toggleDayNightBtnElt = document.getElementById('toggleDayNight');
-
-            toggleDayNightBtnElt.addEventListener('click', (e) => {
-                e.preventDefault();
-
-                const toggleEltValue = e.target.value;
-                let displayId = null;
-
-                switch (toggleEltValue) {
-                    case '0':
-                        displayId = 2;
-                        break;
-                    case '1':
-                        displayId = 1;
-                        break;
-                };
-                const route = '/api/settings/colors/' + displayId;
-                console.log(route, {
-                    method: PUT
-                });
-
-                //On met à jour la table client
-                //(si val = 0 alors mode nuit on met l'id 2 dans la table actor)
-                //(si val = 1 alors mode jour on met l'id 1 dans la table actor)
-
-                fetch(route) //on fait une demande au back des couleurs choisies par l'utilisateur
-                    .then(function (response) {
-                        if (response) {
-                            console.log('Table actor mis à jour avec l\'affichage souhaité.')
-                        }
-                    });
-
-
-                //on requête la table actor pour récupérer les couleurs correspondants à son choix
-                fetch('/api/settings/colors') //on fait une demande au back des couleurs choisies par l'utilisateur
-                    .then(function (response) {
-                        const responseTreated = response.json(); //on décrypte la réponse du back
-                        return responseTreated;
-                    })
-                    .then((colors) => {
-                        console.log((colors));
-
-                        //On applique les couleurs réceptionnées
-                        document.documentElement.style.setProperty('--color1', colors.display_color1);
-                        document.documentElement.style.setProperty('--color2', colors.display_color2);
-                        document.documentElement.style.setProperty('--color3', colors.display_color3);
-                        document.documentElement.style.setProperty('--color4', colors.display_color4);
-                        document.documentElement.style.setProperty('--color5', colors.display_color5);
-
-                        //TODO si le local storage colorsSettings existe alors on le modifie
-                        //TODO S'il n'existe pas on le créé
-
-                        //on enregistre dans le localstorage les préférences utilisateurs
-                        localStorage.setItem('colorsSettings', JSON.stringify(colors));
-
-                    });
-
-            });
         }
     },
 
+    // lecture LS pour setup affichage toggle de manière cohérente avec le mode
+    menuBurgerInitialModeState() {
+        const toggleDayNightBtnElt = document.getElementById('toggleDayNight');
+        const mode = menu.getColorsModeInLS();
+        if (mode === 'BRIGHT') {
+            toggleDayNightBtnElt.value = 1;
+        } else {
+            toggleDayNightBtnElt.value = 0;
+        }
+    },
+
+    // Création du listenner sur le toggle pour MAJ pref user 0/1 DARK/BRIGHT
+    menuBurgerSetDarkModeToggle() {
+        const toggleDayNightBtnElt = document.getElementById('toggleDayNight');
+        toggleDayNightBtnElt.addEventListener('click', (e) => {
+            e.preventDefault();
+            const displayId = Number(e.target.value) + 1;
+            fetch(`/api/settings/colors/${displayId}`, { method: 'PUT' });
+            menu.menuBurgerSetColors();
+        });
+    },
+
+    // Requête sur la BDD pour voir les couleurs choisies
+    // Lancement de setColorsInLS pour mettre à jour le LS
+    // Lancement de setDisplaySettings pour mettre à jour le fichier CSS
+    menuBurgerSetColors() {
+        fetch('/api/settings/colors')
+            .then((res) => res.json())
+            .then((colors) => {
+                menu.setColorsInLS(colors);
+                menu.setDisplaySettings();
+            });
+    },
+
+    // Lit le LS et renvoie BRIGHT ou DARK
+    getColorsModeInLS() {
+        const parsedColors = JSON.parse(localStorage.getItem('colorsSettings'));
+        return parsedColors.display_type;
+    },
+
+    // Enregistrement dans LS des couleurs passées en param
+    setColorsInLS(colors) {
+        localStorage.setItem('colorsSettings', JSON.stringify(colors));
+    },
+
+    // Lancement de 3 fcts
+    // 1-Création Listenner pour afficher/masquer le menu burger
+    // 2-Création du listenner sur le toggle pour MAJ pref user 0/1 DARK/BRIGHT
+    // 3-Requête sur la BDD pour voir les couleurs choisies
+    // 3-Application des couleurs dans le fichier CSS
+    // 3-Lancement de setColorsInLS pour mettre à jour le LS
+    menuBurger() {
+        menu.menuBurgerSetDisplay();
+        menu.menuBurgerSetDarkModeToggle();
+        menu.menuBurgerSetColors();
+    },
+
+    // Lecture du localStorage et application des pref sur le fichier CSS
     setDisplaySettings: () => {
-
-        //On va chercher les couleurs dans le local storage
-
-        const colors = localStorage.getItem('colorsSettings');
-        const parsedColors = JSON.parse(colors);
-
-        //On applique les couleurs du local storage
+        const parsedColors = JSON.parse(localStorage.getItem('colorsSettings'));
         document.documentElement.style.setProperty('--color1', parsedColors.display_color1);
         document.documentElement.style.setProperty('--color2', parsedColors.display_color2);
         document.documentElement.style.setProperty('--color3', parsedColors.display_color3);
         document.documentElement.style.setProperty('--color4', parsedColors.display_color4);
         document.documentElement.style.setProperty('--color5', parsedColors.display_color5);
-
-        //On positionne le curseur du toggleDayNight en fonction de la valeur du localHost
-
-        const toggleDayNightBtnElt = document.getElementById('toggleDayNight');
-
-        console.log('parsedColors.display_type:' + parsedColors.display_type);
-
-        if (parsedColors.display_type === 'LIGHT') {
-            toggleDayNightBtnElt.value = 0;
-        } else {
-            toggleDayNightBtnElt.value = 0;
-        }
-
-    }
-
+    },
 };
 
-
-//Lancement de la gestion de l'affichage du menu Burger
-
+// Lancement de la gestion de l'affichage du menu Burger
 document.addEventListener('DOMContentLoaded', menu.init());

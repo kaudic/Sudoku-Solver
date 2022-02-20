@@ -10,11 +10,11 @@ CREATE TABLE "role" (
 CREATE TABLE "display" (
     "display_id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "display_type" TEXT NOT NULL UNIQUE,
-    "display_color_1" TEXT,
-    "display_color_2" TEXT,
-    "display_color_3" TEXT,
-    "display_color_4" TEXT,
-    "display_color_5" TEXT
+    "display_color1" TEXT,
+    "display_color2" TEXT,
+    "display_color3" TEXT,
+    "display_color4" TEXT,
+    "display_color5" TEXT
 );
 
 CREATE TABLE "board" (

@@ -1,4 +1,4 @@
-const dataMapper = require('../../models/board');
+const dataMapper = require('../../models/settings');
 
 const controller = {
 

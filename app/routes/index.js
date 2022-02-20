@@ -3,6 +3,13 @@ const { errorHandler, SudokError } = require('../helpers/errorHandler');
 
 const router = express.Router();
 
+// si erreur utilisateur, on redirige sur /website
+
+router.get('/', (req, res) => {
+    console.log('ici');
+    res.redirect('/sudoku');
+});
+
 // importation des sous-routeurs
 const apiRouter = require('./api');
 const websiteRouter = require('./website');

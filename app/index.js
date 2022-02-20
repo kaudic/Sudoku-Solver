@@ -1,13 +1,11 @@
-// const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
 const router = require('./routes');
 
 const app = express();
-// TODO mettre en place la doc
-// require('./helpers/apiDocs')(app);
-// app.set('views', path.join(__dirname, 'views'));
+require('./helpers/apiDocs')(app);
+
 app.set('views', `${process.cwd()}/app/views`);
 app.set('view engine', 'ejs');
 

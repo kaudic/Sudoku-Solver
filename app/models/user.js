@@ -11,7 +11,7 @@ module.exports = {
             values: [login, password, name, surname, email, 2],
         };
 
-        // insertion du nouveau compte puis le controoler fera un render de la vue
+        // insertion du nouveau compte puis le controller fera un render de la vue
         const results = await client.query(sqlQuery);
 
         if (results.rows === 0) {

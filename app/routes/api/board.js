@@ -2,13 +2,22 @@ const express = require('express');
 const handler = require('../../helpers/handler');
 const validate = require('../../validation/validator');
 const schema = require('../../validation/schemas/boardSchema');
-
-// Import des contrôleurs avec des alias
 const { boardController: controller } = require('../../controllers/api');
 
-// chargement d'une grille en fonction d'un level demandé
 const router = express.Router();
 
+/**
+ * @typedef {array} boards Array containing 9 Arrays with numbers from 0 to 9, for each line
+ * @typedef {string} level could be Facile1, Facile2, Moyen, Difficile, Démoniaque
+ */
+
+/**
+ * GET /api/board/getBoard/{level}
+ * @summary Get a board with blank cells to play with (qty of blanks depends on the level requested)
+ * @tags Boards - Routes to deal with board management
+ * @param {level} level - Difficulty requested (Facile1, Facile2, Moyen, Difficile, Démoniaque)
+ * @returns {boards} 200 - Array containing 9 Arrays with numbers from 0 to 9, for each line
+ */
 router.route('/getBoard/:level([A-Z][a-z]+[1-2]?)')
     .get(handler(controller.loadBoard));
 

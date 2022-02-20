@@ -6,10 +6,10 @@ const { settingsController: controller } = require('../../controllers/api');
 
 const router = express.Router();
 
-router.route('/colors/:userId(\\d+)')
+router.route('/colors/:displayId(\\d+)')
     .put(handler(controller.updateDisplaySettings));
 
-router.route('/colors/')
-    .get(handler(controller.getDisplaySettings))
+router.route('/colors')
+    .get(handler(controller.getDisplaySettings));
 
 module.exports = router;
