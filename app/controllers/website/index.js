@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const dataMapper = require('../../models/user');
+const formatUser = require('../../helpers/userFormatter');
 
 const controller = {
 
@@ -20,8 +21,7 @@ const controller = {
 
     adminAuth(req, res) {
         if (!req.session.actorConnected) {
-            const loginMessage = 'Vous devez vous connecter pour accéder à cette page.';
-            res.render('login', { loginMessage });
+            res.render('login', { loginMessage: 'Vous devez vous connecter pour accéder à cette page.' });
         }
 
         if (req.session.actorConnected.role.toString().toLowerCase() !== 'admin') {
@@ -30,21 +30,23 @@ const controller = {
     },
 
     async addLogin(req, res) {
-        // récupérer les informations dans le req.body et les affecter à un nouvel objet
         const actorObject = { ...req.body };
 
-        // check if actor_login already exists, if true then render page
-        const results = await dataMapper.getOneUser(actorObject.actor_login);
+        // check if login or email already exists, if true then render page
+        const results = await dataMapper.getOneUserByIdOrEmail(actorObject);
         if (results.rowCount > 0) {
-            const createLoginMessage = 'ce login existe déjà en base de données.';
-            return res.render('createLogin', { createLoginMessage });
+            return res.render('createLogin', { createLoginMessage: 'ce login ou cet email existe déjà en base de données.' });
         }
+
         // crypter les données du password
         const hash = await bcrypt.hash(req.body.password, 10);
-        actorObject.actor_password = hash;
-        await dataMapper.createUser(actorObject);
-        const loginMessage = 'Utilisateur créé, vous pouvez désormais vous connecter.';
-        return res.render('login', { loginMessage });
+        actorObject.password = hash;
+
+        // format names/surnames/emails with capital letters (or not)
+        const formattedUser = formatUser(actorObject);
+
+        await dataMapper.createUser(formattedUser);
+        return res.render('login', { loginMessage: 'Utilisateur créé, vous pouvez désormais vous connecter.' });
     },
 
     async amendActor(req, res) {

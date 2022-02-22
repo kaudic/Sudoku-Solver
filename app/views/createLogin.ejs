@@ -1,6 +1,6 @@
 <%- include('./partials/header'); %>
 
-    <form action="/sudoku/login/add" method="POST" class="loginForm">
+    <form id="loginForm" action="/sudoku/login/add" method="POST" class="loginForm">
 
         <div class="mainDivLogin">
 
@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="loginFormSousDiv">
-                    <label class="loginFormLabel">Login</label>
+                    <label class="loginFormLabel">Pseudo</label>
                     <input class="loginFormInput" name="login" placeholder="Entrer votre login" <% if
                         (locals.actorConnected) { %>
                     value="<%=locals.actorConnected.login%>
@@ -40,7 +40,7 @@
                 </div>
 
                 <div class="loginFormSousDiv">
-                    <label class="loginFormLabel">Password</label>
+                    <label class="loginFormLabel">Mot de passe</label>
                     <input type="password" class="loginFormInput" name="password" <% if (locals.actorConnected) {
                         %>placeholder="Modif de mot de passe non développé">
                     <% } else { %>placeholder="Entrer votre mot de passe">

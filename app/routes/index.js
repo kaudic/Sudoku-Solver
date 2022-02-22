@@ -3,10 +3,8 @@ const { errorHandler, SudokError } = require('../helpers/errorHandler');
 
 const router = express.Router();
 
-// si erreur utilisateur, on redirige sur /website
-
+// si erreur utilisateur, on redirige sur /sudoku
 router.get('/', (req, res) => {
-    console.log('ici');
     res.redirect('/sudoku');
 });
 

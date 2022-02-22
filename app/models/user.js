@@ -21,14 +21,14 @@ module.exports = {
         return true;
     },
 
-    async getOneUser(login) {
+    async getOneUserByIdOrEmail({ login, email }) {
         const sqlQuery = {
-            text: 'SELECT * FROM actor a INNER JOIN role r ON a.actor_role_id = r.role_id WHERE actor_login = $1',
-            values: [login],
+            text: 'SELECT * FROM actor a INNER JOIN role r ON a.actor_role_id = r.role_id WHERE actor_login = $1 OR actor_email=$2',
+            values: [login, email],
         };
 
         const results = await client.query(sqlQuery);
-        return results.rows[0];
+        return results;
     },
 
     async updateOneUser({

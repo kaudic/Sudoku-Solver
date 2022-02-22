@@ -1,4 +1,4 @@
-const app = require('./app');
+// const app = require('./app');
 
 const login = {
     init() {
@@ -16,7 +16,8 @@ const login = {
     },
 
     changeStyles() {
-        const inputs = document.getElementsByTagName('input');
+        const form = document.getElementById('loginForm');
+        const inputs = form.querySelectorAll('input');
         inputs.forEach((input) => {
             input.disabled = false;
             input.style.backgroundColor = 'white';
@@ -71,7 +72,8 @@ const login = {
 
     cancelBtnHandler(e) {
         e.preventDefault();
-        window.location.href = `${app.baseUrl}/sudoku`;
+        // window.location.href = `${app.baseUrl}/sudoku`;
+        window.location.href = `http://localhost:3000/sudoku`;
     },
 };
 

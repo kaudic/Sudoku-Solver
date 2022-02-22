@@ -25,13 +25,13 @@ CREATE TABLE "board" (
 
 CREATE TABLE "actor" (
   "actor_id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  "actor_name" TEXT NOT NULL UNIQUE,
-  "actor_surname" TEXT NOT NULL UNIQUE,
+  "actor_name" TEXT NOT NULL,
+  "actor_surname" TEXT NOT NULL,
   "actor_email" TEXT NOT NULL UNIQUE,
   "actor_login" TEXT NOT NULL UNIQUE,
-  "actor_password" TEXT NOT NULL UNIQUE,
-  "actor_role_id" INT NOT NULL REFERENCES "role" ("role_id"),
-  "actor_display_id" INT NOT NULL REFERENCES "display" ("display_id")
+  "actor_password" TEXT NOT NULL,
+  "actor_role_id" INT NOT NULL DEFAULT 2 REFERENCES "role" ("role_id"),
+  "actor_display_id" INT NOT NULL DEFAULT 1 REFERENCES "display" ("display_id")
 );
 
 COMMIT;

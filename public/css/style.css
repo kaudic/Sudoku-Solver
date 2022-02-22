@@ -15,11 +15,11 @@ body{
 }
 
 main{
-    
+
 }
 
 .globalMenu{
-    
+
 }
 
 .header{
@@ -27,7 +27,7 @@ main{
     flex-direction: row;
     justify-content:space-between;
     align-items: center;
-    
+
 }
 
 .header--Login{
@@ -35,7 +35,7 @@ main{
     margin: 20px;
     font-size: 50px;
     color: var(--color3);
-    
+
 }
 
 
@@ -65,7 +65,7 @@ h2{
     justify-content: flex-end;
     background:var(--color4);
     padding: 10px;
-    
+
 }
 
 .menuBurger--option{
@@ -83,7 +83,7 @@ text-decoration: none;
 }
 
 .form__consigne{
-    
+
     font-size: large;
     line-height: 25px;
 }
@@ -103,7 +103,7 @@ text-decoration: none;
     border-radius: 5px;
     display: block;
     font-family: arial, monospace;
-    
+
 }
 
 .form__btn--admin{
@@ -179,16 +179,16 @@ text-decoration: none;
 
 }
 
-#sudokuBoard input:focus { 
+#sudokuBoard input:focus {
     outline: 0;
     background-color: burlywood;
  }
 
- .sudokuColumn:nth-child(3n) { 
+ .sudokuColumn:nth-child(3n) {
     border-right: 4px solid black;
  }
 
- #sudokuBoard .sudokuRow:nth-child(3n) { 
+ #sudokuBoard .sudokuRow:nth-child(3n) {
     border-bottom: 4px solid black;
  }
 
@@ -366,7 +366,7 @@ text-decoration: none;
     margin-right: 20px;
     display: inline-block;
     width: 110px;
-    
+
 }
 
 .loginFormInput{
@@ -383,7 +383,7 @@ text-decoration: none;
 
 .loginBtnBar{
     display: flex;
-    
+
 }
 
 .loginFormBtn{
@@ -396,7 +396,7 @@ text-decoration: none;
     padding: 6px 15px 6px 15px;
     background: none;
     border: 2px solid var(--color1);
-   
+
 }
 
 .loginFormBtnDelete{
@@ -446,7 +446,7 @@ text-decoration: none;
 
 .loginFormDiv{
 
-  text-align: left; 
+  text-align: left;
   background: none;
 
 }
@@ -471,40 +471,40 @@ text-decoration: none;
 .Footer-nav{
     height:60px;
     background:var(--color4);
-    
+
     }
-    
+
     .Footer-container{
         display: flex;
         flex-direction: row;
         justify-content: space-between;
     }
-    
+
     .Footer-nav__list1{
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
         padding: 5px;
         flex:1;
-    
+
     }
-    
+
     .Footer-nav__list2{
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
         padding: 5px;
         flex:1;
-    
+
     }
-    
+
     .Footer-nav__item{
         margin:10px 30px;
         font-size: 1.1em;
         font-weight: normal;
         color: white;
     }
-    
+
     .Footer-social-icon{
         font-size: 30px;
     }
