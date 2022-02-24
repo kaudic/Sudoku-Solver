@@ -1,7 +1,6 @@
 const dbController = require('./dbController');
 const settingsController = require('./settingsController');
 const boardController = require('./boardController');
-const userController = require('./userController');
 
 const apiController = {
     /**
@@ -20,5 +19,5 @@ const apiController = {
 };
 
 module.exports = {
-    apiController, dbController, settingsController, boardController, userController,
+    apiController, dbController, settingsController, boardController,
 };

@@ -31,8 +31,18 @@ module.exports = {
         return results;
     },
 
+    async getOnePassword(email) {
+        const sqlQuery = {
+            text: 'SELECT actor_password FROM actor WHERE actor_email = $1',
+            values: [email],
+        };
+
+        const result = await client.query(sqlQuery);
+        return result.rows[0];
+    },
+
     async updateOneUser({
-        login, name, surname, email, id,
+        login, name, surname, email, password, id,
     }) {
         // j'enlève les espaces du login dans la requête car je n'arrivais pas à le faire en JS
         const sqlQuery = {
@@ -40,9 +50,10 @@ module.exports = {
             SET actor_login = replace($1,' ',''),
             actor_name= $2,
             actor_surname= $3,
-            actor_email= $4
+            actor_email= $4,
+            actor_password=$6
             WHERE actor_id = $5`,
-            values: [login, name, surname, email, id],
+            values: [login, name, surname, email, id, password],
         };
 
         const results = await client.query(sqlQuery);

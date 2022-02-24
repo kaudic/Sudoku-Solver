@@ -10,33 +10,40 @@
                     <label class="loginFormLabel">Nom</label>
 
 
-                    <input class="loginFormInput" name="surname" placeholder="" <% if (locals.actorConnected) { %>
-                    value="<%=locals.actorConnected.surname%>
-                        <% }%>"disabled>
+                    <input class="loginFormInput" name="surname" placeholder="" <% if (locals.newUser) { %>
+                    value="<%=locals.newUser.surname%>">
+                        <% } else if (locals.actorConnected){%>
+                            value="<%=locals.actorConnected.surname%>"disabled>
+                                <% }%>
 
                 </div>
 
                 <div class="loginFormSousDiv">
                     <label class="loginFormLabel">Prénom</label>
-                    <input class="loginFormInput" name="name" placeholder="" <% if (locals.actorConnected) { %>
-                    value="<%=locals.actorConnected.name%>
-                        <% }%>"disabled>
+                    <input class="loginFormInput" name="name" placeholder="" <% if (locals.newUser) { %>
+                    value="<%=locals.newUser.name%>">
+                        <% } else if (locals.actorConnected){%>
+                            value="<%=locals.actorConnected.name%>"disabled>
+                                <% }%>
                 </div>
 
                 <div class="loginFormSousDiv">
                     <label class="loginFormLabel">E-mail</label>
-                    <input type="email" class="loginFormInput" name="email" placeholder="" <% if (locals.actorConnected)
-                        { %>
-                    value="<%=locals.actorConnected.email%>
-                        <% }%>"disabled>
+                    <input type="email" class="loginFormInput" name="email" placeholder="" <% if (locals.newUser) { %>
+                    value="<%=locals.newUser.email%>">
+                        <% } else if (locals.actorConnected){%>
+                            value="<%=locals.actorConnected.email%>"disabled>
+                                <% }%>
                 </div>
 
                 <div class="loginFormSousDiv">
                     <label class="loginFormLabel">Pseudo</label>
-                    <input class="loginFormInput" name="login" placeholder="Entrer votre login" <% if
-                        (locals.actorConnected) { %>
-                    value="<%=locals.actorConnected.login%>
-                        <% }%>"disabled>
+                    <input class="loginFormInput" name="login" placeholder="Entrer votre login" <% if (locals.newUser) {
+                        %>
+                    value="<%=locals.newUser.login%>">
+                        <% } else if (locals.actorConnected){%>
+                            value="<%=locals.actorConnected.login%>"disabled>
+                                <% }%>
                 </div>
 
                 <div class="loginFormSousDiv">

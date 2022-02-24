@@ -6,14 +6,12 @@ const SudokError = require('../../errors/sudokError');
 const router = express.Router();
 
 // importation des routeurs
-const userRouter = require('./user');
 const boardRouter = require('./board');
 const dbRouter = require('./db');
 const settingsRouter = require('./settings');
 
 // Dispatch entre route d'accueil et routeurs secondaires
 router.all('/', apiController.home);
-router.use('/user', userRouter);
 router.use('/settings', settingsRouter);
 router.use('/db', dbRouter);
 router.use('/board', boardRouter);

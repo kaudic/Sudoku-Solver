@@ -18,6 +18,8 @@ router.use('/sudoku', websiteRouter);
 router.use(() => {
     throw new SudokError(404, 'Page introuvable');
 });
+
+// If an error is thrown then it will be treated in this middleware
 router.use((err, _, response, next) => {
     errorHandler(err, response, next);
 });

@@ -37,8 +37,13 @@ const login = {
     },
 
     createValidationBtn() {
+        // if accountValidation button already exists then return
+        if (document.getElementById('accountValidation')) {
+            return;
+        }
         // Création du bouton de validation
         const accountValidation = document.createElement('button');
+        accountValidation.id = 'accountValidation';
         accountValidation.textContent = 'Valider';
         accountValidation.className = 'loginFormBtn';
         document.getElementById('loginBtnBar').appendChild(accountValidation);
@@ -50,8 +55,13 @@ const login = {
     },
 
     createDeleteBtn() {
+        // if deleteAccount button already exists then return
+        if (document.getElementById('deleteAccount')) {
+            return;
+        }
         // Création du bouton de suppression
         const deleteAccount = document.createElement('button');
+        deleteAccount.id = 'deleteAccount';
         deleteAccount.textContent = 'Supprimer';
         deleteAccount.className = 'loginFormBtnDelete';
         document.getElementById('loginBtnBar').appendChild(deleteAccount);
