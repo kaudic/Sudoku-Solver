@@ -6,7 +6,7 @@ module.exports = {
         login, password, name, surname, email,
     }) {
         const sqlQuery = {
-            text: 'INSERT INTO "actor" ("actor_login", "actor_password", "actor_name","actor_surname","actor_email", "actor_role_id") VALUES ($1,$2,$3,$4,$5,$6);',
+            text: 'INSERT INTO "actor" ("actor_login", "actor_password", "actor_name","actor_surname","actor_email", "actor_role_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING *;',
             // le 2 fait référence à un profil VISITOR (table role)
             values: [login, password, name, surname, email, 2],
         };
@@ -38,7 +38,7 @@ module.exports = {
         };
 
         const result = await client.query(sqlQuery);
-        return result.rows[0];
+        return result.rows[0].actor_password;
     },
 
     async updateOneUser({
@@ -51,9 +51,9 @@ module.exports = {
             actor_name= $2,
             actor_surname= $3,
             actor_email= $4,
-            actor_password=$6
-            WHERE actor_id = $5`,
-            values: [login, name, surname, email, id, password],
+            actor_password=$5
+            WHERE actor_id = $6`,
+            values: [login, name, surname, email, password, id],
         };
 
         const results = await client.query(sqlQuery);

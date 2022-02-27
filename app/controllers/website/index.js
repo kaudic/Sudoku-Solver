@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
+const debug = require('debug')('app:websiteController');
 const dataMapper = require('../../models/user');
 const formatUser = require('../../helpers/userFormatter');
+const mailer = require('../../helpers/mailer');
 
 const controller = {
 
@@ -37,7 +39,6 @@ const controller = {
                 return res.render('createLogin', { createLoginMessage: 'merci de compléter tous les champs obligatoires.', newUser });
             } return true;
         });
-
         // check if login or email already exists, if true then render page
         const results = await dataMapper.getOneUserByIdOrEmail(newUser);
         if (results.rowCount > 0) {
@@ -47,6 +48,7 @@ const controller = {
         const hash = await bcrypt.hash(req.body.password, 10);
         newUser.password = hash;
         await dataMapper.createUser(formatUser(newUser));
+        mailer(newUser);
         return res.render('login', { loginMessage: 'Utilisateur créé, vous pouvez désormais vous connecter.' });
     },
 
@@ -57,23 +59,13 @@ const controller = {
 
         // hash new password excecpt if not entered, in this case we get the one from the DB
         if (actorObject.password === '') {
-            actorObject.password = await dataMapper.getOnePassword(actorObject.email)
+            actorObject.password = await dataMapper.getOnePassword(actorObject.email);
+        } else {
+            actorObject.password = await bcrypt.hash(req.body.password, 10);
         }
-        actorObject.password = await bcrypt.hash(req.body.password, 10);
-
-        console.log(JSON.stringify(actorObject));
-        // lancer le dataMapper qui met à jour les données pour l'id de session en cours
+        // mise à jour dans la DB
         await dataMapper.updateOneUser(actorObject);
-
-        // on remet à jour les données de la session et les locals
-        req.session.actorConnected.login = actorObject.actor_login;
-        req.session.actorConnected.name = actorObject.actor_name;
-        req.session.actorConnected.surname = actorObject.actor_surname;
-        req.session.actorConnected.email = actorObject.actor_email;
-
-        // on transmet les infos de session à EJS
-        res.locals.actorConnected = req.session.actorConnected;
-        return res.redirect('/sudoku');
+        return res.redirect('/sudoku/');
     },
 
     async deleteActor(req, res) {
