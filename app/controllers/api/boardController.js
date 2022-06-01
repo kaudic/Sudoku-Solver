@@ -6,20 +6,32 @@ const controller = {
 
     async loadBoard(req, res) {
         // on récupère le niveau de difficulté demandé par le client (envoyé dans la route)
-        const { level } = req.params;
+        const { level } = (req.params);
+        const levelRegexCheck = new RegExp(/^[A-Z][a-zé]+[1-2]?$/);
+        const isLevelOk = levelRegexCheck.test(level);
+        console.log(isLevelOk);
+        if (!isLevelOk) {
+            throw new Error('Le level demandé n\'est pas conforme à ce qu\'attends l\'API.')
+        };
+
+
+        // we check with a regexp what we received
+        // const levelRegexp =
+
+        const goalOfCellsEmptyPerLine = service.emptyCellsPerLevel(level);
 
         // Appel du datamapper, il va renvoyer une grille aléatoire.
         const fullRandomBoard = await dataMapper.getOneRandomBoard();
 
         // on la passe à la fonction aléatoire pour lui retirer des valeurs
-        const unfilledRandomBoard = service.takeOutNumbers(level, fullRandomBoard.board_data);
+        const unfilledRandomBoard = service.wipeCells(fullRandomBoard.board_data, goalOfCellsEmptyPerLine);
+        console.log('unfilledRandomBoard: ' + unfilledRandomBoard);
 
-        res.json = {
+        return res.json({
             id: fullRandomBoard.board_id,
             data: unfilledRandomBoard,
-        };
+        });
     },
-
     async loadResult(req, res) {
         // on récupère l'ID de la grille affichée sur le navigateur (provient d'un dataset)
         const { boardId } = req.params;
@@ -33,23 +45,18 @@ const controller = {
     async solveBoard(req, res) {
         // on récupère les données de la grille du front
         const frontBoardData = req.body;
-        console.log('coucou');
         // enregistrer les données reçues du front (frontBoardData) vers notre variable en back
-        solver.board.data.ligne = frontBoardData.ligne;
-        solver.board.data.column = frontBoardData.column;
-        solver.board.data.square = frontBoardData.square;
-        solver.board.data.emptyCells = frontBoardData.emptyCells;
+        solver.data.ligne = frontBoardData.ligne;
+        solver.data.column = frontBoardData.column;
+        solver.data.square = frontBoardData.square;
+        solver.data.emptyCells = frontBoardData.emptyCells;
 
-        // !lancement du solveur en mode asynchrone peut être il faudra une fonction anonyme ici
-        const resultatSolver = await solver.board.solve(false);
-        resultatSolver().then((data) => {
-            if (data === 'Non solvable') {
-                return res.json({ results: 'Il n\'y a pas de solution pour cette grille' });
-            }
-            return res.json({ results: solver.board.data.ligne });
-        });
+        const resultatSolver = solver.solve(false);
+        if (resultatSolver === 'Non solvable') {
+            return res.json({ results: 'Il n\'y a pas de solution pour cette grille' });
+        }
+        return res.json({ results: solver.data.ligne });
     },
-
     async checkCellResult(req, res) {
         // on récupère l'Id de la grille et l'Id de l'input
         const { boardId, inputId } = req.params;

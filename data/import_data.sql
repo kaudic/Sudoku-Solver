@@ -1,5 +1,8 @@
 BEGIN;
 
+-- these datas have already been added to the migration folder, initdb file
+-- therefore NO NEED to import this file
+
 --insertion des roles admin/autre
 INSERT INTO "role"("role_description") VALUES ('ADMIN'),('CLIENT'),('VISITOR');
 
@@ -13,14 +16,6 @@ VALUES
 INSERT INTO "actor" ("actor_name", "actor_surname","actor_email","actor_login","actor_password","actor_role_id","actor_display_id")
 VALUES
 ('Killian','Audic','killianaudic@gmail.com','kaudic','$2b$10$7uwE7IKBXN.oMT1qMgGag.KWSt4NH8vYBhRe6vo.dddWSw1B82Rtq','1','1');
-
-
-
-
-
-
-
-
 
 
 COMMIT;

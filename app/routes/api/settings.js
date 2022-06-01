@@ -12,4 +12,7 @@ router.route('/colors/:displayId(\\d+)')
 router.route('/colors')
     .get(handler(controller.getDisplaySettings));
 
+router.route('/mentions')
+    .get(handler(controller.getCurrentLegalNotice));
+
 module.exports = router;

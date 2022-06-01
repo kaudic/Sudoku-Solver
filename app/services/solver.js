@@ -28,12 +28,15 @@ const solver = {
         const stateLines = solver.linesFinished();
 
         if (stateLines) {
-            const stateColumns = solver.squaresFinished();
+            // console.log('stateLines:' + stateLines);
+            const stateColumns = solver.columnsFinished();
 
             if (stateColumns) {
+                // console.log('stateColumns:' + stateColumns);
                 const stateSquares = solver.squaresFinished();
-
+                // return true;
                 if (stateSquares) {
+                    // console.log('stateSquares:' + stateSquares);
                     return true;
                 }
             }
@@ -42,6 +45,7 @@ const solver = {
     },
 
     linesFinished(board = this.data.line) {
+        // console.log('LINE: ' + board);
         let areLinesOK = true;
         board.forEach((line) => {
             for (let i = 1; i < 10; i += 1) {
@@ -55,6 +59,7 @@ const solver = {
 
     squaresFinished(board = this.data.square) {
         let areSquaresOK = true;
+        // console.log('SQUARE: ' + board);
         board.forEach((square) => {
             for (let i = 1; i < 10; i += 1) {
                 if (!square.includes(i) || square.length !== 9) {
@@ -131,24 +136,118 @@ const solver = {
 
     writeInSquare(lig, col, square, result) {
         if ((lig === 0 || lig === 3 || lig === 6) && col <= 2) {
-            solver.board.data.square[square][Number(col)] = result;
+            solver.data.square[square][Number(col)] = result;
         } else if ((lig === 0 || lig === 3 || lig === 6) && col > 2 && col <= 5) {
-            solver.board.data.square[square][Number(col) - 3] = result;
+            solver.data.square[square][Number(col) - 3] = result;
         } else if ((lig === 0 || lig === 3 || lig === 6) && col > 5 && col <= 8) {
-            solver.board.data.square[square][Number(col) - 6] = result;
+            solver.data.square[square][Number(col) - 6] = result;
         } else if ((lig === 1 || lig === 4 || lig === 7) && col <= 2) {
-            solver.board.data.square[square][Number(col) + 3] = result;
+            solver.data.square[square][Number(col) + 3] = result;
         } else if ((lig === 1 || lig === 4 || lig === 7) && col > 2 && col <= 5) {
-            solver.board.data.square[square][Number(col)] = result;
+            solver.data.square[square][Number(col)] = result;
         } else if ((lig === 1 || lig === 4 || lig === 7) && col > 5 && col <= 8) {
-            solver.board.data.square[square][Number(col) - 3] = result;
+            solver.data.square[square][Number(col) - 3] = result;
         } else if ((lig === 2 || lig === 5 || lig === 8) && col <= 2 + 6) {
-            solver.board.data.square[square][Number(col) + 6] = result;
+            solver.data.square[square][Number(col) + 6] = result;
         } else if ((lig === 2 || lig === 5 || lig === 8) && col > 2 && col <= 5) {
-            solver.board.data.square[square][Number(col) + 3] = result;
+            solver.data.square[square][Number(col) + 3] = result;
         } else if ((lig === 2 || lig === 5 || lig === 8) && col > 5 && col <= 8) {
-            solver.board.data.square[square][Number(col)] = result;
+            solver.data.square[square][Number(col)] = result;
         }
+    },
+    updateSquare() {
+        // console.log('update square starting');
+
+        solver.data.square[0][0] = solver.data.ligne[0][0];
+        solver.data.square[0][1] = solver.data.ligne[0][1];
+        solver.data.square[0][2] = solver.data.ligne[0][2];
+        solver.data.square[0][3] = solver.data.ligne[1][0];
+        solver.data.square[0][4] = solver.data.ligne[1][1];
+        solver.data.square[0][5] = solver.data.ligne[1][2];
+        solver.data.square[0][6] = solver.data.ligne[2][0];
+        solver.data.square[0][7] = solver.data.ligne[2][1];
+        solver.data.square[0][8] = solver.data.ligne[2][2];
+
+        solver.data.square[1][0] = solver.data.ligne[0][3];
+        solver.data.square[1][1] = solver.data.ligne[0][4];
+        solver.data.square[1][2] = solver.data.ligne[0][5];
+        solver.data.square[1][3] = solver.data.ligne[1][3];
+        solver.data.square[1][4] = solver.data.ligne[1][4];
+        solver.data.square[1][5] = solver.data.ligne[1][5];
+        solver.data.square[1][6] = solver.data.ligne[2][3];
+        solver.data.square[1][7] = solver.data.ligne[2][4];
+        solver.data.square[1][8] = solver.data.ligne[2][5];
+
+        solver.data.square[2][0] = solver.data.ligne[0][6];
+        solver.data.square[2][1] = solver.data.ligne[0][7];
+        solver.data.square[2][2] = solver.data.ligne[0][8];
+        solver.data.square[2][3] = solver.data.ligne[1][6];
+        solver.data.square[2][4] = solver.data.ligne[1][7];
+        solver.data.square[2][5] = solver.data.ligne[1][8];
+        solver.data.square[2][6] = solver.data.ligne[2][6];
+        solver.data.square[2][7] = solver.data.ligne[2][7];
+        solver.data.square[2][8] = solver.data.ligne[2][8];
+
+        solver.data.square[3][0] = solver.data.ligne[3][0];
+        solver.data.square[3][1] = solver.data.ligne[3][1];
+        solver.data.square[3][2] = solver.data.ligne[3][2];
+        solver.data.square[3][3] = solver.data.ligne[4][0];
+        solver.data.square[3][4] = solver.data.ligne[4][1];
+        solver.data.square[3][5] = solver.data.ligne[4][2];
+        solver.data.square[3][6] = solver.data.ligne[5][0];
+        solver.data.square[3][7] = solver.data.ligne[5][1];
+        solver.data.square[3][8] = solver.data.ligne[5][2];
+
+        solver.data.square[4][0] = solver.data.ligne[3][3];
+        solver.data.square[4][1] = solver.data.ligne[3][4];
+        solver.data.square[4][2] = solver.data.ligne[3][5];
+        solver.data.square[4][3] = solver.data.ligne[4][3];
+        solver.data.square[4][4] = solver.data.ligne[4][4];
+        solver.data.square[4][5] = solver.data.ligne[4][5];
+        solver.data.square[4][6] = solver.data.ligne[5][3];
+        solver.data.square[4][7] = solver.data.ligne[5][4];
+        solver.data.square[4][8] = solver.data.ligne[5][5];
+
+        solver.data.square[5][0] = solver.data.ligne[3][6];
+        solver.data.square[5][1] = solver.data.ligne[3][7];
+        solver.data.square[5][2] = solver.data.ligne[3][8];
+        solver.data.square[5][3] = solver.data.ligne[4][6];
+        solver.data.square[5][4] = solver.data.ligne[4][7];
+        solver.data.square[5][5] = solver.data.ligne[4][8];
+        solver.data.square[5][6] = solver.data.ligne[5][6];
+        solver.data.square[5][7] = solver.data.ligne[5][7];
+        solver.data.square[5][8] = solver.data.ligne[5][8];
+
+        solver.data.square[6][0] = solver.data.ligne[6][0];
+        solver.data.square[6][1] = solver.data.ligne[6][1];
+        solver.data.square[6][2] = solver.data.ligne[6][2];
+        solver.data.square[6][3] = solver.data.ligne[7][0];
+        solver.data.square[6][4] = solver.data.ligne[7][1];
+        solver.data.square[6][5] = solver.data.ligne[7][2];
+        solver.data.square[6][6] = solver.data.ligne[8][0];
+        solver.data.square[6][7] = solver.data.ligne[8][1];
+        solver.data.square[6][8] = solver.data.ligne[8][2];
+
+        solver.data.square[7][0] = solver.data.ligne[6][3];
+        solver.data.square[7][1] = solver.data.ligne[6][4];
+        solver.data.square[7][2] = solver.data.ligne[6][5];
+        solver.data.square[7][3] = solver.data.ligne[7][3];
+        solver.data.square[7][4] = solver.data.ligne[7][4];
+        solver.data.square[7][5] = solver.data.ligne[7][5];
+        solver.data.square[7][6] = solver.data.ligne[8][3];
+        solver.data.square[7][7] = solver.data.ligne[8][4];
+        solver.data.square[7][8] = solver.data.ligne[8][5];
+
+        solver.data.square[8][0] = solver.data.ligne[6][6];
+        solver.data.square[8][1] = solver.data.ligne[6][7];
+        solver.data.square[8][2] = solver.data.ligne[6][8];
+        solver.data.square[8][3] = solver.data.ligne[7][6];
+        solver.data.square[8][4] = solver.data.ligne[7][7];
+        solver.data.square[8][5] = solver.data.ligne[7][8];
+        solver.data.square[8][6] = solver.data.ligne[8][6];
+        solver.data.square[8][7] = solver.data.ligne[8][7];
+        solver.data.square[8][8] = solver.data.ligne[8][8];
+
     },
     /**
      *
@@ -188,12 +287,11 @@ const solver = {
         // on récupère les num de ligne/colonne/square
         const ligne = lastCell.cellCalculated.substr(0, 1);
         const column = lastCell.cellCalculated.substr(1, 1);
-        const square = solver.findSquare(ligne, column);
 
         // on supprime les valeurs de cette cellule dans les data ligne/column et square
         solver.data.ligne[ligne][column] = 0;
         solver.data.column[column][ligne] = 0;
-        solver.writeInSquare(ligne, column, square, 0);
+        solver.updateSquare();
 
         // push found cells in emptyCells of it to be calculated in next round
         solver.data.emptyCells.unshift(lastCell.cellCalculated);
@@ -214,6 +312,14 @@ const solver = {
             // On calcule cette cellule vide (tous les résultats possibles) à l'aide de la fonction calculateCell
             let nextCell = solver.speedUpSolve();
 
+            if (nextCell === 'backtracing') {
+                if (!solver.data.tracker[solver.data.tracker.length - 1]) {
+                    return 'Non solvable';
+                }
+                solver.makeStepsBeforeBacktracing();
+                return solver.solve(true);
+            }
+
             if (!nextCell) {
                 nextCell = solver.data.emptyCells[0];
             }
@@ -225,7 +331,6 @@ const solver = {
                 // On enregistre la cellule calculée, les résultats possibles et le résultat testé (ce sera le premier résultat trouvé) dans le tracker
                 // création d'un objet contenant les données de la cellule
                 const testedResult = cellResults.shift();
-
                 const cellTrackerData = {
                     cellCalculated: nextCell,
                     possibleResults: cellResults,
@@ -234,15 +339,15 @@ const solver = {
 
                 // insertion de l'objet créé dans le tracker
                 solver.data.tracker.push(cellTrackerData);
+                // console.log(JSON.stringify(cellTrackerData));
 
                 // on remplit board.data (ligne/colonne/square) avec la valeur que l'on teste
                 const ligne = nextCell.substr(0, 1);
                 const column = nextCell.substr(1, 1);
-                const square = solver.findSquare(ligne, column);
 
                 solver.data.ligne[ligne][column] = testedResult;
                 solver.data.column[column][ligne] = testedResult;
-                solver.writeInSquare(ligne, column, square, testedResult);
+                solver.updateSquare();
 
                 // on enlève les coordonnées de cette cellule du tableau des cellules vides
                 const cellToDelete = solver.data.emptyCells.findIndex(cell => cell === nextCell);
@@ -250,6 +355,8 @@ const solver = {
 
                 // on vérifie si la grille est terminée avec la méthode isFinished
                 const stopSolver = solver.boardFinished();
+                // console.log('solver.data.ligne: ' + JSON.stringify(solver.data.ligne));
+                // console.log('stopSolver: ' + stopSolver);
 
                 if (stopSolver) {
                     // -> si oui on fait un return pour stopper la fonction (et on ré-initialise le tracker)
@@ -276,6 +383,9 @@ const solver = {
             else {
                 // on a pas trouvé de résultat sur la cellule en cours donc il faut revenir en arrière
                 if (solver.data.tracker.length === 0) {
+                    return 'Non solvable';
+                }
+                if (!solver.data.tracker[solver.data.tracker.length - 1]) {
                     return 'Non solvable';
                 }
                 solver.makeStepsBeforeBacktracing();
@@ -305,11 +415,10 @@ const solver = {
                 // on remplit board.data (ligne/colonne/square) avec la valeur que l'on teste
                 const ligne = solver.data.emptyCells[0].substr(0, 1);
                 const column = solver.data.emptyCells[0].substr(1, 1);
-                const square = solver.findSquare(ligne, column);
 
                 solver.data.ligne[ligne][column] = testedResult;
                 solver.data.column[column][ligne] = testedResult;
-                solver.writeInSquare(ligne, column, square, testedResult);
+                solver.updateSquare();
 
                 // on enlève les coordonnées de cette cellule du tableau des cellules vides
                 solver.data.emptyCells.shift();
@@ -322,6 +431,9 @@ const solver = {
                 if (solver.data.tracker.length === 0) {
                     return 'Non solvable';
                 }
+                if (!solver.data.tracker[solver.data.tracker.length - 1]) {
+                    return 'Non solvable';
+                }
                 solver.makeStepsBeforeBacktracing();
                 // on relance le solveur avec la valeur true car on veur tester un autre résultat qui avait été calculé
                 return solver.solve(true);
@@ -330,17 +442,27 @@ const solver = {
     },
     // fonction qui renvoie la prochaine cellule à calculer (pour améliorer les perfs)
     speedUpSolve() {
+        // console.log('solver.data.emptyCells: ' + solver.data.emptyCells);
         // on déclare une variable dans laquelle on va stocker par ordre les cellules à calculer
         // Vérifier que emptyCell n'est pas vide à moins que ce soit à l'appel de la fonction
-        // Calculer chaque cells de emptyCells
+        // Calculer chaque cells de emptyCells et stocker le résultat dans un tableau
+        // Trier ensuite emptyCells en fct du nb de résultat possible par cellule
+        // Si une seule cellule n'a pas de résultat alors retour arrière
+
+        const arrayOfResultsLength = {};
+
         for (const emptyCell of solver.data.emptyCells) {
             const cellResults = solver.calculateCell(emptyCell);
-            const cellResultsLength = cellResults.length;
-
-            if (cellResultsLength === 1) {
-                return emptyCell;
+            // console.log('emptyCell: ' + emptyCell, cellResults, cellResults.length);
+            arrayOfResultsLength[emptyCell] = cellResults.length;
+            if (cellResults.length === 0) {
+                return 'backtracing';
             }
         }
+        solver.data.emptyCells.sort((a, b) => {
+            return arrayOfResultsLength[a] - arrayOfResultsLength[b]
+        });
+
         return false;
     },
 
@@ -410,10 +532,9 @@ const solver = {
             const cellResult = cellResults[randomResult];
 
             //on remplit board.data (ligne/colonne/square) avec la valeur que l'on teste
-            const square = solver.findSquare(lig, col);
             solver.data.ligne[lig][col] = cellResult;
             solver.data.column[col][lig] = cellResult;
-            solver.writeInSquare(lig, col, square, cellResult);
+            solver.updateSquare();
         }
 
         // on va remplir la variable emptyCells

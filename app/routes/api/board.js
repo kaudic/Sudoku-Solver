@@ -18,7 +18,11 @@ const router = express.Router();
  * @param {level} level - Difficulty requested (Facile1, Facile2, Moyen, Difficile, Démoniaque)
  * @returns {boards} 200 - Array containing 9 Arrays with numbers from 0 to 9, for each line
  */
-router.route('/getBoard/:level([A-Z][a-z]+[1-2]?)')
+// router.route('/getBoard/:level([A-Z][a-zé]+[1-2]?)')
+//     .get(handler(controller.loadBoard));
+
+// je déporte la regexp à l'intérieur du controlleur afin de faire un decodeURI() à cause de l'accent sur Démoniaque
+router.route('/getBoard/:level')
     .get(handler(controller.loadBoard));
 
 // chargement des résultats d'une grille chargée

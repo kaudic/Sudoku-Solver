@@ -5,19 +5,42 @@
     <nav class="Footer-nav">
         <div class="Footer-container container">
             <ul class="Footer-nav__list1 ">
-                <li class="Footer-nav__item">Mentions Légales</li>
+                <li class="Footer-nav__item">
+                    <button class="Footer-nav__Legal_Notice">Mentions Légales</button>
+                </li>
                 <li class="Footer-nav__item">Copyright © 2022</li>
+                <li><a class="Footer-nav__item" href="https://www.planitools.com"> @Planitools</a>
+
+                </li>
 
             </ul>
             <ul class="Footer-nav__list2 ">
-                <li class="Footer-nav__item"><i class="fab fa-facebook Footer-social-icon"></i></li>
-                <li class="Footer-nav__item"><i class="fab fa-twitter Footer-social-icon"></i></li>
-                <li class="Footer-nav__item"><i class="fab fa-linkedin Footer-social-icon"></i></li>
-                <li class="Footer-nav__item"><i class="fab fa-github Footer-social-icon"></i></li>
+                <!-- <li class="Footer-nav__item"><i class="fab fa-facebook Footer-social-icon"></i></li> -->
+                <!-- <li class="Footer-nav__item"><i class="fab fa-twitter Footer-social-icon"></i></li> -->
+                <li class="Footer-nav__item"><a href="https://www.linkedin.com/in/killian-audic-04358821b/"><i
+                            class="fab fa-linkedin Footer-social-icon"></i></a></li>
+                <li class="Footer-nav__item"><a href="https://github.com/kaudic"><i
+                            class="fab fa-github Footer-social-icon"></i></a></li>
+                <li>
+                    <a href="https://www.planitools.com"><img width="100rem" height="auto"
+                            alt="logo de la société planitools"
+                            src="https://kaweb-freelance.s3.eu-west-3.amazonaws.com/logo_planitools_nav.PNG"></a>
+                </li>
             </ul>
         </div>
     </nav>
 
 </footer>
+
+<!-- conditions générales affichées sous forme de modale -->
+<section class="mentions_modal hidden">
+    <div class="mentions_modal_inside_div">
+        <h1 class="mentions_modal__title">Mention Légales </h1>
+        <p class="ql-editor mentions_modal__text">
+
+        </p>
+        <button type="submit" id="retour_btn" class="mentions_modal__retour">Fermer</button>
+    </div>
+</section>
 
 </html>

@@ -2,3 +2,4 @@
 %project=sudoku
 
 initdb 2022-01-29T14:13:43Z Killian AUDIC <killi@LAPTOP-5GJ086M6> # création des tables
+legal_notice_table 2022-06-01T09:45:39Z Killian AUDIC <killi@LAPTOP-5GJ086M6> # creation of the table to hold the legal notice text

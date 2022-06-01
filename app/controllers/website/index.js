@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const debug = require('debug')('app:websiteController');
-const dataMapper = require('../../models/user');
+const userDatamapper = require('../../models/user');
+const boardDatamapper = require('../../models/board');
 const formatUser = require('../../helpers/userFormatter');
 const mailer = require('../../helpers/mailer');
 
@@ -12,7 +13,7 @@ const controller = {
 
     async databaseRead(req, res) {
         // lecture de la base de données
-        const results = await dataMapper.getAllBoards();
+        const results = await boardDatamapper.getAllBoards();
         return res.render('adminDB', { data: results });
     },
 
@@ -21,7 +22,7 @@ const controller = {
         return res.render('login', { loginMessage });
     },
 
-    adminAuth(req, res) {
+    adminAuth(req, res, next) {
         if (!req.session.actorConnected) {
             res.render('login', { loginMessage: 'Vous devez vous connecter pour accéder à cette page.' });
         }
@@ -29,6 +30,7 @@ const controller = {
         if (req.session.actorConnected.role.toString().toLowerCase() !== 'admin') {
             res.redirect('/sudoku');
         }
+        next();
     },
 
     async addLogin(req, res) {
@@ -40,14 +42,14 @@ const controller = {
             } return true;
         });
         // check if login or email already exists, if true then render page
-        const results = await dataMapper.getOneUserByIdOrEmail(newUser);
+        const results = await userDatamapper.getOneUserByIdOrEmail(newUser);
         if (results.rowCount > 0) {
             return res.render('createLogin', { createLoginMessage: 'ce login ou cet email existe déjà en base de données.', newUser });
         }
         // crypter les données du password
         const hash = await bcrypt.hash(req.body.password, 10);
         newUser.password = hash;
-        await dataMapper.createUser(formatUser(newUser));
+        await userDatamapper.createUser(formatUser(newUser));
         mailer(newUser);
         return res.render('login', { loginMessage: 'Utilisateur créé, vous pouvez désormais vous connecter.' });
     },
@@ -59,24 +61,24 @@ const controller = {
 
         // hash new password excecpt if not entered, in this case we get the one from the DB
         if (actorObject.password === '') {
-            actorObject.password = await dataMapper.getOnePassword(actorObject.email);
+            actorObject.password = await userDatamapper.getOnePassword(actorObject.email);
         } else {
             actorObject.password = await bcrypt.hash(req.body.password, 10);
         }
         // mise à jour dans la DB
-        await dataMapper.updateOneUser(actorObject);
+        await userDatamapper.updateOneUser(actorObject);
         return res.redirect('/sudoku/');
     },
 
     async deleteActor(req, res) {
         const id = Number(req.session.actorConnected.id);
-        await dataMapper.deleteOneUser(id);
+        await userDatamapper.deleteOneUser(id);
         // on renvoie sur la route qui supprime la session
         res.redirect('/sudoku/deconnect');
     },
 
     async connect(req, res) {
-        const user = await dataMapper.getOneUserByIdOrEmail(req.body);
+        const user = await userDatamapper.getOneUserByIdOrEmail(req.body);
         if (user.rowCount === 0) {
             return res.render('login', { loginMessage: 'Le login n\'existe pas en base de données.' });
         }

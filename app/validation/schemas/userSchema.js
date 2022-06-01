@@ -4,7 +4,7 @@ const Joi = require('joi');
 
 module.exports = Joi.object({
     login: Joi.string().required(),
-    name: Joi.string().required(),
+    name: Joi.string().required().label('Le prénom est obligatoire.'),
     surname: Joi.string().required().label('Le nom de famille est obligatoire.'),
     email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net', 'fr'] } }).required(),
     password: Joi.string().required(),

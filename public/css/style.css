@@ -1,36 +1,37 @@
-:root{
-    --color1: orange; /* fond soulignement et bordure */
-    --color2: lightgrey; /* rgb(39, 39, 39);  background principal */
-    --color3: black; /* yellowgreen;   titres et bordures */
-    --color4: rgb(80, 80, 80); /* background secondaire*/
-    --color5: white; /* lightgrey;  background secondaire */
+:root {
+    --color1: orange;
+    /* fond soulignement et bordure */
+    --color2: lightgrey;
+    /* rgb(39, 39, 39);  background principal */
+    --color3: black;
+    /* yellowgreen;   titres et bordures */
+    --color4: rgb(80, 80, 80);
+    /* background secondaire*/
+    --color5: white;
+    /* lightgrey;  background secondaire */
 }
 
-body{
-    display:flexbox;
+body {
+    display: flexbox;
     flex-direction: column;
     background-color: var(--color2);
     font-family: 'Holtwood One SC', sans-serif;
     margin: 5px 10px;
 }
 
-main{
+main {}
 
-}
+.globalMenu {}
 
-.globalMenu{
-
-}
-
-.header{
+.header {
     display: flex;
     flex-direction: row;
-    justify-content:space-between;
+    justify-content: space-between;
     align-items: center;
 
 }
 
-.header--Login{
+.header--Login {
     display: block;
     margin: 20px;
     font-size: 50px;
@@ -40,17 +41,17 @@ main{
 
 
 
-.main-title{
+.main-title {
     color: var(--color3);
     font-size: 60px;
 }
 
-h2{
-        color: var(--color3);
-        font-size: 60px;
+h2 {
+    color: var(--color3);
+    font-size: 60px;
 }
 
-.menuBurger{
+.menuBurger {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
@@ -59,36 +60,36 @@ h2{
 
 }
 
-.menuBurger--list{
+.menuBurger--list {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    background:var(--color4);
+    background: var(--color4);
     padding: 10px;
 
 }
 
-.menuBurger--option{
-margin-left: 10px;
-color: var(--color1);
-text-decoration: none;
+.menuBurger--option {
+    margin-left: 10px;
+    color: var(--color1);
+    text-decoration: none;
 }
 
 #toggleDayNight {
     width: 50px;
 }
 
-.toggleDayNightIcon{
+.toggleDayNightIcon {
     color: white;
 }
 
-.form__consigne{
+.form__consigne {
 
     font-size: large;
     line-height: 25px;
 }
 
-.form__btn{
+.form__btn {
     padding: 12px;
     color: black;
     font-weight: bold;
@@ -106,70 +107,67 @@ text-decoration: none;
 
 }
 
-.form__btn--admin{
+.form__btn--admin {
     background-color: var(--color1);
 }
 
 
-.underline-title
- {
-     background-color: var(--color1);
-     height: 10px;
-     border-radius: 10px;
-     width: 770px;
- }
+.underline-title {
+    background-color: var(--color1);
+    height: 10px;
+    border-radius: 10px;
+    width: 770px;
+}
 
- .main-form{
+.main-form {
     display: flex;
     justify-content: flex-start;
     border: 3px solid var(--color3);
     border-radius: 10px;
     margin-top: 40px;
-    background:var(--color4);
+    background: var(--color4);
     padding: 10px;
 }
 
 
-.main-form button, .main-form select{
+.main-form button,
+.main-form select {}
 
-}
-
-.main-form label{
+.main-form label {
     margin: 10px;
     background-color: none;
     color: white;
-    }
+}
 
-.main-content{
+.main-content {
     display: flex;
     justify-content: flex-start;
     align-content: center;
 
 }
 
-#sudokuBoard{
+#sudokuBoard {
     margin: 50px;
 
 }
 
-.errorMessage{
+.errorMessage {
     color: red;
     margin-top: 20px;
     padding: 10px;
-    width: 410px; /*si cette largeur est trop grande alors les bordures
+    width: 410px;
+    /*si cette largeur est trop grande alors les bordures
     de lignes de la grille sudoku déborde et c'est très moche, à modifier
     car cela reste très manuel */
 }
 
-.sudokuRow{
+.sudokuRow {
     display: flex;
 }
 
-.sudokuColumn{
+.sudokuColumn {}
 
-}
-
-#sudokuBoard input{
+#sudokuBoard input {
     display: block;
     border: 1px solid black;
     color: black;
@@ -182,59 +180,66 @@ text-decoration: none;
 #sudokuBoard input:focus {
     outline: 0;
     background-color: burlywood;
- }
+}
 
- .sudokuColumn:nth-child(3n) {
+.sudokuColumn:nth-child(3n) {
     border-right: 4px solid black;
- }
+}
 
- #sudokuBoard .sudokuRow:nth-child(3n) {
+.sudokuColumn:nth-child(9) {
+    border-right: none;
+}
+
+#sudokuBoard .sudokuRow:nth-child(3n) {
     border-bottom: 4px solid black;
- }
-
-
- #sudokuBoard .sudokuRow:last-of-type input{
-    border-bottom:6px solid var(--color1);
 }
 
-#sudokuBoard .sudokuRow:first-of-type input{
-    border-top:6px solid var(--color1);
+#sudokuBoard .sudokuRow:nth-child(9) {
+    border-bottom: none;
 }
 
-#sudokuBoard .sudokuRow .sudokuColumn:last-of-type input{
-    border-right:6px solid var(--color1);
+
+
+#sudokuBoard .sudokuRow:last-of-type input {
+    border-bottom: 6px solid var(--color1);
 }
 
-#sudokuBoard .sudokuRow .sudokuColumn:first-of-type input{
-    border-left:6px solid var(--color1);
+#sudokuBoard .sudokuRow:first-of-type input {
+    border-top: 6px solid var(--color1);
 }
 
-#stopWatch
-{
-   margin-top: 30px;
-   margin-bottom: 30px;
-   border: 4px solid var(--color3);
-   border-radius: 100%;
-   width: 350px;
-   height: 350px;
-   color: var(--color3);
-   margin: 100px;
-   text-align: center;
-   display:flex;
-   flex-direction: column;
-   justify-content:space-evenly;
-   align-items: center;
-   background:var(--color4);
+#sudokuBoard .sudokuRow .sudokuColumn:last-of-type input {
+    border-right: 6px solid var(--color1);
 }
 
-.stopWatchText
-{
-   display:block;
-   background: none;
-   font-size: 30px;
+#sudokuBoard .sudokuRow .sudokuColumn:first-of-type input {
+    border-left: 6px solid var(--color1);
 }
 
-#breakBtn{
+#stopWatch {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border: 4px solid var(--color3);
+    border-radius: 100%;
+    width: 350px;
+    height: 350px;
+    color: var(--color3);
+    margin: 100px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    background: var(--color4);
+}
+
+.stopWatchText {
+    display: block;
+    background: none;
+    font-size: 30px;
+}
+
+#breakBtn {
     border: 2px solid var(--color1);
     line-height: ;
     display: inline;
@@ -247,7 +252,7 @@ text-decoration: none;
 
 /* PAGE DATABASE ADMIN */
 
-.inputAdmin{
+.inputAdmin {
     display: block;
     border: 3px solid var(--color1);
     padding: 12px;
@@ -261,18 +266,17 @@ text-decoration: none;
     color: black;
     border-radius: 5px;
     font-family: arial, monospace;
-    width: 70px;
+    width: 80px;
     text-align: center;
-
 }
 
 
-.tableDatabase{
+.tableDatabase {
 
     border: 3px solid var(--color3);
     border-radius: 10px;
     margin-top: 40px;
-    background:var(--color4);
+    background: var(--color4);
     padding: 10px;
     background-color: var(--color5);
     margin-bottom: 100px;
@@ -280,14 +284,14 @@ text-decoration: none;
 
 }
 
-.tableRow{
-    background:var(--color4);
+.tableRow {
+    background: var(--color4);
     background-color: var(--color5);
     border: 1px solid black;
     border-collapse: collapse;
 }
 
-.tableHeadCells{
+.tableHeadCells {
     border: 1px solid black;
     font-size: 15px;
     padding: 5px;
@@ -297,7 +301,7 @@ text-decoration: none;
     background-color: var(--color4);
 }
 
-.tableCells{
+.tableCells {
     font-family: Arial, Helvetica, sans-serif;
     border: 1px solid black;
     border-collapse: collapse;
@@ -306,7 +310,7 @@ text-decoration: none;
     text-align: center;
 }
 
-.deleteBtn{
+.deleteBtn {
     background: rgb(241, 137, 137);
     font-weight: bold;
     color: black;
@@ -318,14 +322,14 @@ text-decoration: none;
 
 /* PAGE LOGIN */
 
-.login_création{
+.login_création {
     color: var(--color3);
 
 }
 
 /* SPECIFIQUE 404 */
 
-.div404{
+.div404 {
     font-family: sans-serif;
     border: 4px solid var(--color1);
     border-radius: 20px;
@@ -333,35 +337,35 @@ text-decoration: none;
     width: 60%;
     margin: 90px auto;
     text-align: center;
-    background:var(--color4);
+    background: var(--color4);
 }
 
-.div404__lien{
+.div404__lien {
     margin-top: 30px;
 }
 
-.lienAccueil404{
+.lienAccueil404 {
     color: var(--color1);
 }
 
-.mainDivLogin{
+.mainDivLogin {
     border: 4px solid var(--color3);
     color: var(--color3);
     border-radius: 20px;
     padding: 30px 60px 30px 60px;
     margin: 90px auto 20px auto;
     text-align: center;
-    background:var(--color4);
+    background: var(--color4);
     font-family: 'Holtwood One SC', sans-serif;
 }
 
-.loginForm{
+.loginForm {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.loginFormLabel{
+.loginFormLabel {
 
     margin-right: 20px;
     display: inline-block;
@@ -369,7 +373,7 @@ text-decoration: none;
 
 }
 
-.loginFormInput{
+.loginFormInput {
 
     background: none;
     border-radius: 8px;
@@ -381,12 +385,12 @@ text-decoration: none;
 
 }
 
-.loginBtnBar{
+.loginBtnBar {
     display: flex;
 
 }
 
-.loginFormBtn{
+.loginFormBtn {
 
     color: var(--color3);
     font-family: 'Holtwood One SC', sans-serif;
@@ -399,7 +403,7 @@ text-decoration: none;
 
 }
 
-.loginFormBtnDelete{
+.loginFormBtnDelete {
 
     color: white;
     font-family: 'Holtwood One SC', sans-serif;
@@ -418,7 +422,7 @@ text-decoration: none;
     display: block;
 }
 
-.loginMessage{
+.loginMessage {
     font-family: sans-serif;
     font-size: 15px;
     margin: 20px 0px 20px 0px;
@@ -427,7 +431,7 @@ text-decoration: none;
     display: inline-block;
 }
 
-.loginCreationMessage{
+.loginCreationMessage {
     font-family: sans-serif;
     font-size: 15px;
     font-weight: bold;
@@ -435,7 +439,7 @@ text-decoration: none;
     color: black;
 }
 
-.createLoginMessage{
+.createLoginMessage {
     font-family: sans-serif;
     font-size: 15px;
     margin-top: 20px;
@@ -444,14 +448,14 @@ text-decoration: none;
 }
 
 
-.loginFormDiv{
+.loginFormDiv {
 
-  text-align: left;
-  background: none;
+    text-align: left;
+    background: none;
 
 }
 
-.loginFormSousDiv{
+.loginFormSousDiv {
 
     margin-top: 10px;
 
@@ -459,7 +463,7 @@ text-decoration: none;
 
 /*PARTIE FOOTER*/
 
-.footer{
+.footer {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -468,45 +472,120 @@ text-decoration: none;
     font-family: 'Holtwood One SC', sans-serif;
 }
 
-.Footer-nav{
-    height:60px;
-    background:var(--color4);
+.Footer-nav {
+    height: 60px;
+    background: var(--color4);
 
-    }
+}
 
-    .Footer-container{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
+.Footer-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
 
-    .Footer-nav__list1{
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        padding: 5px;
-        flex:1;
+.Footer-nav__list1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 5px;
+    flex: 1;
 
-    }
+}
 
-    .Footer-nav__list2{
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
-        padding: 5px;
-        flex:1;
+.Footer-nav__list2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 5px;
+    flex: 1;
 
-    }
+}
 
-    .Footer-nav__item{
-        margin:10px 30px;
-        font-size: 1.1em;
-        font-weight: normal;
-        color: white;
-    }
+.Footer-nav__item {
+    margin: 10px 30px;
+    font-size: 1.1em;
+    font-weight: normal;
+    color: white;
+    text-decoration: none;
+}
 
-    .Footer-social-icon{
-        font-size: 30px;
-    }
+.Footer-social-icon {
+    font-size: 30px;
+    color: white
+}
 
+.mentions_modal {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(197, 197, 197, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
+.hidden {
+    display: none !important;
+}
+
+.mentions_modal_inside_div {
+    border: 0.1rem solid black;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: white;
+    padding: 2rem 5rem;
+    width: 65%;
+    height: 60%;
+}
+
+.mentions_modal__title {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.mentions_modal__text {
+    height: 100%;
+    text-align: left;
+    font-size: 1.5rem;
+    vertical-align: top;
+    margin: 2rem 0;
+    padding: 1rem;
+    border: 0.1rem solid black;
+    overflow: scroll;
+    font-family: sans-serif;
+    font-size: 1rem;
+
+}
+
+.mentions_modal__retour {
+    font-weight: bold;
+    padding: 0.2em;
+    border-radius: 0.5em;
+    margin: 1rem auto;
+    width: 10rem;
+    display: block;
+    text-align: center;
+    background: orange;
+    color: white;
+    border: 0.1rem solid orange;
+}
+
+.mentions_modal__retour:hover {
+    background: white;
+    color: orange;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.ql-size-large {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
