@@ -84,7 +84,7 @@ const login = {
     cancelBtnHandler(e) {
         e.preventDefault();
         // window.location.href = `${app.baseUrl}/sudoku`;
-        window.location.href = `http://localhost:3000/sudoku`;
+        window.location.href = `${BASE_URL}/sudoku`;
     },
 };
 

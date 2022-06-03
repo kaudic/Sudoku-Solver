@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-redeclare
 const app = {
 
-    baseUrl: 'http://localhost:3000',
+    baseUrl: BASE_URL,
 
     init() {
         console.log('Initialisation');

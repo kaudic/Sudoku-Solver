@@ -3983,7 +3983,6 @@ const database = {
     },
     generateBoards: async (e) => {
         e.preventDefault();
-        console.log('coucou je suis là');
         const formElement = document.querySelector('.main-form');
         const formData = new FormData(formElement);
         const generationResult = await fetch(`${BASE_URL}/api/db/generate`,
