@@ -723,6 +723,11 @@ h2 {
         width: 90vw;
     }
 
+    .sudokValues {
+        width: 33px;
+        height: 33px;
+    }
+
     #copyright,
     #planitools,
     #github {
