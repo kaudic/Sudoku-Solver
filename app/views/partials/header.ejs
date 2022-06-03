@@ -64,11 +64,10 @@
                 <% } %>
 
         </div>
-        <script src="/js/bundle/menu.js" charset="utf-8" defer></script>
-        <script src="/js/bundle/footer.js" charset="utf-8" defer></script>
-
         <% if (NODE_ENV==='production' ) { %>
             <script type="text/javascript" src="/js/baseUrlProd.js" defer></script>
             <% } else { %>
                 <script type="text/javascript" src="/js/baseUrlLocal.js" defer></script>
                 <% }%>
+                    <script src="/js/bundle/menu.js" charset="utf-8" defer></script>
+                    <script src="/js/bundle/footer.js" charset="utf-8" defer></script>
