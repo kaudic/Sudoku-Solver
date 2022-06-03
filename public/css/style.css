@@ -153,6 +153,10 @@ h2 {
     color: white;
 }
 
+#newChrono {
+    display: none;
+}
+
 .main-content {
     display: flex;
     justify-content: flex-start;

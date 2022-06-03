@@ -581,9 +581,9 @@ const app = {
             console.log(`BoardId non identifiée, route:${route}`);
 
             // déjà démarrage du chrono pour mesurer la performance du système solveur
-            app.stopWatch.setOff();
-            app.stopWatch.create();
-            app.stopWatch.launch();
+            // app.stopWatch.setOff();
+            // app.stopWatch.create();
+            // app.stopWatch.launch();
 
             // lecture de la grille html
             const boardData = app.board.read(); // un objet qui contient des tableaux sur différentes propriétés
@@ -610,7 +610,7 @@ const app = {
                     console.log(board.results);
 
                     if (board.results === 'Il n\'y a pas de solution pour cette grille') {
-                        app.stopWatch.setOff();
+                        // app.stopWatch.setOff();
 
                         // Mise à jour du message d'erreur
                         const messageErreurElt = document.getElementById('errorMessage');
@@ -618,7 +618,7 @@ const app = {
                     } else {
                         app.applyDatasToBoard(board.results);
                         // on arrête aussi le chrono pour voir le temps de calcul total
-                        app.stopWatch.setOff();
+                        // app.stopWatch.setOff();
                     }
                 });
         }
