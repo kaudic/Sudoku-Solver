@@ -17,7 +17,7 @@ html {
 }
 
 * {
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
 }
 
 body {
@@ -56,6 +56,8 @@ main {
 .main-title {
     color: var(--color3);
     font-size: 60px;
+    text-decoration: none;
+    /* text-align: center; */
 }
 
 h2 {
@@ -551,30 +553,47 @@ h2 {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    background-color: white;
+    background-color: var(--color2);
     padding: 2rem 5rem;
     width: 65%;
     height: 60%;
 }
 
+
 .mentions_modal__title {
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: bold;
+    color: var(--color3);
 }
 
 .mentions_modal__text {
     height: 100%;
     text-align: left;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     vertical-align: top;
     margin: 2rem 0;
     padding: 1rem;
     border: 0.1rem solid black;
-    overflow: scroll;
+    overflow-y: scroll;
     font-family: sans-serif;
     font-size: 1rem;
+    background-color: var(--color4);
 
 }
+
+.mentions_modal__text>p {
+    color: var(--color5);
+    /* color: black; */
+    font-size: 1.8rem;
+}
+
+.mentions_modal__text>p>a,
+.mentions_modal__text>ul,
+.mentions_modal__text>ul>li>a {
+    /* text-decoration: none; */
+    color: var(--color5) !important;
+}
+
 
 .mentions_modal__retour {
     font-weight: bold;
@@ -598,7 +617,8 @@ h2 {
 
 .ql-size-large {
     font-weight: bold;
-    font-size: 1.5rem;
+    font-size: 2.2rem;
+    color: var(--color3);
 }
 
 /* to replace the size built buy the app.js script */
@@ -641,8 +661,15 @@ h2 {
     }
 
     .header--Login {
-        font-size: 2.8rem;
+        font-size: 2.5rem;
+        text-align: right;
+        align-self: flex-end;
     }
+
+    .menuBurger--list {
+        justify-content: center;
+    }
+
 
     .main-form {
         flex-wrap: wrap;
@@ -669,6 +696,13 @@ h2 {
         height: 3.1rem;
         text-align: center;
         margin: 1px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .form__btn--admin {
+        width: 70%
     }
 
     #newChrono {
@@ -678,14 +712,15 @@ h2 {
     .main-content {}
 
     #sudokuBoard {
-        margin: 1rem auto;
+        margin: 0.5rem auto;
         width: 90vw;
-        height: 45vh;
+        /* height: 10vh; */
     }
 
 
     .sudokuRow {
         justify-content: center;
+        width: 90vw;
     }
 
     #copyright,
@@ -696,6 +731,10 @@ h2 {
 
     .errorMessage {
         margin-top: 10px;
+    }
+
+    .footer_compensation {
+        height: 6rem;
     }
 
     .footer {
@@ -731,6 +770,7 @@ h2 {
         height: 70vh;
         width: 80vw;
         padding: 1rem;
+
     }
 
     .mentions_modal__text {
@@ -738,25 +778,27 @@ h2 {
         width: 100%;
     }
 
+
     /* FIN MENTION LEGALE */
-}
 
-@media screen and (max-width:300px) {
-
-    .Footer-nav__list1 {
-        order: 2;
-        flex-grow: 1;
-        justify-content: flex-start;
+    .loginFormLabel {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        width: 50vw;
     }
 
-    .Footer-nav__item {
-        font-size: 0.8rem;
-        margin: 10px 15px;
+    .loginFormInput {
+        width: 65vw;
     }
 
+    .loginFormBtn {
+        font-size: 2.1rem;
+    }
 
-
-
+    .mainDivLogin {
+        margin: 5rem auto 1rem auto;
+        padding: 2rem 0 2rem 2.5rem
+    }
 
 
 }

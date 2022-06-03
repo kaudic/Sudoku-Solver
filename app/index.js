@@ -1,11 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
+const favicon = require('serve-favicon');
+const path = require('path');
 const router = require('./routes');
 
 const app = express();
 require('./helpers/apiDocs')(app);
-
+app.use(favicon(path.normalize(`${__dirname}/../public/images/favicon.ico`)));
 app.set('views', `${process.cwd()}/app/views`);
 app.set('view engine', 'ejs');
 
