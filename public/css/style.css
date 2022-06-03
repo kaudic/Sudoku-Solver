@@ -130,7 +130,7 @@ h2 {
     background-color: var(--color1);
     height: 10px;
     border-radius: 10px;
-    width: 100vw;
+    /* width: 100vw; */
 }
 
 .main-form {
@@ -519,7 +519,7 @@ h2 {
 
 .Footer-nav__item {
     margin: 10px 30px;
-    font-size: 1.1em;
+    font-size: 1.5em;
     font-weight: normal;
     color: white;
     text-decoration: none;
@@ -780,7 +780,8 @@ h2 {
 
     .mentions_modal__text {
         /* height: 90vh; */
-        width: 100%;
+        width: 90%;
+        margin: auto;
     }
 
 
