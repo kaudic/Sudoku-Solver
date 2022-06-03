@@ -3,7 +3,6 @@ const logger = require('./logger');
 
 const errorHandler = (err, res) => {
     let { statusCode, message } = err;
-
     if (Number.isNaN(Number(statusCode))) {
         statusCode = 500;
     }
@@ -14,7 +13,11 @@ const errorHandler = (err, res) => {
     if (statusCode === 500 && res.app.get('env') !== 'development') {
         message = 'Internal Server Error';
     }
-    res.status(statusCode).json({
+    // if application has thrown a sudok error 404, let's send a special page for it
+    if (statusCode === 404) {
+        return res.render('404.ejs');
+    }
+    return res.status(statusCode).json({
         result: false,
         status: 'error',
         statusCode,

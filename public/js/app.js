@@ -192,8 +192,8 @@ const app = {
                     const inputCellElt = document.createElement('input');
                     inputCellElt.addEventListener('change', app.checkInput);
                     inputCellElt.addEventListener('change', app.isValid);
-                    inputCellElt.style.width = app.board.cellSize;
-                    inputCellElt.style.height = app.board.cellSize;
+                    // inputCellElt.style.width = app.board.cellSize;
+                    // inputCellElt.style.height = app.board.cellSize;
                     const boardCell = divColumns.appendChild(inputCellElt);
                     boardCell.id = i.toString() + j.toString();
                     boardCell.className = 'sudokValues';
