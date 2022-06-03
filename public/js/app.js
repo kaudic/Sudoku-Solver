@@ -1,8 +1,6 @@
 // eslint-disable-next-line no-redeclare
 const app = {
 
-    baseUrl: BASE_URL,
-
     init() {
         console.log('Initialisation');
         app.form.create();
@@ -527,7 +525,7 @@ const app = {
 
         // on lit la difficulté demandée pour l'envoyer au serveur qui traitera alors une route dynamique
         const level = document.getElementById('level-selection').value;
-        const route = `${app.baseUrl}/api/board/getBoard/${level}`;
+        const route = `${BASE_URL}/api/board/getBoard/${level}`;
         console.log(route);
 
         // on fetch une grille avec un niveau de difficulté demandé
@@ -559,8 +557,8 @@ const app = {
         console.log('Bouton "Résoudre Grille activé"');
         const solveBoardBtn = document.getElementById('solveBoardBtn');
         const boardId = solveBoardBtn.dataset.id;
-        console.log(`app.baseUrl:${app.baseUrl}`);
-        let route = `${app.baseUrl}/api/board/solveBoard/`;
+        console.log(`BASE_URL:${BASE_URL}`);
+        let route = `${BASE_URL}/api/board/solveBoard/`;
 
         // On teste la présence d'un id dans les dataset du bouton solve et si oui on fetch la grille concernée et on l'affiche (route1)
         if (boardId) {

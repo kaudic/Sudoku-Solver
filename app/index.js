@@ -42,7 +42,7 @@ app.use((req, res, next) => {
     console.log('-----------------------------------------------------------------------------------------------------------');
     console.log('req.session.actorConnected: ' + req.session.actorConnected);
     res.locals.actorConnected = req.session.actorConnected;
-    res.locals.baseUrl = `${process.env.BASEURL}:${process.env.PORT}`;
+    res.locals.baseUrl = `${process.env.BASE_URL}`;
     next();
 });
 
