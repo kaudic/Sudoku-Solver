@@ -12,7 +12,7 @@
 }
 
 html {
-    /* font-size: 62.5%; */
+    font-size: 62.5%;
     /* equals 1rem = 1rem*/
 }
 
@@ -128,7 +128,7 @@ h2 {
     background-color: var(--color1);
     height: 10px;
     border-radius: 10px;
-    width: 770px;
+    width: 100vw;
 }
 
 .main-form {
@@ -253,7 +253,6 @@ h2 {
 
 #breakBtn {
     border: 2px solid var(--color1);
-    line-height: ;
     display: inline;
     width: 40%;
     height: 10%;
@@ -615,10 +614,13 @@ h2 {
 
     body {
         align-items: center;
+
+        position: relative;
     }
 
     main {
         align-items: center;
+
     }
 
 
@@ -630,38 +632,43 @@ h2 {
     .globalMenu {}
 
     .underline-title {
-        margin-top: 1rem;
+        /* margin-top: 1rem; */
     }
 
     .main-title {
-        font-size: 2.2rem;
+        font-size: 2.5rem;
         text-align: center;
     }
 
     .header--Login {
-        font-size: 2.2rem;
+        font-size: 2.8rem;
     }
 
     .main-form {
         flex-wrap: wrap;
-        width: 75vw;
+        width: 85vw;
         justify-content: center;
         align-items: center;
-        margin: 1rem auto;
+        margin: 2rem auto;
+    }
 
+    .main-form label {
+        margin: 0.5rem 0 5px 0;
     }
 
     .form__consigne {
         text-align: center;
-        font-size: 0.9rem;
+        font-size: 1.5rem;
+        line-height: normal;
     }
 
     .form__btn {
-        font-size: 0.8rem;
+        font-size: 1rem;
         padding: 0.3rem;
-        width: 40%;
+        width: 49%;
         height: 3.1rem;
         text-align: center;
+        margin: 1px;
     }
 
     #newChrono {
@@ -671,13 +678,11 @@ h2 {
     .main-content {}
 
     #sudokuBoard {
-        margin: auto;
+        margin: 1rem auto;
+        width: 90vw;
+        height: 45vh;
     }
 
-    .sudokValues {
-        width: 1.9rem;
-        height: 1.9rem;
-    }
 
     .sudokuRow {
         justify-content: center;
@@ -689,9 +694,15 @@ h2 {
         display: none;
     }
 
+    .errorMessage {
+        margin-top: 10px;
+    }
+
     .footer {
-        /* position: fixed; */
-        height: 5rem;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
     }
 
     .Footer-nav__list1 {
@@ -743,10 +754,7 @@ h2 {
         margin: 10px 15px;
     }
 
-    .sudokValues {
-        width: 1.5rem;
-        height: 1.5rem;
-    }
+
 
 
 
