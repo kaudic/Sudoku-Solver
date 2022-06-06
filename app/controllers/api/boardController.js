@@ -9,15 +9,11 @@ const controller = {
         const { level } = (req.params);
         const levelRegexCheck = new RegExp(/^[A-Z][a-zé]+[1-2]?$/);
         const isLevelOk = levelRegexCheck.test(level);
-        console.log(isLevelOk);
         if (!isLevelOk) {
             throw new Error('Le level demandé n\'est pas conforme à ce qu\'attends l\'API.')
         };
 
-
         // we check with a regexp what we received
-        // const levelRegexp =
-
         const goalOfCellsEmptyPerLine = service.emptyCellsPerLevel(level);
 
         // Appel du datamapper, il va renvoyer une grille aléatoire.

@@ -44,15 +44,15 @@ module.exports = {
     emptyCellsPerLevel(level) {
         switch (level) {
             case 'Facile1':
-                return 2;
-            case 'Facile2':
                 return 3;
-            case 'Moyen':
+            case 'Facile2':
                 return 4;
-            case 'Difficile':
+            case 'Moyen':
                 return 5;
-            default:
+            case 'Difficile':
                 return 6;
+            default:
+                return 7;
         }
     },
 
