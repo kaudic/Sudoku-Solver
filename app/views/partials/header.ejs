@@ -59,9 +59,14 @@
                         <a href="/sudoku/account/<%= locals.actorConnected.login%>" class="menuBurger--option">
                             <li class="menuBurger--option">Mon compte</li>
                         </a>
-                        <a href="/sudoku/deconnect" class="menuBurger--option">
-                            <li class="menuBurger--option">Se déconnecter</li>
-                        </a>
+                        <% if (actorConnected.role==="ADMIN" ) { %>
+                            <a href="/logs" class="menuBurger--option">
+                                <li class="menuBurger--option">Logs</li>
+                            </a>
+                            <% } %>
+                                <a href="/sudoku/deconnect" class="menuBurger--option">
+                                    <li class="menuBurger--option">Se déconnecter</li>
+                                </a>
                     </ul>
                 </div>
                 <% } %>
