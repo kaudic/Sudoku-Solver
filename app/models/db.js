@@ -19,7 +19,6 @@ module.exports = {
         const results = await client.query(sqlQery);
         return results.rows;
     },
-
     async deleteOneBoardById(id) {
         const sqlQuery = {
             text: 'DELETE FROM board WHERE board_id = $1',
@@ -28,6 +27,14 @@ module.exports = {
 
         const results = await client.query(sqlQuery);
         return results.rows;
+    },
+    async insertLogs(logs) {
+        const sqlQuery = {
+            text: 'INSERT INTO logs ("date_of_logs","hostname","ip_address","url","headers","logs_error") VALUES($1,$2,$3,$4,$5,$6) RETURNING *',
+            values: [logs.date_of_logs, logs.hostname, logs.ip_address, logs.url, logs.headers, logs.logs_error],
+        };
+        const result = await client.query(sqlQuery);
+        return result.rows[0];
     },
 
 };

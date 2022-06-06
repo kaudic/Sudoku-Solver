@@ -31,4 +31,12 @@ module.exports = {
         const result = await client.query('SELECT * FROM legal_notice ORDER BY id ASC LIMIT 1');
         return result.rows[0];
     },
+    async getLogs() {
+        const sqlQuery = {
+            text: 'SELECT * FROM logs ORDER BY id DESC LIMIT 100',
+            values: [],
+        };
+        const result = await db.query(sqlQuery);
+        return result.rows;
+    },
 };

@@ -4,6 +4,7 @@ const { errorHandler, SudokError } = require('../helpers/errorHandler');
 // imports of helpers
 const handler = require('../helpers/handler');
 const seoController = require('../controllers/api/seo');
+const settingsController = require('../controllers/api/settingsController');
 
 const router = express.Router();
 
@@ -26,13 +27,16 @@ router.get('/robots.txt', handler(seoController.renderRobotTxt));
 // page publique de consultation du fichier sitemap.xml
 router.get('/sitemap.xml', handler(seoController.renderSiteMapXml));
 
+// page admin de consultation des logs d'erreurs enregistrés en database
+router.get('/logs', handler(settingsController.renderLogs));
+
 router.use(() => {
     throw new SudokError(404, 'Page introuvable');
 });
 
 // If an error is thrown then it will be treated in this middleware
-router.use((err, _, response, next) => {
-    errorHandler(err, response, next);
+router.use((err, req, res, next) => {
+    errorHandler(err, req, res, next);
 });
 
 module.exports = router;

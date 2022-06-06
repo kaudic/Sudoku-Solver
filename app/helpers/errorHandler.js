@@ -1,13 +1,13 @@
 const SudokError = require('../errors/sudokError');
-const logger = require('./logger');
+const databaseLogger = require('../helpers/databaseLogger');
 
-const errorHandler = (err, res) => {
+const errorHandler = (err, req, res, next) => {
     let { statusCode, message } = err;
     if (Number.isNaN(Number(statusCode))) {
         statusCode = 500;
     }
     if (statusCode === 500) {
-        logger.error(err);
+        databaseLogger(req, err);
     }
     // Si l'application n'est pas en développement on reste vague sur l'erreur serveur
     if (statusCode === 500 && res.app.get('env') !== 'development') {

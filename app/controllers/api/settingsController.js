@@ -3,9 +3,7 @@ const dataMapper = require('../../models/settings');
 const controller = {
 
     async getDisplaySettings(req, res) {
-
         let colors = '';
-
         // if we have a session we will get the actor id and get his preferred display settings
         if (req.session.actorConnected) {
             const { id } = req.session.actorConnected;
@@ -14,8 +12,7 @@ const controller = {
         } else {
             // if we don't have a session, we will send default display values
             colors = await dataMapper.getDefaultDisplaySettings();
-        };
-
+        }
         return res.json({
             display_type: (colors[0].display_type),
             display_color1: (colors[0].display_color1),
@@ -25,7 +22,6 @@ const controller = {
             display_color5: (colors[0].display_color5),
         });
     },
-
     async updateDisplaySettings(req, res) {
         const { displayId } = req.params;
         const actorId = req.session.actorConnected.id;
@@ -46,6 +42,10 @@ const controller = {
             description: 'the legal notice was well got, check legalNoticeText attribute of the present json',
             legalNoticeText
         });
+    },
+    async renderLogs(req, res) {
+        const logs = await dataMapper.getLogs();
+        res.json(logs);
     }
 };
 
