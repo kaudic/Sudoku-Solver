@@ -37,7 +37,6 @@ const controller = {
             data: JSON.parse(board.board_data),
         });
     },
-
     async solveBoard(req, res) {
         // on récupère les données de la grille du front
         const frontBoardData = req.body;

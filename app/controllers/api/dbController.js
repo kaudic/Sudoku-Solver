@@ -1,34 +1,30 @@
+const { fork } = require('child_process');
+const path = require('path');
 
-const solver = require('../../services/solver');
-const dataMapper = require('../../models/db');
 
 const controller = {
 
     async dataBaseWrite(req, res) {
-        console.log('----------------------------------------------------------------------------------------------');
-        // console.log('req.body:' + req.body);
         const qty = Number(req.body.qtyNewBoard);
-        // const qty = 2;
-        const arrayOfNewBoards = [];
+        const childRoute = path.normalize(__dirname + '/../../childProcess/generator');
+        console.log('-----------------------------------------------------------------------------------------------')
+        console.log(childRoute);
+        // TODO launch a child process for generating massive boards
+        const boardGeneratorChildProcess = fork(childRoute);
 
-        // Boucle de Générations de grilles aléatoires avec leurs solutions
-        for (let i = 0; i < qty; i += 1) {
-            // Génération grille
-            const newSolvedBoard = solver.generatorSupervisor();
+        boardGeneratorChildProcess.on('message', (message) => {
+            console.log('Board Generator Process finished');
+            // Sending answer
+            res.json({
+                result: true,
+                message: 'New boards are well generated and inserted in database'
+            });
 
-            // On pousse les nouvelles grilles dans un tableau
-            arrayOfNewBoards.push(newSolvedBoard);
-
-            // remise à 0 du tracker et de emptyCells pour éviter de mélanger les données
-            solver.data.emptyCells = [];
-            solver.tracker = [];
-        }
-
-        await dataMapper.insertNewBoards(JSON.stringify(arrayOfNewBoards));
-        res.json({
-            result: true,
-            message: 'New boards are well generated and inserted in database'
         });
+
+        boardGeneratorChildProcess.send('START');
+
+
     },
 
     async deleteBoard(req, res) {
@@ -37,7 +33,5 @@ const controller = {
         return res.redirect('/sudoku/database/');
     },
 };
-
-// controller.dataBaseWrite();
 
 module.exports = controller;
