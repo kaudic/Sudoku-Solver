@@ -1,6 +1,9 @@
 const express = require('express');
 const { errorHandler, SudokError } = require('../helpers/errorHandler');
 
+// imports of controllers
+const webSiteController = require('../controllers/website');
+
 // imports of helpers
 const handler = require('../helpers/handler');
 const seoController = require('../controllers/api/seo');
@@ -28,7 +31,7 @@ router.get('/robots.txt', handler(seoController.renderRobotTxt));
 router.get('/sitemap.xml', handler(seoController.renderSiteMapXml));
 
 // page admin de consultation des logs d'erreurs enregistrés en database
-router.get('/logs', handler(settingsController.renderLogs));
+router.get('/logs', handler(webSiteController.adminAuth), handler(settingsController.renderLogs));
 
 router.use(() => {
     throw new SudokError(404, 'Page introuvable');
