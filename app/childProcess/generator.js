@@ -1,6 +1,9 @@
 const solver = require('../services/solver');
 const dataMapper = require('../models/db');
 
+// we install this package to help us parsing parameters received
+const argv = require('yargs').argv;
+
 const boardsGeneratorProcess = async (qty) => {
     const arrayOfNewBoards = [];
 
@@ -23,8 +26,7 @@ const boardsGeneratorProcess = async (qty) => {
 
 process.on('message', (message) => {
     if (message == 'START') {
-        console.log('Child process generator of Boards just received START message');
-        const result = boardsGeneratorProcess(900);
+        const result = boardsGeneratorProcess(argv.qtyNewBoard);
         process.send(result);
     }
 });

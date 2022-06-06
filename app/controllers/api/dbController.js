@@ -5,12 +5,11 @@ const path = require('path');
 const controller = {
 
     async dataBaseWrite(req, res) {
-        const qty = Number(req.body.qtyNewBoard);
+        const qty = req.body.qtyNewBoard;
         const childRoute = path.normalize(__dirname + '/../../childProcess/generator');
-        console.log('-----------------------------------------------------------------------------------------------')
-        console.log(childRoute);
-        // TODO launch a child process for generating massive boards
-        const boardGeneratorChildProcess = fork(childRoute);
+
+        // Launching a child process for generating massive quantities of boards without blocking the main thread
+        const boardGeneratorChildProcess = fork(childRoute, [`--qtyNewBoard=${qty}`]);
 
         boardGeneratorChildProcess.on('message', (message) => {
             console.log('Board Generator Process finished');
