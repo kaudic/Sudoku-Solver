@@ -36,7 +36,7 @@ module.exports = {
             text: 'SELECT * FROM logs ORDER BY id DESC LIMIT 100',
             values: [],
         };
-        const result = await db.query(sqlQuery);
+        const result = await client.query(sqlQuery);
         return result.rows;
     },
 };
