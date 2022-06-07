@@ -125,6 +125,11 @@ h2 {
     background-color: var(--color1);
 }
 
+.form__btn--api {
+    background-color: var(--color1);
+    justify-self: flex-end;
+}
+
 
 .underline-title {
     background-color: var(--color1);
@@ -705,7 +710,8 @@ h2 {
         align-items: center;
     }
 
-    .form__btn--admin {
+    .form__btn--admin,
+    .form__btn--api {
         width: 70%
     }
 

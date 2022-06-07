@@ -4,7 +4,7 @@ const options = {
     info: {
         version: '1.0.0',
         title: 'Sudoku Solver',
-        description: 'Solveur de grilles de Sudoku à but pédagogique',
+        description: 'Solveur de Sudoku: performance exceptionnelle, gratuit et pas du publicité! Il utilise la méthode backtracing qui serait une méthode à exploiter en planification industrielle',
     },
     baseDir: __dirname,
     // On analyse tous les fichiers du projet

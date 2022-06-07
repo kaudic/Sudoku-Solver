@@ -13,13 +13,13 @@ const router = express.Router();
 
 /**
  * GET /api/board/getBoard/{level}
- * @summary Get a board with blank cells to play with (qty of blanks depends on the level requested)
+ * @summary Get a board with random blank cells. The level requested will determine the number of blank cells per line. A board id will be sent to help you get the solution.
  * @tags Boards - Routes to deal with board management
  * @param {level} level - Difficulty requested (Facile1, Facile2, Moyen, Difficile, Démoniaque)
  * @returns {boards} 200 - Array containing 9 Arrays with numbers from 0 to 9, for each line
+ * @example response - 200 - success response example
+ * {"id":276,"data":[[3,2,"",7,"",9,"",4,8],["","","",3,8,6,1,5,2],[8,5,6,"","",2,9,7,""],["",8,3,6,4,"",2,9,""],["",6,"",8,9,5,"",1,4],[9,4,5,2,"",1,"",8,""],[5,3,2,"",7,"",4,6,""],["",7,"",9,2,"",5,3,1],["",1,9,5,6,3,"",2,""]]}
  */
-// router.route('/getBoard/:level([A-Z][a-zé]+[1-2]?)')
-//     .get(handler(controller.loadBoard));
 
 // je déporte la regexp à l'intérieur du controlleur afin de faire un decodeURI() à cause de l'accent sur Démoniaque
 router.route('/getBoard/:level')

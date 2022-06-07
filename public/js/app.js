@@ -6,7 +6,6 @@ const app = {
         app.form.create();
         app.board.draw();
     },
-
     isValid(e) {
         // On met la zone de message d'erreur à vide (au cas ou)
         app.emptyErrorMessage();
@@ -115,7 +114,6 @@ const app = {
             }
         }
     },
-
     checkInput: (e) => {
         // On met la zone de message d'erreur à vide (au cas ou)
         app.emptyErrorMessage();
@@ -157,9 +155,7 @@ const app = {
 
         }
     },
-
     board: {
-
         draw() {
             console.log('Generating Board ...');
 
@@ -207,32 +203,24 @@ const app = {
             const sudokBoardElt = document.getElementById('sudokuBoard');
             sudokBoardElt.appendChild(messageErreurElt);
         },
-
         rows: 9,
-
         columns: 9,
-
         cellSize: '40px',
-
         data: {
             emptyCells: [],
             ligne: [[], [], [], [], [], [], [], [], []],
             column: [[], [], [], [], [], [], [], [], []],
             square: [[], [], [], [], [], [], [], [], []],
         },
-
         read() {
             // on commence par vider emptyCells car sinon sans rafraichissement de la page client, la méthode push ne fait qu'augmenter la variable emptyCells avec les grilles précédentes
             app.board.data.ligne = [[], [], [], [], [], [], [], [], []];
-
             // récupérer tous les inputs de la grille et itérer sur chacun des éléments
             const cellELements = document.getElementsByClassName('sudokValues');
-
             for (const cell of cellELements) {
                 const numLigne = cell.id.substr(0, 1);
                 const numColumn = cell.id.substr(1, 1);
                 let inputValue = 0;
-
                 // les cellules vides sont transformées en 0
                 if (!cell.value) {
                     inputValue = 0;
@@ -269,7 +257,6 @@ const app = {
 
             return square;
         },
-
         findcolSquare(lig, col) {
             let colSquare = 0;
 
@@ -295,9 +282,7 @@ const app = {
 
             return colSquare;
         },
-
     },
-
     stopWatch: {
 
         count: 0,
@@ -378,7 +363,6 @@ const app = {
             }
         },
     },
-
     form: {
 
         create() {
@@ -415,13 +399,11 @@ const app = {
         level: ['Facile1', 'Facile2', 'Moyen', 'Difficile', 'Démoniaque'],
 
     },
-
     emptyErrorMessage: () => {
         // On met la zone de message d'erreur à vide (au cas ou)
         const messageErreurElt = document.getElementById('errorMessage');
         messageErreurElt.textContent = '';
     },
-
     emptyExercice: () => {
         // On met la zone de message d'erreur à vide (au cas ou)
         app.emptyErrorMessage();
@@ -454,7 +436,6 @@ const app = {
         autoCheckInputLabel.style.display = 'none';
         autoCheckInput.checked = false;
     },
-
     applyDatasToBoard: (data) => {
         // On met la zone de message d'erreur à vide (au cas ou)
         app.emptyErrorMessage();
@@ -475,7 +456,6 @@ const app = {
             }
         }
     },
-
     loadExercice: (e) => {
         e.preventDefault();
 
@@ -512,7 +492,6 @@ const app = {
         autoCheckInputLabel.style.display = 'inline-block';
         autoCheckInput.checked = false;
     },
-
     solveExercice: (e) => {
         e.preventDefault();
 

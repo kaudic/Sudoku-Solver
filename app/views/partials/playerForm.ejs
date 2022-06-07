@@ -16,6 +16,7 @@
     <button class="form__btn" id="newChrono">Lancer un chrono</button>
     <input type="checkbox" name="autoCheck" id="autoCheck" style="display: none;">
     <label id="autoCheckLabel" for="autoCheck" style="display: none;">Live Correction</label>
+    <a href="/api-docs" class="form__btn form__btn--api" id="api">DOCUMENTATION API</a>
 
     <% if (locals.actorConnected){ if (locals.actorConnected.role.toString().toLowerCase()==='admin' ) { %>
         <a class="form__btn form__btn--admin" href="/sudoku/database" id="databaseAccess">Base de données</a>

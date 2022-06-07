@@ -25,30 +25,22 @@
 <body>
 
     <main>
-
         <div class="globalMenu">
-
             <div class="header">
                 <h1>
                     <a class="main-title" href="/sudoku">Solveur de Sudoku</a>
                 </h1>
 
                 <% if (locals.actorConnected) { %>
-
                     <p class="header--Login">
                         <%=locals.actorConnected.login%>
                             <btn id="menuBurger"><i class="fas fa-bars"></i></btn>
                     </p>
-
                     <% } else { %>
-
                         <a href="/sudoku/login" class="header--Login"><i class="fas fa-power-off"></i></a>
-
                         <% } %>
-
             </div>
             <div class="underline-title"></div>
-
 
             <% if (locals.actorConnected) { %>
                 <div class="menuBurger">

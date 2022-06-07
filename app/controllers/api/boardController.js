@@ -18,20 +18,29 @@ const controller = {
         const fullRandomBoard = await dataMapper.getOneRandomBoard();
         // on la passe à la fonction aléatoire pour lui retirer des valeurs
         const unfilledRandomBoard = service.wipeCells(fullRandomBoard.board_data, goalOfCellsEmptyPerLine);
-        console.log('unfilledRandomBoard: ' + unfilledRandomBoard);
-        return res.json({
+        const returnObject = {
             id: fullRandomBoard.board_id,
             data: unfilledRandomBoard,
-        });
+        };
+
+        console.log('-----------------------------------------------------------------------------------------');
+        console.log(JSON.stringify(returnObject));
+        console.log('-----------------------------------------------------------------------------------------');
+
+        return res.json(returnObject);
     },
     async loadResult(req, res) {
         // on récupère l'ID de la grille affichée sur le navigateur (provient d'un dataset)
         const { boardId } = req.params;
         const board = await dataMapper.getOneBoardById(boardId);
-        res.json({
+        const returnObject = {
             id: board.board_id,
             data: JSON.parse(board.board_data),
-        });
+        };
+        console.log('-----------------------------------------------------------------------------------------');
+        console.log(JSON.stringify(returnObject));
+        console.log('-----------------------------------------------------------------------------------------');
+        res.json(returnObject);
     },
     async solveBoard(req, res) {
         // on récupère les données de la grille du front
