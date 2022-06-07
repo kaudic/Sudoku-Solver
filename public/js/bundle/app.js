@@ -7,7 +7,6 @@ const app = {
         app.form.create();
         app.board.draw();
     },
-
     isValid(e) {
         // On met la zone de message d'erreur à vide (au cas ou)
         app.emptyErrorMessage();
@@ -116,7 +115,6 @@ const app = {
             }
         }
     },
-
     checkInput: (e) => {
         // On met la zone de message d'erreur à vide (au cas ou)
         app.emptyErrorMessage();
@@ -158,9 +156,7 @@ const app = {
 
         }
     },
-
     board: {
-
         draw() {
             console.log('Generating Board ...');
 
@@ -171,7 +167,6 @@ const app = {
             main.appendChild(boardContainerElt);
 
             // Création d'un élément nommé sudokuBoard
-
             const sudokuBoard = document.createElement('div');
             sudokuBoard.id = 'sudokuBoard';
             boardContainerElt.appendChild(sudokuBoard);
@@ -189,11 +184,15 @@ const app = {
                     divRow.appendChild(divColumns);
 
                     const inputCellElt = document.createElement('input');
+                    const labelForInputCellElt = document.createElement('label');
                     inputCellElt.addEventListener('change', app.checkInput);
                     inputCellElt.addEventListener('change', app.isValid);
-                    // inputCellElt.style.width = app.board.cellSize;
-                    // inputCellElt.style.height = app.board.cellSize;
+
                     const boardCell = divColumns.appendChild(inputCellElt);
+                    const boardLabel = divColumns.appendChild(labelForInputCellElt);
+                    boardLabel.setAttribute("for", i.toString() + j.toString());
+                    boardLabel.textContent = 'Cellule ' + i.toString() + j.toString();
+                    boardLabel.classList.add('visually-hidden');
                     boardCell.id = i.toString() + j.toString();
                     boardCell.className = 'sudokValues';
                 }
@@ -208,32 +207,24 @@ const app = {
             const sudokBoardElt = document.getElementById('sudokuBoard');
             sudokBoardElt.appendChild(messageErreurElt);
         },
-
         rows: 9,
-
         columns: 9,
-
         cellSize: '40px',
-
         data: {
             emptyCells: [],
             ligne: [[], [], [], [], [], [], [], [], []],
             column: [[], [], [], [], [], [], [], [], []],
             square: [[], [], [], [], [], [], [], [], []],
         },
-
         read() {
             // on commence par vider emptyCells car sinon sans rafraichissement de la page client, la méthode push ne fait qu'augmenter la variable emptyCells avec les grilles précédentes
             app.board.data.ligne = [[], [], [], [], [], [], [], [], []];
-
             // récupérer tous les inputs de la grille et itérer sur chacun des éléments
             const cellELements = document.getElementsByClassName('sudokValues');
-
             for (const cell of cellELements) {
                 const numLigne = cell.id.substr(0, 1);
                 const numColumn = cell.id.substr(1, 1);
                 let inputValue = 0;
-
                 // les cellules vides sont transformées en 0
                 if (!cell.value) {
                     inputValue = 0;
@@ -270,7 +261,6 @@ const app = {
 
             return square;
         },
-
         findcolSquare(lig, col) {
             let colSquare = 0;
 
@@ -296,9 +286,7 @@ const app = {
 
             return colSquare;
         },
-
     },
-
     stopWatch: {
 
         count: 0,
@@ -379,7 +367,6 @@ const app = {
             }
         },
     },
-
     form: {
 
         create() {
@@ -416,13 +403,11 @@ const app = {
         level: ['Facile1', 'Facile2', 'Moyen', 'Difficile', 'Démoniaque'],
 
     },
-
     emptyErrorMessage: () => {
         // On met la zone de message d'erreur à vide (au cas ou)
         const messageErreurElt = document.getElementById('errorMessage');
         messageErreurElt.textContent = '';
     },
-
     emptyExercice: () => {
         // On met la zone de message d'erreur à vide (au cas ou)
         app.emptyErrorMessage();
@@ -455,7 +440,6 @@ const app = {
         autoCheckInputLabel.style.display = 'none';
         autoCheckInput.checked = false;
     },
-
     applyDatasToBoard: (data) => {
         // On met la zone de message d'erreur à vide (au cas ou)
         app.emptyErrorMessage();
@@ -476,7 +460,6 @@ const app = {
             }
         }
     },
-
     loadExercice: (e) => {
         e.preventDefault();
 
@@ -513,7 +496,6 @@ const app = {
         autoCheckInputLabel.style.display = 'inline-block';
         autoCheckInput.checked = false;
     },
-
     solveExercice: (e) => {
         e.preventDefault();
 
@@ -550,11 +532,6 @@ const app = {
             // lecture de la grille html
             const boardData = app.board.read(); // un objet qui contient des tableaux sur différentes propriétés
             const boardDataJSON = JSON.stringify(boardData);
-            console.log('-------------------------------------------------------------------------------------');
-            console.log('boardDataJSON: ' + boardDataJSON);
-            console.log('route: ' + route);
-
-            // !we modify the boardDataJSON with only the ligne parameter
 
             // envoie de la grille sous format JSON
             fetch(route, {
@@ -588,7 +565,6 @@ const app = {
 };
 
 // Lancement de la génération de la grille
-
 document.addEventListener('DOMContentLoaded', app.init);
 
 },{}]},{},[1]);

@@ -166,7 +166,6 @@ const app = {
             main.appendChild(boardContainerElt);
 
             // Création d'un élément nommé sudokuBoard
-
             const sudokuBoard = document.createElement('div');
             sudokuBoard.id = 'sudokuBoard';
             boardContainerElt.appendChild(sudokuBoard);
@@ -184,11 +183,15 @@ const app = {
                     divRow.appendChild(divColumns);
 
                     const inputCellElt = document.createElement('input');
+                    const labelForInputCellElt = document.createElement('label');
                     inputCellElt.addEventListener('change', app.checkInput);
                     inputCellElt.addEventListener('change', app.isValid);
-                    // inputCellElt.style.width = app.board.cellSize;
-                    // inputCellElt.style.height = app.board.cellSize;
+
                     const boardCell = divColumns.appendChild(inputCellElt);
+                    const boardLabel = divColumns.appendChild(labelForInputCellElt);
+                    boardLabel.setAttribute("for", i.toString() + j.toString());
+                    boardLabel.textContent = 'Cellule ' + i.toString() + j.toString();
+                    boardLabel.classList.add('visually-hidden');
                     boardCell.id = i.toString() + j.toString();
                     boardCell.className = 'sudokValues';
                 }
@@ -528,11 +531,6 @@ const app = {
             // lecture de la grille html
             const boardData = app.board.read(); // un objet qui contient des tableaux sur différentes propriétés
             const boardDataJSON = JSON.stringify(boardData);
-            console.log('-------------------------------------------------------------------------------------');
-            console.log('boardDataJSON: ' + boardDataJSON);
-            console.log('route: ' + route);
-
-            // !we modify the boardDataJSON with only the ligne parameter
 
             // envoie de la grille sous format JSON
             fetch(route, {
@@ -566,5 +564,4 @@ const app = {
 };
 
 // Lancement de la génération de la grille
-
 document.addEventListener('DOMContentLoaded', app.init);

@@ -12,7 +12,7 @@
 }
 
 html {
-    font-size: 62.5%;
+    font-size: 72.5%;
     /* equals 1rem = 1rem*/
 }
 
@@ -337,7 +337,7 @@ h2 {
     font-weight: bold;
     color: black;
     text-decoration: none;
-    font-size: 11px;
+    font-size: 12px;
     padding: 2px;
     border: 2px solid black;
 }
@@ -556,6 +556,19 @@ h2 {
     display: none !important;
 }
 
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    /* added line */
+    border: 0;
+}
+
 .mentions_modal_inside_div {
     border: 0.1rem solid black;
     border-radius: 1rem;
@@ -699,7 +712,7 @@ h2 {
     }
 
     .form__btn {
-        font-size: 1rem;
+        font-size: 1.2rem;
         padding: 0.3rem;
         width: 49%;
         height: 3.1rem;
