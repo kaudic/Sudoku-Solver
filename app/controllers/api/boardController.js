@@ -22,11 +22,6 @@ const controller = {
             id: fullRandomBoard.board_id,
             data: unfilledRandomBoard,
         };
-
-        console.log('-----------------------------------------------------------------------------------------');
-        console.log(JSON.stringify(returnObject));
-        console.log('-----------------------------------------------------------------------------------------');
-
         return res.json(returnObject);
     },
     async loadResult(req, res) {
@@ -45,6 +40,7 @@ const controller = {
     async solveBoard(req, res) {
         // on récupère les données de la grille du front
         const frontBoardData = req.body;
+        console.log(JSON.stringify(frontBoardData));
         // enregistrer les données reçues du front (frontBoardData) vers notre objet de variables en back
         solver.data.ligne = frontBoardData;
         solver.data.column = service.loadSolverDataColumn(frontBoardData);
@@ -55,6 +51,7 @@ const controller = {
         if (resultatSolver === 'Non solvable') {
             return res.json({ results: 'Il n\'y a pas de solution pour cette grille' });
         }
+        console.log('---------------------------------------------------------------------------------');
         console.log('RESULTAT: ' + JSON.stringify(solver.data.ligne));
         return res.json({ results: solver.data.ligne });
     },
