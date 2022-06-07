@@ -40,7 +40,7 @@ const router = express.Router();
 }
 */
 
-// je déporte la regexp à l'intérieur du controlleur afin de faire un decodeURI() à cause de l'accent sur Démoniaque
+// Je déporte la regexp à l'intérieur du controlleur afin de faire un decodeURI() à cause de l'accent sur Démoniaque
 router.route('/getBoard/:level')
     .get(handler(controller.loadBoard));
 
@@ -86,9 +86,116 @@ router.route('/solveBoard/:boardId(\\d+)')
 * POST /api/board/solveBoard
 * @summary Solve any valid boards with backtracing method - delay of resolution <1s
 * @param {array<integer>} request.body.required - boards numbers containing 0 for the figures that need to be solved - application/json
-* @returns {playerBoard} 200 - full list of numbers in 9 arrays - each array is representing one line of the board
+* @returns {playerBoard} 200 - full list of numbers in the results property of the object
  * @example response - 200 - success response example
- * [[2,3,6,4,1,5,7,8,9],[5,8,9,6,2,7,1,3,4],[1,4,7,8,3,9,2,5,6],[4,6,2,3,5,1,8,9,7],[9,5,8,7,4,2,6,1,3],[3,7,1,9,6,8,4,2,5],[6,2,5,1,7,3,9,4,8],[7,9,3,2,8,4,5,6,1],[8,1,4,5,9,6,3,7,2]]
+ * {
+  "results": [
+    [
+      7,
+      9,
+      5,
+      1,
+      6,
+      2,
+      3,
+      4,
+      8
+    ],
+    [
+      2,
+      4,
+      6,
+      3,
+      7,
+      8,
+      9,
+      1,
+      5
+    ],
+    [
+      3,
+      1,
+      8,
+      4,
+      9,
+      5,
+      7,
+      2,
+      6
+    ],
+    [
+      5,
+      2,
+      3,
+      7,
+      8,
+      1,
+      6,
+      9,
+      4
+    ],
+    [
+      8,
+      7,
+      9,
+      6,
+      5,
+      4,
+      2,
+      3,
+      1
+    ],
+    [
+      1,
+      6,
+      4,
+      2,
+      3,
+      9,
+      8,
+      5,
+      7
+    ],
+    [
+      4,
+      8,
+      2,
+      9,
+      1,
+      7,
+      5,
+      6,
+      3
+    ],
+    [
+      6,
+      5,
+      1,
+      8,
+      2,
+      3,
+      4,
+      7,
+      9
+    ],
+    [
+      9,
+      3,
+      7,
+      5,
+      4,
+      6,
+      1,
+      8,
+      2
+    ]
+  ]
+}
+* @returns {playerBoard} 400 - no solution for the board received
+ * @example response - 400 - bad request
+ * {
+  "results": "Il n'y a pas de solution pour cette grille"
+}
 * @example request - example payload
  * [[0,0,0,0,0,2,0,4,0],[2,0,0,0,0,8,0,0,0],[3,1,0,0,0,0,0,0,0],[0,0,0,0,8,0,6,9,0],[0,0,0,0,0,4,0,0,1],[0,6,0,0,0,0,8,0,7],[0,0,0,0,0,7,5,0,0],[0,0,0,0,2,0,4,0,0],[0,0,0,0,0,0,1,0,2]]
  *

@@ -49,7 +49,7 @@ const controller = {
 
         const resultatSolver = solver.solve(false);
         if (resultatSolver === 'Non solvable') {
-            return res.json({ results: 'Il n\'y a pas de solution pour cette grille' });
+            return res.status(400).json({ results: 'Il n\'y a pas de solution pour cette grille' });
         }
         console.log('---------------------------------------------------------------------------------');
         console.log('RESULTAT: ' + JSON.stringify(solver.data.ligne));

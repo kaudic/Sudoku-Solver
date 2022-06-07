@@ -4,14 +4,16 @@
 ################################################################################
 @endpoint = https://solveur-de-sudoku.herokuapp.com
 
-### Test a board resolution
-POST {{ endpoint }}/solveBoard
-content-type: application/json
+### Test a board resolution (curl request that I got from the API-swagger-Docs when I used the "try it out" button)
 
-[
+curl -X 'POST' \
+  'http://localhost:3000/api/board/solveBoard' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '[
   [
-    1,
     0,
+    2,
     0,
     0,
     0,
@@ -108,4 +110,4 @@ content-type: application/json
     0,
     2
   ]
-]
+]'
