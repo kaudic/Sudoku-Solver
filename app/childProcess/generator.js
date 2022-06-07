@@ -2,6 +2,7 @@ const solver = require('../services/solver');
 const dataMapper = require('../models/db');
 
 // we install this package to help us parsing parameters received
+// maybe we don't need such package
 const argv = require('yargs').argv;
 
 const boardsGeneratorProcess = async (qty) => {

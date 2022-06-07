@@ -224,11 +224,7 @@ const app = {
 
         read() {
             // on commence par vider emptyCells car sinon sans rafraichissement de la page client, la méthode push ne fait qu'augmenter la variable emptyCells avec les grilles précédentes
-
-            app.board.data.emptyCells = [];
             app.board.data.ligne = [[], [], [], [], [], [], [], [], []];
-            app.board.data.column = [[], [], [], [], [], [], [], [], []];
-            app.board.data.square = [[], [], [], [], [], [], [], [], []];
 
             // récupérer tous les inputs de la grille et itérer sur chacun des éléments
             const cellELements = document.getElementsByClassName('sudokValues');
@@ -238,49 +234,15 @@ const app = {
                 const numColumn = cell.id.substr(1, 1);
                 let inputValue = 0;
 
-                // les cellules vides sont transformées en 0 -> on en profite pour charger emptyCells
-
+                // les cellules vides sont transformées en 0
                 if (!cell.value) {
                     inputValue = 0;
-                    app.board.data.emptyCells.push(numLigne + numColumn);
                 } else {
                     inputValue = Number(cell.value);
                 }
-
-                // on remplit l'array sur les lignes
                 app.board.data.ligne[numLigne][numColumn] = inputValue;
-
-                // on remplit l'array sur les colonnes
-                app.board.data.column[numColumn][numLigne] = inputValue;
-
-                // on remplit l'array sur les squares en utilisant une fonction déportée
-                app.board.writeInSquare(numLigne, numColumn, inputValue);
             }
-
-            return app.board.data;
-        },
-
-        writeInSquare(numLigne, numColumn, inputValue) {
-            // Gestion des 9 carrés, cela nécessite l'emploi d'un else if
-            if (numLigne <= 2 && numColumn <= 2) {
-                app.board.data.square[0].push(inputValue);
-            } else if (numLigne <= 2 && numColumn > 2 && numColumn <= 5) {
-                app.board.data.square[1].push(inputValue);
-            } else if (numLigne <= 2 && numColumn > 5) {
-                app.board.data.square[2].push(inputValue);
-            } else if (numLigne > 2 && numLigne <= 5 && numColumn <= 2) {
-                app.board.data.square[3].push(inputValue);
-            } else if (numLigne > 2 && numLigne <= 5 && numColumn > 2 && numColumn <= 5) {
-                app.board.data.square[4].push(inputValue);
-            } else if (numLigne > 2 && numLigne <= 5 && numColumn > 5) {
-                app.board.data.square[5].push(inputValue);
-            } else if (numLigne > 5 && numColumn <= 2) {
-                app.board.data.square[6].push(inputValue);
-            } else if (numLigne > 5 && numColumn > 2 && numColumn <= 5) {
-                app.board.data.square[7].push(inputValue);
-            } else if (numLigne > 5 && numColumn > 5) {
-                app.board.data.square[8].push(inputValue);
-            }
+            return app.board.data.ligne;
         },
 
         findSquare(lig, col) { // cette fonction trouve le carré concerné à partir du numéro de ligne et de colonne
@@ -588,6 +550,11 @@ const app = {
             // lecture de la grille html
             const boardData = app.board.read(); // un objet qui contient des tableaux sur différentes propriétés
             const boardDataJSON = JSON.stringify(boardData);
+            console.log('-------------------------------------------------------------------------------------');
+            console.log('boardDataJSON: ' + boardDataJSON);
+            console.log('route: ' + route);
+
+            // !we modify the boardDataJSON with only the ligne parameter
 
             // envoie de la grille sous format JSON
             fetch(route, {
@@ -596,22 +563,17 @@ const app = {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-
             })
-
                 // réception des calculs du solveur, décryptage du json
                 .then((response) => {
                     const responseTreated = response.json();
                     return responseTreated;
                 })
-
                 // le décryptage des calculs solveur est terminé, on écrit les données dans la grille html
                 .then((board) => {
                     console.log(board.results);
-
                     if (board.results === 'Il n\'y a pas de solution pour cette grille') {
                         // app.stopWatch.setOff();
-
                         // Mise à jour du message d'erreur
                         const messageErreurElt = document.getElementById('errorMessage');
                         messageErreurElt.textContent = board.results;

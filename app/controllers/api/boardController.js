@@ -12,17 +12,13 @@ const controller = {
         if (!isLevelOk) {
             throw new Error('Le level demandé n\'est pas conforme à ce qu\'attends l\'API.')
         };
-
         // we check with a regexp what we received
         const goalOfCellsEmptyPerLine = service.emptyCellsPerLevel(level);
-
         // Appel du datamapper, il va renvoyer une grille aléatoire.
         const fullRandomBoard = await dataMapper.getOneRandomBoard();
-
         // on la passe à la fonction aléatoire pour lui retirer des valeurs
         const unfilledRandomBoard = service.wipeCells(fullRandomBoard.board_data, goalOfCellsEmptyPerLine);
         console.log('unfilledRandomBoard: ' + unfilledRandomBoard);
-
         return res.json({
             id: fullRandomBoard.board_id,
             data: unfilledRandomBoard,
@@ -40,16 +36,17 @@ const controller = {
     async solveBoard(req, res) {
         // on récupère les données de la grille du front
         const frontBoardData = req.body;
-        // enregistrer les données reçues du front (frontBoardData) vers notre variable en back
-        solver.data.ligne = frontBoardData.ligne;
-        solver.data.column = frontBoardData.column;
-        solver.data.square = frontBoardData.square;
-        solver.data.emptyCells = frontBoardData.emptyCells;
+        // enregistrer les données reçues du front (frontBoardData) vers notre objet de variables en back
+        solver.data.ligne = frontBoardData;
+        solver.data.column = service.loadSolverDataColumn(frontBoardData);
+        solver.data.square = service.loadSolverDataSquare(frontBoardData);
+        solver.data.emptyCells = service.loadSolverDataEmptyCells(frontBoardData);
 
         const resultatSolver = solver.solve(false);
         if (resultatSolver === 'Non solvable') {
             return res.json({ results: 'Il n\'y a pas de solution pour cette grille' });
         }
+        console.log('RESULTAT: ' + JSON.stringify(solver.data.ligne));
         return res.json({ results: solver.data.ligne });
     },
     async checkCellResult(req, res) {

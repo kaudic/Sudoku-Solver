@@ -43,7 +43,6 @@ const solver = {
         }
         return false;
     },
-
     linesFinished(board = this.data.line) {
         // console.log('LINE: ' + board);
         let areLinesOK = true;
@@ -56,7 +55,6 @@ const solver = {
         });
         return areLinesOK;
     },
-
     squaresFinished(board = this.data.square) {
         let areSquaresOK = true;
         // console.log('SQUARE: ' + board);
@@ -69,7 +67,6 @@ const solver = {
         });
         return areSquaresOK;
     },
-
     columnsFinished(board = this.data.column) {
         let areColumnsOK = true;
         board.forEach((column) => {
@@ -107,53 +104,6 @@ const solver = {
             square = 8;
         }
         return square;
-    },
-
-    findcolSquare(lig, col) {
-        let colSquare = 0;
-
-        if ((lig === 0 || lig === 3 || lig === 6) && col <= 2) {
-            colSquare = Number(col);
-        } else if ((lig === 0 || lig === 3 || lig === 6) && col > 2 && col <= 5) {
-            colSquare = Number(col) - 3;
-        } else if ((lig === 0 || lig === 3 || lig === 6) && col > 5 && col <= 8) {
-            colSquare = Number(col) - 6;
-        } else if ((lig === 1 || lig === 4 || lig === 7) && col <= 2) {
-            colSquare = Number(col) + 3;
-        } else if ((lig === 1 || lig === 4 || lig === 7) && col > 2 && col <= 5) {
-            colSquare = Number(col);
-        } else if ((lig === 1 || lig === 4 || lig === 7) && col > 5 && col <= 8) {
-            colSquare = Number(col) - 3;
-        } else if ((lig === 2 || lig === 5 || lig === 8) && col <= 2 + 6) {
-            colSquare = Number(col) + 6;
-        } else if ((lig === 2 || lig === 5 || lig === 8) && col > 2 && col <= 5) {
-            colSquare = Number(col) + 3;
-        } else if ((lig === 2 || lig === 5 || lig === 8) && col > 5 && col <= 8) {
-            colSquare = Number(col);
-        }
-        return colSquare;
-    },
-
-    writeInSquare(lig, col, square, result) {
-        if ((lig === 0 || lig === 3 || lig === 6) && col <= 2) {
-            solver.data.square[square][Number(col)] = result;
-        } else if ((lig === 0 || lig === 3 || lig === 6) && col > 2 && col <= 5) {
-            solver.data.square[square][Number(col) - 3] = result;
-        } else if ((lig === 0 || lig === 3 || lig === 6) && col > 5 && col <= 8) {
-            solver.data.square[square][Number(col) - 6] = result;
-        } else if ((lig === 1 || lig === 4 || lig === 7) && col <= 2) {
-            solver.data.square[square][Number(col) + 3] = result;
-        } else if ((lig === 1 || lig === 4 || lig === 7) && col > 2 && col <= 5) {
-            solver.data.square[square][Number(col)] = result;
-        } else if ((lig === 1 || lig === 4 || lig === 7) && col > 5 && col <= 8) {
-            solver.data.square[square][Number(col) - 3] = result;
-        } else if ((lig === 2 || lig === 5 || lig === 8) && col <= 2 + 6) {
-            solver.data.square[square][Number(col) + 6] = result;
-        } else if ((lig === 2 || lig === 5 || lig === 8) && col > 2 && col <= 5) {
-            solver.data.square[square][Number(col) + 3] = result;
-        } else if ((lig === 2 || lig === 5 || lig === 8) && col > 5 && col <= 8) {
-            solver.data.square[square][Number(col)] = result;
-        }
     },
     updateSquare() {
         // console.log('update square starting');
@@ -278,7 +228,6 @@ const solver = {
         });
         return possibleResults;
     },
-
     makeStepsBeforeBacktracing() {
         // on recherche le dernier élément du tracker
         const trackerLength = solver.data.tracker.length;
@@ -465,7 +414,6 @@ const solver = {
 
         return false;
     },
-
     generator: function () { //générateur de grille non résolue
 
         // initialisation des arrays
@@ -552,7 +500,6 @@ const solver = {
         };
         return retour;
     },
-
     // fonction récursive qui génère une grille aléatoire et essaie de la résoudre, tant qu'il n'y a pas une grille de résolue, la récursion continue
     generatorSupervisor() {
         // Génération d'une grille aléatoire
@@ -569,7 +516,6 @@ const solver = {
             return solver.data.ligne;
         }
     },
-
 };
 
 module.exports = solver;
