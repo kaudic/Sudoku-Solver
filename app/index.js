@@ -45,7 +45,7 @@ app.use((req, res, next) => {
     if (!req.session.actorConnected) { req.session.actorConnected = '' };
     res.locals.actorConnected = req.session.actorConnected;
     res.locals.baseUrl = `${process.env.BASE_URL}`;
-    console.log('request received in Sudoku project');
+    console.log('req.url : ' + req.url);
     next();
 });
 
