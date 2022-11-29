@@ -20,6 +20,7 @@ router.get('/', (req, res) => {
 const apiRouter = require('./api');
 const websiteRouter = require('./website');
 
+router.use('/', console.log('req.url in the sudoky project: ' + req.url));
 // On préfixe les sous-routers
 router.use('/api', apiRouter);
 router.use('/sudoku-solver', websiteRouter);
