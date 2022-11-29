@@ -27,7 +27,7 @@ const controller = {
         }
 
         if (req.session.actorConnected.role.toString().toLowerCase() !== 'admin') {
-            res.redirect(`${process.env.BASE_URL}/sudoku-solver`);
+            res.redirect(`${process.env.BASE_URL}/sudoku/sudoku-solver`);
         }
         next();
     },
@@ -66,14 +66,14 @@ const controller = {
         }
         // mise à jour dans la DB
         await userDatamapper.updateOneUser(actorObject);
-        return res.redirect(`${process.env.BASE_URL}/sudoku-solver/`);
+        return res.redirect(`${process.env.BASE_URL}/sudoku/sudoku-solver/`);
     },
 
     async deleteActor(req, res) {
         const id = Number(req.session.actorConnected.id);
         await userDatamapper.deleteOneUser(id);
         // on renvoie sur la route qui supprime la session
-        res.redirect(`${process.env.BASE_URL}/sudoku-solver/deconnect`);
+        res.redirect(`${process.env.BASE_URL}/sudoku/sudoku-solver/deconnect`);
     },
 
     async connect(req, res) {
@@ -94,13 +94,13 @@ const controller = {
             email: user.rows[0].actor_email,
         };
         res.locals.actorConnected = req.session.actorConnected;
-        return res.redirect(`${process.env.BASE_URL}/sudoku-solver`);
+        return res.redirect(`${process.env.BASE_URL}/sudoku/sudoku-solver`);
     },
 
     deconnect: (req, res) => {
         delete req.session.actorConnected;
         res.locals = null;
-        res.redirect(`${process.env.BASE_URL}/sudoku-solver/login`);
+        res.redirect(`${process.env.BASE_URL}/sudoku/sudoku-solver/login`);
     },
 
     displayAccount: (req, res) => {
