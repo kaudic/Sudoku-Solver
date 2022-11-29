@@ -13,7 +13,7 @@ const router = express.Router();
 
 // si erreur utilisateur, on redirige sur /sudoku
 router.get('/', (req, res) => {
-    res.redirect('/sudoku');
+    res.redirect('/sudoku-solver');
 });
 
 // importation des sous-routeurs
@@ -22,7 +22,7 @@ const websiteRouter = require('./website');
 
 // On préfixe les sous-routers
 router.use('/api', apiRouter);
-router.use('/sudoku', websiteRouter);
+router.use('/sudoku-solver', websiteRouter);
 
 // page publique de consultation du fichier robot.txt
 router.get('/robots.txt', handler(seoController.renderRobotTxt));
