@@ -25,6 +25,7 @@ app.use(cors(process.env.CORS_DOMAINS ?? '*'));
 
 // We give the locals the NODE_ENV info to send localhost BASE_URL or prod BASE_URL
 app.use((_, res, next) => {
+    console.log('request received in Sudoku project');
     res.locals.NODE_ENV = process.env.NODE_ENV;
     next();
 });
@@ -42,7 +43,8 @@ app.use(session({
 
 // variable à transmettre à EJS
 app.use((req, res, next) => {
-    res.locals.actorConnected = req.session.actorConnected || '';
+    if (!req.session.actorConnected) { req.session.actorConnected = '' };
+    res.locals.actorConnected = req.session.actorConnected;
     res.locals.baseUrl = `${process.env.BASE_URL}`;
     next();
 });
