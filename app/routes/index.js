@@ -20,14 +20,16 @@ router.get('/', (req, res) => {
 const apiRouter = require('./api');
 const websiteRouter = require('./website');
 
+
+// On préfixe les sous-routers
+router.use('/api', apiRouter);
+
 // If sudoku is still in th url then cut it
 router.use('/', (req, res, next) => {
     req.url = req.url.replace('/sudoku/', '/');
     next();
 });
 
-// On préfixe les sous-routers
-router.use('/api', apiRouter);
 router.use('/sudoku-solver', websiteRouter);
 
 // page publique de consultation du fichier robot.txt
