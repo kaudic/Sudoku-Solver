@@ -1,6 +1,7 @@
 <form class="main-form">
-
-    <label class="form__consigne" for="level-selection">Choisir un exercice <br>ou saisir une grille</label>
+    <label class="form__consigne" for="level-selection"
+        >Choisir un exercice <br />ou saisir une grille</label
+    >
 
     <select class="form__btn" id="level-selection">
         <option>Facile1</option>
@@ -11,16 +12,32 @@
     </select>
 
     <button class="form__btn" id="loadExerciceBtnElt">Charger Exercice</button>
-    <button class="form__btn" type="button" id="emptyBoardBtnElt">Vider la grille</button>
+    <button class="form__btn" type="button" id="emptyBoardBtnElt">
+        Vider la grille
+    </button>
     <button class="form__btn" id="solveBoardBtn">Résoudre la grille</button>
     <button class="form__btn" id="newChrono">Lancer un chrono</button>
-    <input type="checkbox" name="autoCheck" id="autoCheck" style="display: none;">
-    <label id="autoCheckLabel" for="autoCheck" style="display: none;">Live Correction</label>
-    <a href="/api-docs" class="form__btn form__btn--api" id="api">DOCUMENTATION API</a>
+    <input
+        type="checkbox"
+        name="autoCheck"
+        id="autoCheck"
+        style="display: none"
+    />
+    <label id="autoCheckLabel" for="autoCheck" style="display: none"
+        >Live Correction</label
+    >
+    <a href="/sudoku/api-docs" class="form__btn form__btn--api" id="api"
+        >DOCUMENTATION API</a
+    >
 
-    <% if (locals.actorConnected){ if (locals.actorConnected.role.toString().toLowerCase()==='admin' ) { %>
-        <a class="form__btn form__btn--admin" href="/sudoku/database" id="databaseAccess">Base de données</a>
+    <% if (locals.actorConnected){ if
+    (locals.actorConnected.role.toString().toLowerCase()==='admin' ) { %>
+    <a
+        class="form__btn form__btn--admin"
+        href="/sudoku/database"
+        id="databaseAccess"
+        >Base de données</a
+    >
 
-        <% }}%>
-
+    <% }}%>
 </form>
