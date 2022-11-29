@@ -160,10 +160,10 @@ const app = {
             console.log('Generating Board ...');
 
             // Sélection de main pour y mettre un conteneur pour la grille et le Chronomètre
-            const main = document.querySelector('main');
+            const boardContainer = document.getElementById('board-container');
             const boardContainerElt = document.createElement('div');
             boardContainerElt.classList.add('main-content');
-            main.appendChild(boardContainerElt);
+            boardContainer.appendChild(boardContainerElt);
 
             // Création d'un élément nommé sudokuBoard
             const sudokuBoard = document.createElement('div');
