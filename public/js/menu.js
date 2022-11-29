@@ -39,7 +39,7 @@ const menu = {
             toggleDayNightBtnElt.addEventListener('click', (e) => {
                 e.preventDefault();
                 const displayId = Number(e.target.value) + 1;
-                fetch(`/api/settings/colors/${displayId}`, { method: 'PUT' });
+                fetch(`/sudoku/api/settings/colors/${displayId}`, { method: 'PUT' });
                 menu.menuBurgerSetColors();
             });
         }
@@ -49,7 +49,7 @@ const menu = {
     // Lancement de setColorsInLS pour mettre à jour le LS
     // Lancement de setDisplaySettings pour mettre à jour le fichier CSS
     menuBurgerSetColors() {
-        fetch('/api/settings/colors')
+        fetch('/sudoku/api/settings/colors')
             .then((res) => res.json())
             .then((colors) => {
                 menu.setColorsInLS(colors);
