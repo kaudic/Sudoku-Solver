@@ -13,7 +13,7 @@ const options = {
     swaggerUIPath: process.env.API_DOCUMENTATION_ROUTE,
     // Activation de la documentation à travers une route de l'API
     exposeApiDocs: true,
-    apiDocsPath: '/sudoku-solver/api/docs',
+    apiDocsPath: '/api/docs',
 };
 
 /**
