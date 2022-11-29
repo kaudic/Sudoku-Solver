@@ -27,7 +27,7 @@ const controller = {
     async deleteBoard(req, res) {
         const id = Number(req.params.id);
         await dataMapper.deleteOneBoardById(id);
-        return res.redirect('/sudoku/database/');
+        return res.redirect(`${process.env.BASE_URL}/sudoku-solver/database/`);
     },
 };
 
