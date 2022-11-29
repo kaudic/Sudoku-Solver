@@ -286,8 +286,10 @@ const solver = {
                     testedResults: [testedResult]
                 };
 
+
                 // insertion de l'objet créé dans le tracker
                 solver.data.tracker.push(cellTrackerData);
+
                 // console.log(JSON.stringify(cellTrackerData));
 
                 // on remplit board.data (ligne/colonne/square) avec la valeur que l'on teste
@@ -310,6 +312,7 @@ const solver = {
                 if (stopSolver) {
                     // -> si oui on fait un return pour stopper la fonction (et on ré-initialise le tracker)
                     // si besoin faire une boucle avec du shift pour shooter les éléments un par un
+
                     solver.data.tracker = [];
                     const solverResponse = solver.data.ligne;
                     // remise à 0 du compteur car c'est la fin de la fonction
