@@ -20,8 +20,9 @@ router.get('/', (req, res) => {
 const apiRouter = require('./api');
 const websiteRouter = require('./website');
 
+// If sudoku is still in th url then cut it
 router.use('/', (req, res, next) => {
-    console.log('req.url in the sudoky project: ' + req.url);
+    req.url = req.url.replace('/sudoku/', '/');
     next();
 });
 
