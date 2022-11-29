@@ -6,7 +6,9 @@ const path = require('path');
 const router = require('./routes');
 
 const app = express();
+
 require('./helpers/apiDocs')(app);
+
 app.use(favicon(path.normalize(`${__dirname}/../public/images/favicon.ico`)));
 app.set('views', `${process.cwd()}/app/views`);
 app.set('view engine', 'ejs');
@@ -40,9 +42,7 @@ app.use(session({
 
 // variable à transmettre à EJS
 app.use((req, res, next) => {
-    console.log('-----------------------------------------------------------------------------------------------------------');
-    console.log('req.session.actorConnected: ' + req.session.actorConnected);
-    res.locals.actorConnected = req.session.actorConnected;
+    res.locals.actorConnected = req.session.actorConnected || '';
     res.locals.baseUrl = `${process.env.BASE_URL}`;
     next();
 });
