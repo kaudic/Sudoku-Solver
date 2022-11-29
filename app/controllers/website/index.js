@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt');
-const debug = require('debug')('app:websiteController');
 const userDatamapper = require('../../models/user');
 const boardDatamapper = require('../../models/board');
 const formatUser = require('../../helpers/userFormatter');
