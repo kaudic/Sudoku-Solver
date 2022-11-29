@@ -35,7 +35,7 @@
             <div class="globalMenu">
                 <div class="header">
                     <h1>
-                        <a class="main-title" href="/sudoku"
+                        <a class="main-title" href="/sudoku/sudoku-solver"
                             >Solveur de Sudoku</a
                         >
                     </h1>
@@ -46,7 +46,7 @@
                         <btn id="menuBurger"><i class="fas fa-bars"></i></btn>
                     </p>
                     <% } else { %>
-                    <a href="/sudoku/login" class="header--Login"
+                    <a href="/sudoku/sudoku-solver/login" class="header--Login"
                         ><i class="fas fa-power-off"></i
                     ></a>
                     <% } %>
@@ -64,17 +64,20 @@
                             ><i class="fas fa-lightbulb toggleDayNightIcon"></i
                         ></span>
                         <a
-                            href="/sudoku/account/<%= locals.actorConnected.login%>"
+                            href="/sudoku/sudoku-solver/account/<%= locals.actorConnected.login%>"
                             class="menuBurger--option"
                         >
                             <li class="menuBurger--option">Mon compte</li>
                         </a>
                         <% if (actorConnected.role==="ADMIN" ) { %>
-                        <a href="/logs" class="menuBurger--option">
+                        <a href="/sudoku/logs" class="menuBurger--option">
                             <li class="menuBurger--option">Logs</li>
                         </a>
                         <% } %>
-                        <a href="/sudoku/deconnect" class="menuBurger--option">
+                        <a
+                            href="/sudoku/sudoku-solver/deconnect"
+                            class="menuBurger--option"
+                        >
                             <li class="menuBurger--option">Se déconnecter</li>
                         </a>
                     </ul>
@@ -84,18 +87,26 @@
             <% if (NODE_ENV==='production' ) { %>
             <script
                 type="text/javascript"
-                src="/js/baseUrlProd.js"
+                src="/sudoku/js/baseUrlProd.js"
                 defer
             ></script>
             <% } else { %>
             <script
                 type="text/javascript"
-                src="/js/baseUrlLocal.js"
+                src="/sudoku/js/baseUrlLocal.js"
                 defer
             ></script>
             <% }%>
-            <script src="/js/bundle/menu.js" charset="utf-8" defer></script>
-            <script src="/js/bundle/footer.js" charset="utf-8" defer></script>
+            <script
+                src="/sudoku/js/bundle/menu.js"
+                charset="utf-8"
+                defer
+            ></script>
+            <script
+                src="/sudoku/js/bundle/footer.js"
+                charset="utf-8"
+                defer
+            ></script>
             <script
                 src="https://kit.fontawesome.com/7a7244ff73.js"
                 crossorigin="anonymous"
