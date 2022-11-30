@@ -7,6 +7,10 @@ const router = require('./routes');
 
 const app = express();
 
+app.use('/', (req, res, next) => {
+    req.url = req.url.replace('/sudoku/', '/');
+    next();
+});
 require('./helpers/apiDocs')(app);
 
 app.use(favicon(path.normalize(`${__dirname}/../public/images/favicon.ico`)));
