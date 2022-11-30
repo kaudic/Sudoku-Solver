@@ -68,7 +68,7 @@ const controller = {
         }
         // mise à jour dans la DB
         await userDatamapper.updateOneUser(actorObject);
-        return res.redirect(`sudoku/sudoku-solver/`);
+        return res.redirect(`${process.env.BASE_URL}/sudoku/sudoku-solver`);
     },
 
     async deleteActor(req, res) {
