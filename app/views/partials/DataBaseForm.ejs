@@ -1,16 +1,29 @@
 <form class="main-form" action="/api/db/generate" method="POST">
-
-    <label class="form__consigne" for="level-selection">NB GRILLES<br> EN BASE</label>
-    <input class="inputAdmin" id="boardsCount" value="<% if (data[0].count){ %>
+    <label class="form__consigne" for="level-selection"
+        >NB GRILLES<br />
+        EN BASE</label
+    >
+    <input
+        class="inputAdmin"
+        id="boardsCount"
+        value="<% if (data[0].count){ %>
         <%= locals.data[0].count %>
-            <% } %>">
+            <% } %>"
+    />
 
-
-    <label class="form__consigne" id="nbGrillesLabel" for="nbGrilles">Nb de grilles<br> à génerer</label>
-    <input class="inputAdmin" type="value" name="qtyNewBoard" id="nbGrilles" required>
+    <label class="form__consigne" id="nbGrillesLabel" for="nbGrilles"
+        >Nb de grilles<br />
+        à génerer</label
+    >
+    <input
+        class="inputAdmin"
+        type="value"
+        name="qtyNewBoard"
+        id="nbGrilles"
+        required
+    />
     <button class="form__btn" id="dataGeneratorBtn">Générer</button>
     <a href="/sudoku" class="form__btn form__btn--admin">RETOUR</a>
-
 </form>
 
-<script src="/js/bundle/database.js" charset="utf-8" defer></script>
+<script src="/sudoku/js/bundle/database.js" charset="utf-8" defer></script>
