@@ -13,6 +13,8 @@ const controller = {
     async databaseRead(req, res) {
         // lecture de la base de données
         const results = await boardDatamapper.getAllBoards();
+        console.log('in the databaseRead controller');
+        console.log(JSON.stringify(results));
         return res.render('adminDB', { data: results });
     },
 
