@@ -5,6 +5,7 @@ const dataMapper = require('../../models/db');
 const controller = {
 
     async dataBaseWrite(req, res) {
+        console.log('in the controller databaseWrite');
         const qty = req.body.qtyNewBoard;
         // eslint-disable-next-line no-path-concat, prefer-template
         const childRoute = path.normalize(__dirname + '/../../childProcess/generator');
