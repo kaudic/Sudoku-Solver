@@ -100,7 +100,7 @@ const controller = {
     deconnect: (req, res) => {
         delete req.session.actorConnected;
         res.locals = null;
-        res.redirect(`sudoku/sudoku-solver/login`);
+        res.redirect(`${process.env.BASE_URL}/sudoku-solver/login`);
     },
 
     displayAccount: (req, res) => {
