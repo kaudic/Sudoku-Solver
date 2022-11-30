@@ -3985,7 +3985,7 @@ const database = {
         e.preventDefault();
         const formElement = document.querySelector('.main-form');
         const formData = new FormData(formElement);
-        const generationResult = await fetch(`${BASE_URL}/api/db/generate`,
+        const generationResult = await fetch(`${BASE_URL}/sudoku/api/db/generate`,
             {
                 method: "POST",
                 body: formData,
