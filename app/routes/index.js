@@ -13,7 +13,7 @@ const router = express.Router();
 
 // si erreur utilisateur, on redirige sur /sudoku
 router.get('/', (req, res) => {
-    res.redirect(`sudoku-solver`);
+    res.redirect(`sudoku/sudoku-solver`);
 });
 
 // importation des sous-routeurs
