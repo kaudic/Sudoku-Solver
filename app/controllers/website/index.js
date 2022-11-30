@@ -75,7 +75,7 @@ const controller = {
         const id = Number(req.session.actorConnected.id);
         await userDatamapper.deleteOneUser(id);
         // on renvoie sur la route qui supprime la session
-        res.redirect(`sudoku/sudoku-solver/deconnect`);
+        return res.redirect(`${process.env.BASE_URL}/sudoku/sudoku-solver`);
     },
 
     async connect(req, res) {
