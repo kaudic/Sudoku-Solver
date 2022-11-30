@@ -51,7 +51,7 @@ const login = {
         accountValidation.addEventListener('click', () => {
             // On modifie la route du formulaire
             const formElts = document.getElementsByTagName('form');
-            formElts[0].action = '/sudoku/sudoku-solver/login/modify';
+            formElts[0].action = '/sudoku-solver/login/modify';
         });
     },
 
