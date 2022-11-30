@@ -94,7 +94,7 @@ const controller = {
             email: user.rows[0].actor_email,
         };
         res.locals.actorConnected = req.session.actorConnected;
-        return res.redirect(`sudoku/sudoku-solver`);
+        return res.redirect(`${process.env.BASE_URL}/sudoku/sudoku-solver`);
     },
 
     deconnect: (req, res) => {
