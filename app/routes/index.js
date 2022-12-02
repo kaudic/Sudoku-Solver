@@ -25,10 +25,10 @@ const websiteRouter = require('./website');
 router.use('/api', apiRouter);
 
 // If sudoku is still in th url then cut it
-router.use('/', (req, res, next) => {
-    req.url = req.url.replace('/sudoku/', '/');
-    next();
-});
+// router.use('/', (req, res, next) => {
+//     req.url = req.url.replace('/sudoku/', '/');
+//     next();
+// });
 
 router.use('/sudoku-solver', websiteRouter);
 
