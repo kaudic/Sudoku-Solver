@@ -44,7 +44,7 @@
         "nodemailer": "^6.7.2",
         "pg": "^8.7.1",
         "serve-favicon": "^2.5.0",
-        "sweetalert2": "^11.4.17",
+        "sweetalert2": "^11.4.",
         "yargs": "^17.5.1"
     },
     "devDependencies": {
