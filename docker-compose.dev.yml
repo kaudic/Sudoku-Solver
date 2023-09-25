@@ -9,7 +9,7 @@ services:
         networks:
             - sudoku-network
         ports:
-            - 3004:3004
+            - 3013:3013
     db-sudoku:
         image: postgres
         environment:
@@ -24,7 +24,7 @@ services:
               source: sudoku-data
               target: /var/lib/postgresql/data
         ports:
-            - 54032:54032
+            - 54033:54033
         networks:
             - sudoku-network
     reverse-proxy:
@@ -32,7 +32,7 @@ services:
             context: ./reverse-proxy
             dockerfile: Dockerfile.dev
         ports:
-            - 3003:3003
+            - 3014:3014
         depends_on:
             - app-sudoku
             - db-sudoku
