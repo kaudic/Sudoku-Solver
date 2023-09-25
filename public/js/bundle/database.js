@@ -3992,8 +3992,6 @@ const database = {
             })
             .then((res) => res.json());
 
-        console.log(JSON.stringify(generationResult));
-
         if (generationResult.result === true) {
             Swal.fire({
                 title: 'Les grilles ont été générées !',
