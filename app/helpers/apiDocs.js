@@ -14,6 +14,7 @@ const options = {
     // Activation de la documentation à travers une route de l'API
     exposeApiDocs: true,
     apiDocsPath: '/api/docs',
+
 };
 
 /**

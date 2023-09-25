@@ -1,0 +1,49 @@
+version: "3.9"
+services:
+    app-sudoku:
+        build:
+            context: .
+            dockerfile: Dockerfile.prod
+        env_file:
+            - ./.env
+        networks:
+            - sudoku-network
+        ports:
+            - 3005:3005
+    db-sudoku:
+        image: postgres
+        environment:
+            - POSTGRES_USER=sudoku
+            - POSTGRES_PASSWORD=sudoku
+            - PGDATA=/var/lib/postgresql/data/pgdata
+        volumes:
+            #this line will play the sql file when building container (sql file contains structure and data)
+            - ./backups/sudoku_structure_dump.sql:/docker-entrypoint-initdb.d/sudoku_structure_dump.sql
+            #this group will create a volume and persist data
+            - type: volume
+              source: sudoku-data
+              target: /var/lib/postgresql/data
+        ports:
+            - 54033:54033
+        networks:
+            - sudoku-network
+    reverse-proxy:
+        build:
+            context: ./reverse-proxy
+            dockerfile: Dockerfile.dev
+        ports:
+            - 3003:3003
+        depends_on:
+            - app-sudoku
+            - db-sudoku
+        networks:
+            - external-planitools
+            - sudoku-network
+networks:
+    external-planitools:
+        external: true
+    sudoku-network:
+        internal: true
+
+volumes:
+    sudoku-data:

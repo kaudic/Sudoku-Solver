@@ -8,7 +8,16 @@ const router = require('./routes');
 const app = express();
 
 app.use('/', (req, res, next) => {
-    req.url = req.url.replace('/sudoku/', '/');
+    if (req.url === '/sudoku/sudoku/docs/api-docs') {
+        req.url = 'sudoku-solver/sudoku/sudoku/docs/api-docs';
+    }
+    if (req.url === '/sudoku') {
+        req.url = '/';
+    }
+    if (req.url !== 'sudoku-solver/sudoku/sudoku/docs/api-docs' && req.url !== '/sudoku') {
+        req.url = req.url.replaceAll('sudoku/', '');
+    }
+
     next();
 });
 require('./helpers/apiDocs')(app);
@@ -46,7 +55,7 @@ app.use(session({
 
 // variable à transmettre à EJS
 app.use((req, res, next) => {
-    if (!req.session.actorConnected) { req.session.actorConnected = '' };
+    if (!req.session.actorConnected) { req.session.actorConnected = ''; }
     res.locals.actorConnected = req.session.actorConnected;
     res.locals.baseUrl = `${process.env.BASE_URL}`;
     next();
